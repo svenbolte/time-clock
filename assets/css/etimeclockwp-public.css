@@ -1,0 +1,89 @@
+/***************** clock in / out *****************/
+
+.etimeclock-main {
+	margin: 0 auto;
+	width: 600px;
+	border: 1px solid #ccc;
+	background-color: #eee;
+	padding: 10px;
+}
+
+.etimeclock-body {
+	width: 100%;
+	text-align: center;
+}
+
+#etimeclock-epw {color:black!important}
+
+.etimeclock-date {
+	font-size: 18pt;
+}
+
+.etimeclock-time {
+	font-size: 20pt;
+}
+
+.etimeclock-button {
+	width: 45%;
+	display: inline-block;
+	margin-bottom: 15px;
+	font-size: 1.3em;
+	color:#fff;
+	text-transform: uppercase;
+	padding:14px 0
+}
+
+.etimeclock-button a {
+	color:white
+}
+
+.etimeclock-text {
+	display: inline-block;
+}
+
+.etimeclock-input {
+	border: 1px solid #ccc !important;
+	width: 250px;
+}
+
+#etimeclock-response-red {
+	font-size: 18pt;
+	color: #FF5555;
+}
+
+#etimeclock-response-green {
+	font-size: 18pt;
+	color: #3EBB9C;
+}
+
+.etimeclock-in, .etimeclock-break-out {
+	margin-right: 15px;
+}
+
+@media all and ( max-width: 600px ) {
+	.etimeclock-main {
+		width: unset;
+	}
+	
+	.etimeclock-button {
+		width: 150px;
+		margin: 0px;
+	}
+	
+	.etimeclock-input {
+		width: 200px;
+	}
+}
+
+
+@media all and ( max-width: 400px ) {
+	
+	.etimeclock-text {
+		width: 150px;
+		display: inline-block;
+	}
+	
+	.etimeclock-input {
+		width: 150px;
+	}
+}

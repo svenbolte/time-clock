@@ -1,0 +1,424 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Time Clock\n"
+"POT-Creation-Date: 2022-09-25 12:29+0000\n"
+"PO-Revision-Date: 2022-09-25 17:17+0000\n"
+"Last-Translator: Keller Admin\n"
+"Language-Team: Deutsch (Sie)\n"
+"Language: de_DE_formal\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+"Report-Msgid-Bugs-To: \n"
+"X-Loco-Version: 2.6.2; wp-6.0.2"
+
+#: includes/admin/settings/settings_dashboard_items.php:11
+msgid ""
+"\n"
+"\t\t\t\n"
+"1. On any page or post, you can place the shortcode [timeclock]. This will "
+"display a timeclock.  <br /> <br  /> Note: You should only have one "
+"timeclock shortcode per page or post. <br /><br />\n"
+"\n"
+"2. Create a new user on the <a target='_blank' href='edit.php?"
+"post_type=etimeclockwp_users'> Users page</a>. <br /><br />\n"
+"\n"
+"3. When the user enters their username and password (which is setup on the "
+"Users page) on the timeclock, there time will be recorded. <br /><br />\n"
+"\n"
+"4. You can view the users activity on the <a target='_blank' href='edit.php?"
+"post_type=etimeclockwp_clock'>Activity page</a>. <br /><br />\n"
+"\n"
+"5. You may wish to change the datetime format displayed in the timeclock and "
+"on the Activity page. You can do this on the General Tab -> <a href='admin."
+"php?page=etimeclockwp_settings_page&tab=13'>Date & Time Format section</a> "
+"<br /><br />\n"
+"\n"
+"\t\t\t"
+msgstr ""
+"1. Auf jeder Seite oder jedem Beitrag können Sie den Shortcode [timeclock] "
+"platzieren. Dies zeigt eine Zeituhr an. <br /> <br /> Hinweis: Sie sollten "
+"nur einen Timeclock-Shortcode pro Seite oder Post haben. <br /><br />\n"
+"2. Erstellen Sie einen neuen Benutzer auf der <a target='_blank' href='edit."
+"php?post_type=etimeclockwp_users'> Benutzerseite</a>. <br /><br />\n"
+"3. Wenn der Benutzer seinen Benutzernamen und sein Passwort (das auf der "
+"Benutzerseite eingerichtet wird) auf der Zeitschaltuhr eingibt, wird dort "
+"die Zeit aufgezeichnet. <br /><br />\n"
+"4. Sie können die Benutzeraktivität auf der <a target='_blank' href='edit."
+"php?post_type=etimeclockwp_clock'>Aktivitätsseite</a> anzeigen. <br /><br />"
+"\n"
+"5. Möglicherweise möchten Sie das in der Zeitschaltuhr und auf der "
+"Aktivitätsseite angezeigte Datum/Uhrzeit-Format ändern. Sie können dies auf "
+"der Registerkarte \"Allgemein\" -> <a href='admin.php?"
+"page=etimeclockwp_settings_page&tab=13'>Abschnitt Datums- und Zeitformat</a> "
+"<br /><br /> tun"
+
+#: includes/settings/settings_api.php:195
+msgid " Version "
+msgstr "Version"
+
+#: includes/settings/settings_api.php:601
+msgid "Activate License"
+msgstr "Lizenz aktivieren"
+
+#: includes/admin/post_types.php:13 includes/admin/post_types.php:14
+#: includes/admin/post_types.php:17 includes/admin/post_types.php:20
+msgid "Activity"
+msgstr "Aktivität"
+
+#: includes/admin/post_types.php:15
+msgid "Add New Activity"
+msgstr "Neue Aktivität zufügen"
+
+#: includes/admin/post_types.php:40
+msgid "Add New User"
+msgstr "Mitarbeitende zufügen"
+
+#: includes/functions.php:107
+msgid "Admin Review"
+msgstr "Admin Ansicht"
+
+#: includes/settings/settings_api.php:130
+msgid "Advanced"
+msgstr "Erweitert"
+
+#: includes/admin/activity.php:446
+msgid "All users"
+msgstr "Alle Benutzer"
+
+#. Description of the plugin
+msgid "An employee and volunteer time clock plugin for WordPress"
+msgstr "Ein Mitarbeiter- und Freiwilligen-Stempeluhr-Plugin für WordPress"
+
+#: includes/actions.php:339
+msgid "Break Off"
+msgstr "Pause deaktivieren"
+
+#: includes/actions.php:333
+msgid "Break On"
+msgstr "Pause aktivieren"
+
+#: includes/admin/activity.php:190 includes/admin/activity.php:223
+#: includes/admin/activity.php:254
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: includes/actions.php:327 includes/settings/settings_api.php:80
+#: includes/settings/settings_api.php:83
+msgid "Clock In"
+msgstr "Einstempeln"
+
+#: includes/settings/settings_api.php:35
+msgid "Clock In - Button Color"
+msgstr "Einstempeln Button Farbe"
+
+#: includes/actions.php:345 includes/settings/settings_api.php:87
+#: includes/settings/settings_api.php:90
+msgid "Clock Out"
+msgstr "Ausstempeln"
+
+#: includes/settings/settings_api.php:42
+msgid "Clock Out - Button Color"
+msgstr "Ausstempeln Farbe"
+
+#: includes/admin/activity.php:189 includes/admin/activity.php:222
+#: includes/admin/activity.php:253
+msgid "Confirm"
+msgstr "Bestätigen"
+
+#: includes/settings/settings_api.php:10 includes/settings/settings_api.php:12
+msgid "Dashboard"
+msgstr "Kontrollzentrum"
+
+#: includes/settings/settings_api.php:109
+msgid "Date & Time Format"
+msgstr "Datum und Zeitformat"
+
+#: includes/settings/settings_api.php:111
+msgid "Date Format"
+msgstr "Datumsformat"
+
+#: includes/admin/activity.php:285
+msgid "Date Worked"
+msgstr "Arbeits-Datum"
+
+#: includes/admin/activity.php:56
+msgid "Date: "
+msgstr "Datum:"
+
+#: includes/admin/activity.php:10
+msgid "Day Details"
+msgstr "Tages-Details"
+
+#: includes/settings/settings_api.php:598
+msgid "Deactivate License"
+msgstr "Lizenz deaktivieren"
+
+#: includes/settings/settings_api.php:34
+msgid "Default Colors"
+msgstr "Standardfarben"
+
+#: includes/settings/settings_api.php:64
+msgid "Default Text"
+msgstr "Standardtext"
+
+#: includes/admin/activity.php:159
+msgid "Delete"
+msgstr "Löschen"
+
+#: includes/admin/activity.php:180
+msgid "Delete Entry"
+msgstr "Eintrag löschen"
+
+#: includes/admin/activity.php:11
+msgid "Details"
+msgstr "Details"
+
+#: includes/admin/activity.php:158
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: includes/admin/activity.php:203
+msgid "Edit Entry"
+msgstr "Eintrag bearbeiten"
+
+#: includes/admin/post_types.php:42
+msgid "Edit User"
+msgstr "Benutzer bearbeiten"
+
+#: includes/settings/settings_api.php:66 includes/settings/settings_api.php:69
+msgid "Employee ID"
+msgstr "Personalkürzel"
+
+#: includes/settings/settings_api.php:73 includes/settings/settings_api.php:76
+msgid "Employee Password"
+msgstr "Kennwort"
+
+#: timeclock.php:66
+msgid "Employee Time Clock has been auto-deactivated."
+msgstr "Die Mitarbeiter-Stempeluhr wurde automatisch deaktiviert."
+
+#: timeclock.php:64
+msgid ""
+"Employee Time Clock requires PHP 5.6+ and WordPress 4.0+ to function "
+"properly. Your current configuration does not meet one or more of these "
+"requirements."
+msgstr ""
+"Employee Time Clock erfordert PHP 5.6+ und WordPress 4.0+, um richtig zu "
+"funktionieren. Ihre aktuelle Konfiguration erfüllt eine oder mehrere dieser "
+"Anforderungen nicht."
+
+#: includes/actions.php:54
+msgid "Error - Nonce validation failed."
+msgstr "Fehler - Nonce Validierung fehlgeschlagen"
+
+#: includes/admin/users.php:30
+msgid "Full Name"
+msgstr "Vollständiger Name"
+
+#: includes/settings/settings_api.php:19
+msgid "General"
+msgstr "Allgemein"
+
+#: includes/settings/settings_api.php:550
+msgid "Generate Report"
+msgstr "Bericht erzeugen"
+
+#: includes/admin/settings/settings_dashboard_items.php:10
+msgid "Getting Started Guide"
+msgstr "Schnellstart"
+
+#. Author URI of the plugin
+msgid "https://wpplugin.org"
+msgstr "https://wpplugin.org"
+
+#: includes/actions.php:441
+msgid "Incorrect ID or Password."
+msgstr "Falsches Kennwort"
+
+#: includes/settings/settings_api.php:587
+msgid "Key"
+msgstr "Aktion"
+
+#: includes/settings/settings_api.php:94 includes/settings/settings_api.php:97
+msgid "Leave On Break"
+msgstr "Pause beginnen"
+
+#: includes/settings/settings_api.php:49
+msgid "Leave On Break - Button Color"
+msgstr "Pause beginnen Farbe"
+
+#: includes/settings/settings_api.php:21
+msgid "Main"
+msgstr "Haupt"
+
+#: includes/admin/activity.php:157
+msgid "New"
+msgstr "Neuer Eintrag"
+
+#: includes/admin/post_types.php:18
+msgid "New Activity"
+msgstr "Neue Aktivität"
+
+#: includes/admin/activity.php:236
+msgid "New Entry"
+msgstr "Neuer Eintrag"
+
+#: includes/admin/post_types.php:43
+msgid "New User"
+msgstr "Neue Mitarbeitende"
+
+#: includes/settings/settings_api.php:27
+msgid "No"
+msgstr "Nein"
+
+#: includes/settings/settings_api.php:136
+msgid "No (Default)"
+msgstr "Nein (Standard)"
+
+#: includes/admin/post_types.php:19
+msgid "No Activity found"
+msgstr "keine Aktivitäten gefunden"
+
+#: includes/admin/post_types.php:44
+msgid "No Users Found"
+msgstr "keine Mitarbeitenden gefunden"
+
+#: includes/admin/users.php:40
+msgid "Password"
+msgstr "Kennwort"
+
+#: includes/settings/settings_api.php:131
+msgid "Plugin Data"
+msgstr "Plugin Daten"
+
+#: includes/settings/settings_api.php:132
+msgid "Remove all plugin data on uninstall"
+msgstr "Beim Deinstallieren alle Daten entfernen!"
+
+#: includes/admin/users.php:40
+msgid "Required"
+msgstr "erforderlich"
+
+#: includes/admin/users.php:35
+msgid "Required. The User ID should not contains spaces. Example: JSmith87"
+msgstr ""
+"Erforderlich. Die Benutzer-ID darf keine Leerzeichen enthalten. Beispiel: "
+"JSmith87"
+
+#: includes/settings/settings_api.php:101
+#: includes/settings/settings_api.php:104
+msgid "Return From Break"
+msgstr "Pause beenden"
+
+#: includes/settings/settings_api.php:56
+msgid "Return From Break - Button Color"
+msgstr "Pause beenden Farbe"
+
+#: includes/admin/activity.php:69 includes/admin/users.php:9
+#: includes/admin/users.php:61
+msgid "Save"
+msgstr "Speichern"
+
+#. Author of the plugin
+msgid "Scott Paterson"
+msgstr "Scott Paterson"
+
+#: includes/admin/post_types.php:16
+msgid "Search Activity"
+msgstr "Aktivität suchen"
+
+#: includes/admin/post_types.php:41
+msgid "Search Users"
+msgstr "Benutzer suchen"
+
+#: includes/admin/menu.php:11 includes/settings/settings_api.php:194
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: includes/settings/settings_api.php:22
+msgid "Show Break In / Break Out Options"
+msgstr "Pause/Pausenoptionen anzeigen"
+
+#: includes/settings/settings_api.php:608
+msgid "Status"
+msgstr "Status"
+
+#: includes/actions.php:436
+msgid "Success"
+msgstr "Erfolg!"
+
+#. Name of the plugin
+msgid "Time Clock"
+msgstr "Time Clock"
+
+#: includes/settings/settings_api.php:118
+msgid "Time Format"
+msgstr "Zeitformat"
+
+#: includes/admin/activity.php:355
+msgid "Time Worked"
+msgstr "Arbeitszeit"
+
+#: includes/admin/activity.php:292
+msgid "Total Time Worked"
+msgstr "Gesamt Arbeitszeit"
+
+#: includes/admin/activity.php:278 includes/admin/post_types.php:39
+msgid "User"
+msgstr "Mitarbeitender"
+
+#: includes/admin/users.php:35 includes/admin/users.php:156
+msgid "User ID"
+msgstr "Personal-ID"
+
+#: includes/admin/users.php:8
+msgid "User Information"
+msgstr "Benutzerinformation"
+
+#: includes/admin/activity.php:353 includes/admin/users.php:155
+msgid "User Name"
+msgstr "Mitarbeitenden-Name"
+
+#: includes/admin/activity.php:27
+msgid "User: "
+msgstr "Mitarbeitende"
+
+#: includes/admin/post_types.php:38 includes/admin/post_types.php:45
+msgid "Users"
+msgstr "Mitarbeitende"
+
+#: includes/settings/settings_api.php:30
+msgid ""
+"When the timeclock shortcode is displayed, the Clock In / Clock Out Buttons "
+"are displayed. Should the Leave On Break / Return From Break buttons also be "
+"displayed?"
+msgstr ""
+"Wenn der Shortcode der Zeitschaltuhr angezeigt wird, werden die "
+"Schaltflächen Kommen/Gehen angezeigt. Sollen auch die Schaltflächen Leave On "
+"Break / Return From Break angezeigt werden?"
+
+#: includes/admin/activity.php:354
+msgid "Work Date"
+msgstr "Arbeitsdatum"
+
+#: includes/settings/settings_api.php:137
+msgid "Yes"
+msgstr "Ja"
+
+#: includes/settings/settings_api.php:26
+msgid "Yes (Default)"
+msgstr "Ja (Standard)"
+
+#: includes/admin/settings/settings_page.php:11
+msgid ""
+"You do not have sufficient permissions to access this page. Please sign in "
+"as an administrator."
+msgstr ""
+"Sie haben keine ausreichenden Berechtigungen, um auf diese Seite zuzugreifen."
+" Bitte melden Sie sich als Administrator an."
