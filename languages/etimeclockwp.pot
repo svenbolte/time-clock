@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-09-25 17:16+0000\n"
+"POT-Creation-Date: 2022-09-28 18:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -66,11 +66,15 @@ msgstr ""
 msgid "Admin Review"
 msgstr ""
 
+#: includes/shortcodes.php:54
+msgid "admin show bookings"
+msgstr ""
+
 #: includes/settings/settings_api.php:130
 msgid "Advanced"
 msgstr ""
 
-#: includes/admin/activity.php:446
+#: includes/admin/activity.php:423
 msgid "All users"
 msgstr ""
 
@@ -78,20 +82,20 @@ msgstr ""
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr ""
 
-#: includes/actions.php:339
+#: includes/actions.php:323
 msgid "Break Off"
 msgstr ""
 
-#: includes/actions.php:333
+#: includes/actions.php:318
 msgid "Break On"
 msgstr ""
 
-#: includes/admin/activity.php:190 includes/admin/activity.php:223
-#: includes/admin/activity.php:254
+#: includes/admin/activity.php:184 includes/admin/activity.php:217
+#: includes/admin/activity.php:248
 msgid "Cancel"
 msgstr ""
 
-#: includes/actions.php:327 includes/settings/settings_api.php:80
+#: includes/actions.php:313 includes/settings/settings_api.php:80
 #: includes/settings/settings_api.php:83
 msgid "Clock In"
 msgstr ""
@@ -100,7 +104,7 @@ msgstr ""
 msgid "Clock In - Button Color"
 msgstr ""
 
-#: includes/actions.php:345 includes/settings/settings_api.php:87
+#: includes/actions.php:328 includes/settings/settings_api.php:87
 #: includes/settings/settings_api.php:90
 msgid "Clock Out"
 msgstr ""
@@ -109,8 +113,8 @@ msgstr ""
 msgid "Clock Out - Button Color"
 msgstr ""
 
-#: includes/admin/activity.php:189 includes/admin/activity.php:222
-#: includes/admin/activity.php:253
+#: includes/admin/activity.php:183 includes/admin/activity.php:216
+#: includes/admin/activity.php:247
 msgid "Confirm"
 msgstr ""
 
@@ -126,11 +130,11 @@ msgstr ""
 msgid "Date Format"
 msgstr ""
 
-#: includes/admin/activity.php:285
+#: includes/admin/activity.php:279
 msgid "Date Worked"
 msgstr ""
 
-#: includes/admin/activity.php:56
+#: includes/admin/activity.php:55
 msgid "Date: "
 msgstr ""
 
@@ -150,11 +154,11 @@ msgstr ""
 msgid "Default Text"
 msgstr ""
 
-#: includes/admin/activity.php:159
+#: includes/admin/activity.php:153
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/activity.php:180
+#: includes/admin/activity.php:174
 msgid "Delete Entry"
 msgstr ""
 
@@ -162,11 +166,11 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: includes/admin/activity.php:158
+#: includes/admin/activity.php:152
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/activity.php:203
+#: includes/admin/activity.php:197
 msgid "Edit Entry"
 msgstr ""
 
@@ -182,18 +186,18 @@ msgstr ""
 msgid "Employee Password"
 msgstr ""
 
-#: timeclock.php:66
+#: timeclock.php:68
 msgid "Employee Time Clock has been auto-deactivated."
 msgstr ""
 
-#: timeclock.php:64
+#: timeclock.php:66
 msgid ""
 "Employee Time Clock requires PHP 5.6+ and WordPress 4.0+ to function "
 "properly. Your current configuration does not meet one or more of these "
 "requirements."
 msgstr ""
 
-#: includes/actions.php:54
+#: includes/actions.php:37
 msgid "Error - Nonce validation failed."
 msgstr ""
 
@@ -214,10 +218,14 @@ msgid "Getting Started Guide"
 msgstr ""
 
 #. Author URI of the plugin
-msgid "https://wpplugin.org"
+msgid "https://github.com/svenbolte/"
 msgstr ""
 
-#: includes/actions.php:441
+#. URI of the plugin
+msgid "https://github.com/svenbolte/time-clock/"
+msgstr ""
+
+#: includes/actions.php:419
 msgid "Incorrect ID or Password."
 msgstr ""
 
@@ -237,7 +245,7 @@ msgstr ""
 msgid "Main"
 msgstr ""
 
-#: includes/admin/activity.php:157
+#: includes/admin/activity.php:151
 msgid "New"
 msgstr ""
 
@@ -245,7 +253,7 @@ msgstr ""
 msgid "New Activity"
 msgstr ""
 
-#: includes/admin/activity.php:236
+#: includes/admin/activity.php:230
 msgid "New Entry"
 msgstr ""
 
@@ -298,13 +306,13 @@ msgstr ""
 msgid "Return From Break - Button Color"
 msgstr ""
 
-#: includes/admin/activity.php:69 includes/admin/users.php:9
+#: includes/admin/activity.php:65 includes/admin/users.php:9
 #: includes/admin/users.php:61
 msgid "Save"
 msgstr ""
 
 #. Author of the plugin
-msgid "Scott Paterson"
+msgid "Scott Paterson and PBMod"
 msgstr ""
 
 #: includes/admin/post_types.php:16
@@ -327,7 +335,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: includes/actions.php:436
+#: includes/actions.php:414
 msgid "Success"
 msgstr ""
 
@@ -339,15 +347,15 @@ msgstr ""
 msgid "Time Format"
 msgstr ""
 
-#: includes/admin/activity.php:355
+#: includes/admin/activity.php:332
 msgid "Time Worked"
 msgstr ""
 
-#: includes/admin/activity.php:292
+#: includes/admin/activity.php:286
 msgid "Total Time Worked"
 msgstr ""
 
-#: includes/admin/activity.php:278 includes/admin/post_types.php:39
+#: includes/admin/activity.php:272 includes/admin/post_types.php:39
 msgid "User"
 msgstr ""
 
@@ -359,11 +367,11 @@ msgstr ""
 msgid "User Information"
 msgstr ""
 
-#: includes/admin/activity.php:353 includes/admin/users.php:155
+#: includes/admin/activity.php:330 includes/admin/users.php:155
 msgid "User Name"
 msgstr ""
 
-#: includes/admin/activity.php:27
+#: includes/admin/activity.php:26
 msgid "User: "
 msgstr ""
 
@@ -378,7 +386,7 @@ msgid ""
 "displayed?"
 msgstr ""
 
-#: includes/admin/activity.php:354
+#: includes/admin/activity.php:331
 msgid "Work Date"
 msgstr ""
 

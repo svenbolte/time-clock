@@ -11,6 +11,8 @@ jQuery(document).ready(function($) {
 			'eid':		jQuery('#etimeclock-eid').val(), 			// employee id
 			'epw':		jQuery('#etimeclock-epw').val(),			// employee password
 			'hash':		jQuery('#etimeclock-hash').val(),			// password hash
+			'mandate':		jQuery('#manualdate').val(),			// date set manually
+			'mantime':		jQuery('#manualtime').val(),			// time set manually
 		};
 		
 		jQuery.ajax({
@@ -24,10 +26,12 @@ jQuery(document).ready(function($) {
 			success: function (result) {
 				
 				if (result.color == 'red') {
-					alert(result.message);
+					jQuery('#etimeclock-status').css('color', 'tomato');
+					jQuery('#etimeclock-status').html(result.message);
 				} else {
-					alert(result.message);
+					jQuery('#etimeclock-status').html(result.message);
 					// refresh
+					window.setTimeout( result, 6000 ); // 6 seconds
 					location.reload(); 
 				}
 				

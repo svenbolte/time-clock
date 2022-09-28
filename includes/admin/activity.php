@@ -21,8 +21,7 @@ function etimeclockwp_callback_activity($post) {
 	
 	// see if new post
 	if ($post->post_status == 'auto-draft') {
-		
-		
+	
 		echo "<table><tr><td>";
 			echo __('User: ', 'etimeclockwp');
 		echo "</td><td>";
@@ -61,13 +60,9 @@ function etimeclockwp_callback_activity($post) {
 		$date_now = 		date_i18n($wp_date_format);
 		
 		echo "<input type='text' id='etimeclockwp-new-activity' class='etimeclockwp_cell_width' value='$date_now'><input type='hidden' id='etimeclockwp-new-activity-real' name='real-date' value=''>";
-		
 		echo '<input type="hidden" name="etimeclockwp_MetaNonce" value="', wp_create_nonce(basename(__FILE__)), '" />';
-		
 		echo '<input type="hidden" name="etimeclockwp_submit" value="1" />';
-		
 		echo "</td></tr><tr><td></td><td><input id='publish' class='button-primary' type='submit' value='"; echo __('Save','etimeclockwp'); echo "' accesskey='p' tabindex='5' name='save'>";
-		
 		echo "</td></tr></table>";
 		
 		
@@ -87,7 +82,6 @@ function etimeclockwp_callback_activity($post) {
 			echo '<table>';
 				
 				$metavalue = get_post_meta($post->ID);
-				
 				
 				$wp_date_format = etimeclockwp_get_option('date-format');
 				$wp_time_format = etimeclockwp_get_option('time-format');
@@ -145,8 +139,8 @@ function etimeclockwp_callback_activity($post) {
 						$datetime = date_i18n($wp_date_format.' '.$wp_time_format,$timestampdb);
 						$date = 	date_i18n($wp_date_format,$timestampdb);
 						$time = 	date_i18n($wp_time_format,$timestampdb);
-
 						$timestamp = 		date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp,$timestampdb);
+
 						if (!empty($oldtimestampdb)) $difftime = german_time_diff($oldtimestampdb,$timestampdb); else $difftime='';
 						
 						if (isset($timestamp_array[1])) {
@@ -299,23 +293,6 @@ function etimeclockwp_callback_status($post) {
 		
 	echo "</div>";
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

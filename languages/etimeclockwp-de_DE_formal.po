@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Time Clock\n"
 "POT-Creation-Date: 2022-09-25 12:29+0000\n"
-"PO-Revision-Date: 2022-09-25 17:17+0000\n"
+"PO-Revision-Date: 2022-09-28 18:49+0000\n"
 "Last-Translator: Keller Admin\n"
 "Language-Team: Deutsch (Sie)\n"
 "Language: de_DE_formal\n"
@@ -83,11 +83,15 @@ msgstr "Mitarbeitende zufügen"
 msgid "Admin Review"
 msgstr "Admin Ansicht"
 
+#: includes/shortcodes.php:54
+msgid "admin show bookings"
+msgstr "Buchungen anzeigen"
+
 #: includes/settings/settings_api.php:130
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: includes/admin/activity.php:446
+#: includes/admin/activity.php:423
 msgid "All users"
 msgstr "Alle Benutzer"
 
@@ -95,20 +99,20 @@ msgstr "Alle Benutzer"
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr "Ein Mitarbeiter- und Freiwilligen-Stempeluhr-Plugin für WordPress"
 
-#: includes/actions.php:339
+#: includes/actions.php:323
 msgid "Break Off"
 msgstr "Pause deaktivieren"
 
-#: includes/actions.php:333
+#: includes/actions.php:318
 msgid "Break On"
 msgstr "Pause aktivieren"
 
-#: includes/admin/activity.php:190 includes/admin/activity.php:223
-#: includes/admin/activity.php:254
+#: includes/admin/activity.php:184 includes/admin/activity.php:217
+#: includes/admin/activity.php:248
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: includes/actions.php:327 includes/settings/settings_api.php:80
+#: includes/actions.php:313 includes/settings/settings_api.php:80
 #: includes/settings/settings_api.php:83
 msgid "Clock In"
 msgstr "Einstempeln"
@@ -117,7 +121,7 @@ msgstr "Einstempeln"
 msgid "Clock In - Button Color"
 msgstr "Einstempeln Button Farbe"
 
-#: includes/actions.php:345 includes/settings/settings_api.php:87
+#: includes/actions.php:328 includes/settings/settings_api.php:87
 #: includes/settings/settings_api.php:90
 msgid "Clock Out"
 msgstr "Ausstempeln"
@@ -126,8 +130,8 @@ msgstr "Ausstempeln"
 msgid "Clock Out - Button Color"
 msgstr "Ausstempeln Farbe"
 
-#: includes/admin/activity.php:189 includes/admin/activity.php:222
-#: includes/admin/activity.php:253
+#: includes/admin/activity.php:183 includes/admin/activity.php:216
+#: includes/admin/activity.php:247
 msgid "Confirm"
 msgstr "Bestätigen"
 
@@ -143,11 +147,11 @@ msgstr "Datum und Zeitformat"
 msgid "Date Format"
 msgstr "Datumsformat"
 
-#: includes/admin/activity.php:285
+#: includes/admin/activity.php:279
 msgid "Date Worked"
 msgstr "Arbeits-Datum"
 
-#: includes/admin/activity.php:56
+#: includes/admin/activity.php:55
 msgid "Date: "
 msgstr "Datum:"
 
@@ -167,11 +171,11 @@ msgstr "Standardfarben"
 msgid "Default Text"
 msgstr "Standardtext"
 
-#: includes/admin/activity.php:159
+#: includes/admin/activity.php:153
 msgid "Delete"
 msgstr "Löschen"
 
-#: includes/admin/activity.php:180
+#: includes/admin/activity.php:174
 msgid "Delete Entry"
 msgstr "Eintrag löschen"
 
@@ -179,11 +183,11 @@ msgstr "Eintrag löschen"
 msgid "Details"
 msgstr "Details"
 
-#: includes/admin/activity.php:158
+#: includes/admin/activity.php:152
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: includes/admin/activity.php:203
+#: includes/admin/activity.php:197
 msgid "Edit Entry"
 msgstr "Eintrag bearbeiten"
 
@@ -199,11 +203,11 @@ msgstr "Personalkürzel"
 msgid "Employee Password"
 msgstr "Kennwort"
 
-#: timeclock.php:66
+#: timeclock.php:68
 msgid "Employee Time Clock has been auto-deactivated."
 msgstr "Die Mitarbeiter-Stempeluhr wurde automatisch deaktiviert."
 
-#: timeclock.php:64
+#: timeclock.php:66
 msgid ""
 "Employee Time Clock requires PHP 5.6+ and WordPress 4.0+ to function "
 "properly. Your current configuration does not meet one or more of these "
@@ -213,7 +217,7 @@ msgstr ""
 "funktionieren. Ihre aktuelle Konfiguration erfüllt eine oder mehrere dieser "
 "Anforderungen nicht."
 
-#: includes/actions.php:54
+#: includes/actions.php:37
 msgid "Error - Nonce validation failed."
 msgstr "Fehler - Nonce Validierung fehlgeschlagen"
 
@@ -234,10 +238,14 @@ msgid "Getting Started Guide"
 msgstr "Schnellstart"
 
 #. Author URI of the plugin
-msgid "https://wpplugin.org"
-msgstr "https://wpplugin.org"
+msgid "https://github.com/svenbolte/"
+msgstr "https://github.com/svenbolte/"
 
-#: includes/actions.php:441
+#. URI of the plugin
+msgid "https://github.com/svenbolte/time-clock/"
+msgstr "https://github.com/svenbolte/time-clock/"
+
+#: includes/actions.php:419
 msgid "Incorrect ID or Password."
 msgstr "Falsches Kennwort"
 
@@ -257,7 +265,7 @@ msgstr "Pause beginnen Farbe"
 msgid "Main"
 msgstr "Haupt"
 
-#: includes/admin/activity.php:157
+#: includes/admin/activity.php:151
 msgid "New"
 msgstr "Neuer Eintrag"
 
@@ -265,7 +273,7 @@ msgstr "Neuer Eintrag"
 msgid "New Activity"
 msgstr "Neue Aktivität"
 
-#: includes/admin/activity.php:236
+#: includes/admin/activity.php:230
 msgid "New Entry"
 msgstr "Neuer Eintrag"
 
@@ -320,14 +328,14 @@ msgstr "Pause beenden"
 msgid "Return From Break - Button Color"
 msgstr "Pause beenden Farbe"
 
-#: includes/admin/activity.php:69 includes/admin/users.php:9
+#: includes/admin/activity.php:65 includes/admin/users.php:9
 #: includes/admin/users.php:61
 msgid "Save"
 msgstr "Speichern"
 
 #. Author of the plugin
-msgid "Scott Paterson"
-msgstr "Scott Paterson"
+msgid "Scott Paterson and PBMod"
+msgstr "Scott Paterson and PBMod"
 
 #: includes/admin/post_types.php:16
 msgid "Search Activity"
@@ -349,7 +357,7 @@ msgstr "Pause/Pausenoptionen anzeigen"
 msgid "Status"
 msgstr "Status"
 
-#: includes/actions.php:436
+#: includes/actions.php:414
 msgid "Success"
 msgstr "Erfolg!"
 
@@ -361,15 +369,15 @@ msgstr "Time Clock"
 msgid "Time Format"
 msgstr "Zeitformat"
 
-#: includes/admin/activity.php:355
+#: includes/admin/activity.php:332
 msgid "Time Worked"
 msgstr "Arbeitszeit"
 
-#: includes/admin/activity.php:292
+#: includes/admin/activity.php:286
 msgid "Total Time Worked"
 msgstr "Gesamt Arbeitszeit"
 
-#: includes/admin/activity.php:278 includes/admin/post_types.php:39
+#: includes/admin/activity.php:272 includes/admin/post_types.php:39
 msgid "User"
 msgstr "Mitarbeitender"
 
@@ -381,11 +389,11 @@ msgstr "Personal-ID"
 msgid "User Information"
 msgstr "Benutzerinformation"
 
-#: includes/admin/activity.php:353 includes/admin/users.php:155
+#: includes/admin/activity.php:330 includes/admin/users.php:155
 msgid "User Name"
 msgstr "Mitarbeitenden-Name"
 
-#: includes/admin/activity.php:27
+#: includes/admin/activity.php:26
 msgid "User: "
 msgstr "Mitarbeitende"
 
@@ -403,7 +411,7 @@ msgstr ""
 "Schaltflächen Kommen/Gehen angezeigt. Sollen auch die Schaltflächen Leave On "
 "Break / Return From Break angezeigt werden?"
 
-#: includes/admin/activity.php:354
+#: includes/admin/activity.php:331
 msgid "Work Date"
 msgstr "Arbeitsdatum"
 

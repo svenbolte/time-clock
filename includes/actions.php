@@ -23,25 +23,6 @@ function etimeclockwp_firstrun() {
 add_action('admin_init', 'etimeclockwp_firstrun');
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // employee timeclock action
 function etimeclockwp_timeclock_action_callback() {
 
@@ -49,10 +30,11 @@ function etimeclockwp_timeclock_action_callback() {
 	$data =		sanitize_text_field($_POST['data']);
 	$eid =		sanitize_text_field($_POST['eid']);
 	$epw =		sanitize_text_field($_POST['epw']);
+	$mandate =		sanitize_text_field($_POST['mandate']);
+	$mantime =		sanitize_text_field($_POST['mantime']);
 	
 	// verify nonce
 	if (!wp_verify_nonce($nonce,'etimeclock_nonce')) { die( __('Error - Nonce validation failed.','etimeclockwp')); }
-	
 	
 	
 	// check to see if login data is valid
@@ -87,18 +69,22 @@ function etimeclockwp_timeclock_action_callback() {
 		
 		$wp_date_format = current_time(etimeclockwp_get_option('date-format'));
 		$wp_time_format = current_time(etimeclockwp_get_option('time-format'));
-		
-		
 		$now 		= strtotime(current_time('mysql'));
 		$now_part 	= current_time('Y-m-d');
+
+		// oder Datum und Zeit vorgeben manuell
+		if (!empty($mandate) && !empty($mantime)) {
+			$wp_date_format = date(etimeclockwp_get_option('date-format'),strtotime($mandate));
+			$wp_time_format = date(etimeclockwp_get_option('time-format'),strtotime($mantime));
+			$now 		= strtotime($mandate.' '.$mantime);
+			$now_part 	= date('Y-m-d',$now);
+		}
 		$rand 		= mt_rand(); // default: 0, default: mt_getrandmax() - random numbers are needed because meta key names must be unique
 		
 		
 		// set defaults
 		$flag = '0';
 		$clock_in = '0';
-		
-		
 		
 		// allow users to work past midnight
 		if ($data == 'breakon' || $data == 'breakoff' || $data == 'out') {
@@ -110,9 +96,9 @@ function etimeclockwp_timeclock_action_callback() {
 				'post_status'					=> 'publish',
 				'update_post_term_cache'		=> false, // don't retrieve post terms
 				'date_query'					=> array(
-						'year'	=> current_time('Y'),
-						'month'	=> current_time('m'),
-						'day'	=> current_time('d'),
+						'year'	=> date('Y',$now),
+						'month'	=> date('m',$now),
+						'day'	=> date('d',$now),
 				),
 				'meta_query'					=> array(
 					'relation'					=> 'and',
@@ -151,9 +137,9 @@ function etimeclockwp_timeclock_action_callback() {
 					'post_status'					=> 'publish',
 					'update_post_term_cache'		=> false, // don't retrieve post terms
 					'date_query'					=> array(
-							'year'	=> date("Y", time() + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )),
-							'month'	=> date("m", time() + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )),
-							'day'	=> date("d", time() + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )), // yesterday's date
+							'year'	=> date("Y", $now + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )),
+							'month'	=> date("m", $now + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )),
+							'day'	=> date("d", $now + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )), // yesterday's date
 					),
 					'meta_query'					=> array(
 						'relation'					=> 'and',
@@ -182,9 +168,9 @@ function etimeclockwp_timeclock_action_callback() {
 						'post_status'					=> 'publish',
 						'update_post_term_cache'		=> false, // don't retrieve post terms
 						'date_query'					=> array(
-							'year'	=> date("Y", time() + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )),
-							'month'	=> date("m", time() + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )),
-							'day'	=> date("d", time() + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )), // yesterday's date
+							'year'	=> date("Y", $now + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )),
+							'month'	=> date("m", $now + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )),
+							'day'	=> date("d", $now + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )), // yesterday's date
 						),
 						'meta_query'					=> array(
 							'relation'					=> 'and',
@@ -210,9 +196,9 @@ function etimeclockwp_timeclock_action_callback() {
 							'post_status'					=> 'publish',
 							'update_post_term_cache'		=> false, // don't retrieve post terms
 							'date_query'					=> array(
-								'year'	=> current_time('Y'),
-								'month'	=> current_time('m'),
-								'day'	=> current_time('d'),
+								'year'	=> date('Y',$now),
+								'month'	=> date('m',$now),
+								'day'	=> date('d',$now),
 							),
 							'meta_query'					=> array(
 								'relation'					=> 'and',
@@ -267,9 +253,9 @@ function etimeclockwp_timeclock_action_callback() {
 						'post_status'					=> 'publish',
 						'update_post_term_cache'		=> false, // don't retrieve post terms
 						'date_query'					=> array(
-							'year'	=> current_time('Y'),
-							'month'	=> current_time('m'),
-							'day'	=> current_time('d'),
+							'year'	=> date('Y',$now),
+							'month'	=> date('m',$now),
+							'day'	=> date('d',$now),
 						),
 						'meta_query'					=> array(
 							'relation'					=> 'and',
@@ -300,9 +286,9 @@ function etimeclockwp_timeclock_action_callback() {
 				'post_status'					=> 'publish',
 				'update_post_term_cache'		=> false, // don't retrieve post terms
 				'date_query'					=> array(
-						'year'	=> current_time('Y'),
-						'month'	=> current_time('m'),
-						'day'	=> current_time('d'),
+						'year'	=> date('Y',$now),
+						'month'	=> date('m',$now),
+						'day'	=> date('d',$now),
 				),
 				'meta_query'					=> array(
 					'relation'					=> 'and',
@@ -326,31 +312,23 @@ function etimeclockwp_timeclock_action_callback() {
 		if ($data == 'in') {
 			$success_msg 	= __('Clock In','etimeclockwp');
 			$working_status = '1';
-			
 		}
 		
 		if ($data == 'breakon') {
 			$success_msg 	= __('Break On','etimeclockwp');
 			$working_status = '0';
-			
 		}
 		
 		if ($data == 'breakoff') {
 			$success_msg 	= __('Break Off','etimeclockwp');
 			$working_status = '1';
-			
 		}
 		
 		if ($data == 'out') {
 			$success_msg 	= __('Clock Out','etimeclockwp');
 			$working_status = '0';
-			
 		}
-		
-		
-		
-		
-		
+
 		// date is not in db, so insert - record event for today
 		
 		if (empty($post_exists)) {

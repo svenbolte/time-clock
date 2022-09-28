@@ -1,89 +1,88 @@
 /***************** clock in / out *****************/
 
 .etimeclock-main {
-	margin: 0 auto;
-	width: 600px;
-	border: 1px solid #ccc;
-	background-color: #eee;
-	padding: 10px;
+margin: 0 auto;
+width: 600px;
+border: 1px solid #ccc;
+background-color: #eee;
+padding: 10px;
 }
 
 .etimeclock-body {
-	width: 100%;
-	text-align: center;
+width: 100%;
+text-align: center;
 }
 
 #etimeclock-epw {color:black!important}
 
+#etimeclock-status {
+width:100%;
+margin: 0 auto;
+text-align:center;
+background-color:#000000aa;
+color:#00ff00;
+padding:3px;
+font-weight:700;
+font-size:1.1em
+}	
+
 .etimeclock-date {
-	font-size: 18pt;
+font-size: 18pt;
 }
 
 .etimeclock-time {
-	font-size: 20pt;
+font-size: 20pt;
 }
 
 .etimeclock-button {
-	width: 45%;
-	display: inline-block;
-	margin-bottom: 15px;
-	font-size: 1.3em;
-	color:#fff;
-	text-transform: uppercase;
-	padding:14px 0
+width: 45%;
+display: inline-block;
+margin-bottom: 15px;
+font-size: 1.3em;
+color:#fff;
+text-transform: uppercase;
+padding:14px 0
 }
 
 .etimeclock-button a {
-	color:white
+color:white
 }
 
 .etimeclock-text {
-	display: inline-block;
+display: inline-block;
 }
 
 .etimeclock-input {
-	border: 1px solid #ccc !important;
-	width: 250px;
+border: 1px solid #ccc !important;
+width: 250px;
 }
 
 #etimeclock-response-red {
-	font-size: 18pt;
-	color: #FF5555;
+font-size: 18pt;
+color: #FF5555;
 }
 
 #etimeclock-response-green {
-	font-size: 18pt;
-	color: #3EBB9C;
+font-size: 18pt;
+color: #3EBB9C;
 }
 
 .etimeclock-in, .etimeclock-break-out {
-	margin-right: 15px;
+margin-right: 15px;
 }
 
 @media all and ( max-width: 600px ) {
-	.etimeclock-main {
-		width: unset;
-	}
-	
-	.etimeclock-button {
-		width: 150px;
-		margin: 0px;
-	}
-	
-	.etimeclock-input {
-		width: 200px;
-	}
+.etimeclock-main {
+width: unset;
 }
 
+.etimeclock-button {
+width: 150px;
+font-size:1em;
+margin: 0px
+}
 
-@media all and ( max-width: 400px ) {
-	
-	.etimeclock-text {
-		width: 150px;
-		display: inline-block;
-	}
-	
-	.etimeclock-input {
-		width: 150px;
-	}
+.etimeclock-input {
+width: 200px;
+}
 }
