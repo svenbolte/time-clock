@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-09-28 18:46+0000\n"
+"POT-Creation-Date: 2022-09-29 19:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -66,7 +66,7 @@ msgstr ""
 msgid "Admin Review"
 msgstr ""
 
-#: includes/shortcodes.php:54
+#: includes/shortcodes.php:51
 msgid "admin show bookings"
 msgstr ""
 
@@ -82,11 +82,11 @@ msgstr ""
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr ""
 
-#: includes/actions.php:323
+#: includes/actions.php:126
 msgid "Break Off"
 msgstr ""
 
-#: includes/actions.php:318
+#: includes/actions.php:121
 msgid "Break On"
 msgstr ""
 
@@ -95,7 +95,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: includes/actions.php:313 includes/settings/settings_api.php:80
+#: includes/actions.php:116 includes/settings/settings_api.php:80
 #: includes/settings/settings_api.php:83
 msgid "Clock In"
 msgstr ""
@@ -104,7 +104,7 @@ msgstr ""
 msgid "Clock In - Button Color"
 msgstr ""
 
-#: includes/actions.php:328 includes/settings/settings_api.php:87
+#: includes/actions.php:131 includes/settings/settings_api.php:87
 #: includes/settings/settings_api.php:90
 msgid "Clock Out"
 msgstr ""
@@ -201,6 +201,10 @@ msgstr ""
 msgid "Error - Nonce validation failed."
 msgstr ""
 
+#: includes/shortcodes.php:62
+msgid "export"
+msgstr ""
+
 #: includes/admin/users.php:30
 msgid "Full Name"
 msgstr ""
@@ -225,7 +229,7 @@ msgstr ""
 msgid "https://github.com/svenbolte/time-clock/"
 msgstr ""
 
-#: includes/actions.php:419
+#: includes/actions.php:185
 msgid "Incorrect ID or Password."
 msgstr ""
 
@@ -335,12 +339,16 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: includes/actions.php:414
+#: includes/actions.php:180
 msgid "Success"
 msgstr ""
 
 #. Name of the plugin
 msgid "Time Clock"
+msgstr ""
+
+#: includes/shortcodes.php:61
+msgid "time clock"
 msgstr ""
 
 #: includes/settings/settings_api.php:118

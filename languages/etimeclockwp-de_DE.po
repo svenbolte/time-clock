@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Time Clock\n"
 "POT-Creation-Date: 2022-09-25 12:29+0000\n"
-"PO-Revision-Date: 2022-09-28 18:49+0000\n"
+"PO-Revision-Date: 2022-09-29 19:30+0000\n"
 "Last-Translator: Keller Admin\n"
 "Language-Team: Deutsch\n"
 "Language: de_DE\n"
@@ -83,7 +83,7 @@ msgstr "Mitarbeitende zufügen"
 msgid "Admin Review"
 msgstr "Admin Ansicht"
 
-#: includes/shortcodes.php:54
+#: includes/shortcodes.php:51
 msgid "admin show bookings"
 msgstr "Buchungen anzeigen"
 
@@ -99,11 +99,11 @@ msgstr "Alle Benutzer"
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr "Ein Mitarbeiter- und Freiwilligen-Stempeluhr-Plugin für WordPress"
 
-#: includes/actions.php:323
+#: includes/actions.php:126
 msgid "Break Off"
 msgstr "Pause deaktivieren"
 
-#: includes/actions.php:318
+#: includes/actions.php:121
 msgid "Break On"
 msgstr "Pause aktivieren"
 
@@ -112,7 +112,7 @@ msgstr "Pause aktivieren"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: includes/actions.php:313 includes/settings/settings_api.php:80
+#: includes/actions.php:116 includes/settings/settings_api.php:80
 #: includes/settings/settings_api.php:83
 msgid "Clock In"
 msgstr "Einstempeln"
@@ -121,7 +121,7 @@ msgstr "Einstempeln"
 msgid "Clock In - Button Color"
 msgstr "Einstempeln Button Farbe"
 
-#: includes/actions.php:328 includes/settings/settings_api.php:87
+#: includes/actions.php:131 includes/settings/settings_api.php:87
 #: includes/settings/settings_api.php:90
 msgid "Clock Out"
 msgstr "Ausstempeln"
@@ -221,6 +221,10 @@ msgstr ""
 msgid "Error - Nonce validation failed."
 msgstr "Fehler - Nonce Validierung fehlgeschlagen"
 
+#: includes/shortcodes.php:62
+msgid "export"
+msgstr "Export"
+
 #: includes/admin/users.php:30
 msgid "Full Name"
 msgstr "Vollständiger Name"
@@ -245,7 +249,7 @@ msgstr "https://github.com/svenbolte/"
 msgid "https://github.com/svenbolte/time-clock/"
 msgstr "https://github.com/svenbolte/time-clock/"
 
-#: includes/actions.php:419
+#: includes/actions.php:185
 msgid "Incorrect ID or Password."
 msgstr "Falsches Kennwort"
 
@@ -357,13 +361,17 @@ msgstr "Pause/Pausenoptionen anzeigen"
 msgid "Status"
 msgstr "Status"
 
-#: includes/actions.php:414
+#: includes/actions.php:180
 msgid "Success"
 msgstr "Erfolg!"
 
 #. Name of the plugin
 msgid "Time Clock"
 msgstr "Time Clock"
+
+#: includes/shortcodes.php:61
+msgid "time clock"
+msgstr "Stempeluhr"
 
 #: includes/settings/settings_api.php:118
 msgid "Time Format"

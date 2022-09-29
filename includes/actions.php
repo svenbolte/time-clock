@@ -71,6 +71,7 @@ function etimeclockwp_timeclock_action_callback() {
 		$wp_time_format = current_time(etimeclockwp_get_option('time-format'));
 		$now 		= strtotime(current_time('mysql'));
 		$now_part 	= current_time('Y-m-d');
+		$postdate = current_time('Y-m-d H:i:s');
 
 		// oder Datum und Zeit vorgeben manuell
 		if (!empty($mandate) && !empty($mantime)) {
@@ -78,237 +79,39 @@ function etimeclockwp_timeclock_action_callback() {
 			$wp_time_format = date(etimeclockwp_get_option('time-format'),strtotime($mantime));
 			$now 		= strtotime($mandate.' '.$mantime);
 			$now_part 	= date('Y-m-d',$now);
+			$postdate = $mandate.' '.$mantime;
 		}
 		$rand 		= mt_rand(); // default: 0, default: mt_getrandmax() - random numbers are needed because meta key names must be unique
-		
 		
 		// set defaults
 		$flag = '0';
 		$clock_in = '0';
 		
-		// allow users to work past midnight
-		if ($data == 'breakon' || $data == 'breakoff' || $data == 'out') {
-			
-			// check if there is a clock in entry for today
-			// check to see if date already in db
-			$args_a = array(
-				'post_type'						=> 'etimeclockwp_clock',
-				'post_status'					=> 'publish',
-				'update_post_term_cache'		=> false, // don't retrieve post terms
-				'date_query'					=> array(
-						'year'	=> date('Y',$now),
-						'month'	=> date('m',$now),
-						'day'	=> date('d',$now),
+		// clock in event - record event for today - a post for today might already exists if the user is working a double shift, so check to see if a post exists or not before making a new one
+		$args_f = array(
+			'post_type'						=> 'etimeclockwp_clock',
+			'update_post_term_cache'		=> false, // don't retrieve post terms
+			'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit'),
+			'date_query'					=> array(
+					'year'	=> date('Y',$now),
+					'month'	=> date('m',$now),
+					'day'	=> date('d',$now),
+			),
+			'meta_query'					=> array(
+				'relation'					=> 'and',
+				array(
+					'key'           => 'uid',
+					'value'         => $user_id,
+					'compare'       => '=',
 				),
-				'meta_query'					=> array(
-					'relation'					=> 'and',
-					array(
-						'key'           => 'uid',
-						'value'         => $user_id,
-						'compare'       => '=',
-					),
-					array(
-						'key'           => 'in',
-						'value'         => '1',
-						'compare'       => '=',
-					),
-				),
-			);
-			
-			$posts_array_a = new WP_Query($args_a);
-			
-			if (!empty($posts_array_a->posts)) {
-				
-				// user has clocked in for today
-				// record event for today
-				//echo "record event for today 1";
-				
-				foreach ($posts_array_a->posts as $post) {
-					$post_exists = $post->ID;
-				}
-				
-			} else {
-				
-				// user has not clocked in today
-				// see if there is a clock out event for yesterday
-				
-				$args_b = array(
-					'post_type'						=> 'etimeclockwp_clock',
-					'post_status'					=> 'publish',
-					'update_post_term_cache'		=> false, // don't retrieve post terms
-					'date_query'					=> array(
-							'year'	=> date("Y", $now + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )),
-							'month'	=> date("m", $now + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )),
-							'day'	=> date("d", $now + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )), // yesterday's date
-					),
-					'meta_query'					=> array(
-						'relation'					=> 'and',
-						array(
-							'key'           => 'uid',
-							'value'         => $user_id,
-							'compare'       => '=',
-						),
-						array(
-							'key'           => 'out',
-							'value'         => '1',
-							'compare'       => '=',
-						),
-					),
-				);
-				
-				$posts_array_b = new WP_Query($args_b);
-				
-				if (empty($posts_array_b->posts)) {
-					
-					// no clock out for yesterday
-					// see if user worked yesterday
-					
-					$args_c = array(
-						'post_type'						=> 'etimeclockwp_clock',
-						'post_status'					=> 'publish',
-						'update_post_term_cache'		=> false, // don't retrieve post terms
-						'date_query'					=> array(
-							'year'	=> date("Y", $now + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )),
-							'month'	=> date("m", $now + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )),
-							'day'	=> date("d", $now + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS - 60 * 60 * 24 )), // yesterday's date
-						),
-						'meta_query'					=> array(
-							'relation'					=> 'and',
-							array(
-								'key'           => 'uid',
-								'value'         => $user_id,
-								'compare'       => '=',
-							),
-						),
-					);
-					
-					$posts_array_c = new WP_Query($args_c);
-					
-					if (empty($posts_array_c->posts)) {
-						
-						// user did not work yesterday - forgot to clock in today
-						// record event for today
-						
-						//echo "record event for today 2 - forgot to clock in today";
-						
-						$args_d = array(
-							'post_type'						=> 'etimeclockwp_clock',
-							'post_status'					=> 'publish',
-							'update_post_term_cache'		=> false, // don't retrieve post terms
-							'date_query'					=> array(
-								'year'	=> date('Y',$now),
-								'month'	=> date('m',$now),
-								'day'	=> date('d',$now),
-							),
-							'meta_query'					=> array(
-								'relation'					=> 'and',
-								array(
-									'key'           => 'uid',
-									'value'         => $user_id,
-									'compare'       => '=',
-								),
-							),
-						);
-						
-						$posts_array_d = new WP_Query($args_d);
-						
-						foreach ($posts_array_d->posts as $post) {
-							$post_exists = $post->ID;
-						}
-						
-						// add admin review flag
-						$flag = '1';
-						
-						// add clocked in meta key
-						$clock_in = '1';
-						
-						// add admin review flag
-						$flag = '1';
-						
-						
-					} else {
-						
-						// user did work yesterday
-						// record event for yesterday
-						
-						//echo "record event for yesterday 1";
-						
-						foreach ($posts_array_c->posts as $post) {
-							$post_exists = $post->ID;
-						}
-						
-					}
-					
-				} else {
-					
-					// clock out for yesterday
-					// user forgot to clock in today
-					// record event for today
-					
-					//echo "record event for today 3 - forgot to clock in today";
-					
-					
-					$args_e = array(
-						'post_type'						=> 'etimeclockwp_clock',
-						'post_status'					=> 'publish',
-						'update_post_term_cache'		=> false, // don't retrieve post terms
-						'date_query'					=> array(
-							'year'	=> date('Y',$now),
-							'month'	=> date('m',$now),
-							'day'	=> date('d',$now),
-						),
-						'meta_query'					=> array(
-							'relation'					=> 'and',
-							array(
-								'key'           => 'uid',
-								'value'         => $user_id,
-								'compare'       => '=',
-							),
-						),
-					);
-					
-					$posts_array_e = new WP_Query($args_e);
-					
-					foreach ($posts_array_e->posts as $post) {
-						$post_exists = $post->ID;
-					}
-					
-					// add admin review flag
-					$flag = '1';
-					
-				}
-			}
-			
-		} else {
-			// clock in event - record event for today - a post for today might already exists if the user is working a double shift, so check to see if a post exists or not before making a new one
-			$args_f = array(
-				'post_type'						=> 'etimeclockwp_clock',
-				'post_status'					=> 'publish',
-				'update_post_term_cache'		=> false, // don't retrieve post terms
-				'date_query'					=> array(
-						'year'	=> date('Y',$now),
-						'month'	=> date('m',$now),
-						'day'	=> date('d',$now),
-				),
-				'meta_query'					=> array(
-					'relation'					=> 'and',
-					array(
-						'key'           => 'uid',
-						'value'         => $user_id,
-						'compare'       => '=',
-					),
-				),
-			);
-			
-			$posts_array_f = new WP_Query($args_f);
-			
-			foreach ($posts_array_f->posts as $post) {
-				$post_exists = $post->ID;
-			}
+			),
+		);
+		$posts_array_f = new WP_Query($args_f);
+		
+		foreach ($posts_array_f->posts as $post) {
+			$post_exists = $post->ID;
 		}
-		
-		
-		
+	
 		if ($data == 'in') {
 			$success_msg 	= __('Clock In','etimeclockwp');
 			$working_status = '1';
@@ -329,7 +132,7 @@ function etimeclockwp_timeclock_action_callback() {
 			$working_status = '0';
 		}
 
-		// date is not in db, so insert - record event for today
+		// date is not in db, so insert - record event for the date
 		
 		if (empty($post_exists)) {
 			
@@ -337,12 +140,12 @@ function etimeclockwp_timeclock_action_callback() {
 				array(
 					'post_title'     => $user_id,
 					'post_content'   => '',
-					'post_status'    => 'publish',
+					'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit'),
 					'post_author'    => 1,
+					'post_date' => $postdate,
 					'post_type'      => 'etimeclockwp_clock',
 				)
 			);
-			
 			
 			// today is now in db, so add post meta
 			update_post_meta($new_post_id,'etimeclockwp-'.$data.'_'.$rand,$now.'|0');
@@ -352,24 +155,6 @@ function etimeclockwp_timeclock_action_callback() {
 			
 			// insert user id into post meta
 			update_post_meta($new_post_id,'uid',$user_id);
-			
-			// update count - used to keep track of the order of clock in / out, etc. events
-			update_post_meta($new_post_id,'count','1');
-			
-			// record if the user has clocked in or out today, this is necessary as a wp_query search cannot perform a like search on a key name, which is required for allow users to work past midnight
-			if ($data == 'in' || $data == 'out') {
-				update_post_meta($new_post_id, $data, true);
-			}
-			
-			// maybe set notices flag
-			if ($flag == '1') {
-				update_post_meta($new_post_id,'notices', true);
-			}
-			
-			// maybe set clock in flag
-			if ($clock_in == '1') {
-				update_post_meta($new_post_id, $data, true);
-			}
 			
 			// total time
 			etimeclockwp_caculate_total_time($new_post_id);
@@ -389,25 +174,6 @@ function etimeclockwp_timeclock_action_callback() {
 			
 			// total time
 			etimeclockwp_caculate_total_time($post_exists);
-			
-			// record if the user has clocked in or out today, this is necessary as a wp_query search cannot perform a like search on a key name, which is required for allow users to work past midnight
-			if ($data == 'in' || $data == 'out') {
-				update_post_meta($post_exists,$data,true);
-			}
-			
-			// update count - used to keep track of the order of clock in / out, etc. events
-			$count++;
-			update_post_meta($post_exists,'count',$count);
-			
-			// maybe set notices flag
-			if ($flag == '1') {
-				update_post_meta($post_exists,'notices', true);
-			}
-			
-			// maybe set clock in flag
-			if ($clock_in == '1') {
-				update_post_meta($post_exists, $data, true);
-			}
 			
 		}
 		
