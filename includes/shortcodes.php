@@ -74,10 +74,13 @@ function etimeclockwp_button_shortcode($atts) {
 
 		foreach($activity as $post) {
 			$oldtimestampdb = '';
-			$users = get_posts(array( 'posts_per_page' => -1, 'post_type' => 'etimeclockwp_users','ID' => $post->post_title ) );
-			foreach($users as $user) { $usersname = $user->post_title;	}
+			$users = get_posts(array( 'posts_per_page' => -1, 'post_type' => 'etimeclockwp_users', 'post__in' => array($post->post_title) ) );
+			foreach($users as $user) { $usersname = $user->post_title; }
+			$tagessumme = etimeclockwp_get_time_worked($post,$format = true);
 			$result .= '<table>';
-			$result .= '<thead><th colspan=5>'.$usersname.' &nbsp; ID ('.$post->post_title.') &nbsp;  activity ('.$post->ID.')</th></thead>';
+			$result .= '<thead><th colspan=3>'.$usersname.' &nbsp; ID ('.$post->post_title.') &nbsp;  activity ('.$post->ID.')</th>';
+			$result .= '<th>'.get_the_date('D',$post->ID).' ';
+			$result .= get_the_date(etimeclockwp_get_option('date-format'),$post->ID). '</th><th><i class="fa fa-hourglass-3"></i> '. etimeclockwp_get_time_worked($post,$format = true).'</th></thead>';
 			$metavalue = get_post_meta($post->ID);
 			$wp_date_format = etimeclockwp_get_option('date-format');
 			$wp_time_format = etimeclockwp_get_option('time-format');
@@ -128,7 +131,8 @@ function etimeclockwp_button_shortcode($atts) {
 					$timestamp = 		date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp,$timestampdb);
 					if (!empty($oldtimestampdb)) {
 						$difftime = german_time_diff($oldtimestampdb,$timestampdb);
-						$diffhhmm = sprintf('%02d:%02d', ($timestampdb - $oldtimestampdb)/60/60, ($timestampdb - $oldtimestampdb)/60%60);
+						$diffsecs = round($timestampdb - $oldtimestampdb);
+						$diffhhmm = sprintf('%02d:%02d:%02d', ($diffsecs / 3600),($diffsecs / 60 % 60), $diffsecs % 60);
 					} else {
 						$difftime='';
 						$diffhhmm='';
@@ -138,7 +142,7 @@ function etimeclockwp_button_shortcode($atts) {
 						$order = $timestamp_array[1];
 						$result .= "<tr><td class='etimeclockwp_cell_title_width' style='color:white;text-transform:uppercase;background-color: ".$keycolor."'>";
 						$result .= $key;
-						$result .= "</td><td>".$datetime.'</td><td>'.ago($timestampdb-date('Z')).'</td><td>'.$diffhhmm."</td><td>".$difftime."</td></tr>";
+						$result .= "</td><td>".date_i18n('D',$timestampdb).' '.$datetime.'</td><td>'.ago($timestampdb-date('Z')).'</td><td>'.$diffhhmm."</td><td>".$difftime."</td></tr>";
 					} else {
 						$result .= "<tr><td class='etimeclockwp_cell_title_width'>";
 						$result .= $key;
@@ -163,7 +167,7 @@ function etimeclockwp_button_shortcode($atts) {
 		header('Content-Type: text/csv; charset=utf-8');
 		header("Content-Disposition: attachment; filename=\"" . $filename . " " . $date . ".csv\";" );
 		header("Content-Transfer-Encoding: binary");	
-		fputcsv( $output, array('Username', 'UserID', 'StempeltagID', 'Stempelart', 'Stempelzeit', 'humandiff', 'Arbeitszeit'), ';');
+		fputcsv( $output, array('Username', 'UserID', 'StempeltagID', 'Stempelart', 'StempelUhrzeit', 'Arbeitszeit', 'AZproTagTotal'), ';');
 			$result ='';
 			$activity = get_posts(
 				array(
@@ -176,7 +180,7 @@ function etimeclockwp_button_shortcode($atts) {
 			);
 		foreach($activity as $post) {
 			$oldtimestampdb = '';
-			$users = get_posts(array( 'posts_per_page' => -1, 'post_type' => 'etimeclockwp_users','ID' => $post->post_title ) );
+			$users = get_posts(array( 'posts_per_page' => -1, 'post_type' => 'etimeclockwp_users', 'post__in' => array($post->post_title) ) );
 			foreach($users as $user) { $usersname = $user->post_title;	}
 			$metavalue = get_post_meta($post->ID);
 			$wp_date_format = etimeclockwp_get_option('date-format');
@@ -191,7 +195,18 @@ function etimeclockwp_button_shortcode($atts) {
 			$nonce_delete = wp_create_nonce('etimeclockwp_delete');
 			$nonce_add = 	wp_create_nonce('etimeclockwp_add');
 			$post_excerpt = $post->post_excerpt;
-			
+
+				$modified_values = array(
+					$usersname,
+					$post->post_title,
+					'',
+					get_the_date(etimeclockwp_get_option('date-format'),$post->ID),
+					'',
+					'',
+					etimeclockwp_get_time_worked($post,$format = true),
+				);
+			   fputcsv( $output, $modified_values, ';' );
+
 			foreach($metavalue as $key => $val) {
 				if (substr($key, 0, 5) === "etime") {
 					$key_pure = $key;
@@ -228,7 +243,8 @@ function etimeclockwp_button_shortcode($atts) {
 					$timestamp = 		date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp,$timestampdb);
 					if (!empty($oldtimestampdb)) {
 						$difftime = german_time_diff($oldtimestampdb,$timestampdb);
-						$diffhhmm = sprintf('%02d:%02d', ($timestampdb - $oldtimestampdb)/60/60, ($timestampdb - $oldtimestampdb)/60%60);
+						$diffsecs = round($timestampdb - $oldtimestampdb);
+						$diffhhmm = sprintf('%02d:%02d:%02d', ($diffsecs / 3600),($diffsecs / 60 % 60), $diffsecs % 60);
 					} else {
 						$difftime='';
 						$diffhhmm='';
@@ -242,8 +258,8 @@ function etimeclockwp_button_shortcode($atts) {
 							$post->ID,
 							$key,
 							$datetime,
-							ago($timestampdb-date('Z')),
 							$diffhhmm,
+							'',
 						);
 					   fputcsv( $output, $modified_values, ';' );
 					} else {
