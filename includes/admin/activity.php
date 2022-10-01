@@ -307,7 +307,7 @@ function etimeclockwp_manage_activity_columns( $column, $post_id ) {
 		break;
 		
 		case 'date_work' :
-			echo get_the_date(etimeclockwp_get_option('date-format'),$post_id);
+			echo get_the_date('D',$post->ID).' '.get_the_date(etimeclockwp_get_option('date-format'),$post_id);
 		break;
 		
 		case 'time_worked' :
