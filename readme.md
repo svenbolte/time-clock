@@ -1,11 +1,11 @@
-=== Time Clock - A WordPress Employee & Volunteer Time Clock Plugin MOD German
+## Time Clock - A WordPress Employee & Volunteer Time Clock Plugin MOD German
 
-== Why this fork
+## Why this fork
 
 Die Ursprüngliche Lösung von Herrn Paterson war weder komplett in deutsch, noch bot sie die benötigten Funktionen.
 Dennoch eine tolle und schlanke Basis, um das Werkzeug zu erweitern.
 
-== Beschreibung
+## Beschreibung
 
 Mittlerweile ist die EU-Vorschrift zur Arbeitszeiterfassung auch in deutsches Recht umgesetzt.
 Um die Zeiterfassung digital zu gestalten und den Mitarbeitenden und dem Admin Auswertungen und Listen zu erstellen,
@@ -24,7 +24,7 @@ So können Arbeitszeitverstöße (mehr als 10 Stunden pro Tag arbeiten) leicht e
 In einem weiteren Release werden diese Verstöße rot hinterlegt. Zusätzlich lässt sich eine Stundenvorgabe pro Arbeitswoche festlegen und berechnen, ob überstunden angefallen sind.
 
 
-== Disclaimer
+## Disclaimer
 
 Die Benutzung erfolgt auf eigenes Risiko. Diese Open-Source Lösung stellt nur ein Werkzeug dar, um die Forderungen digital zu erfüllen.
 Es gilt ein Haftungsausschluß gegenüber dem Autor (vgl. auch Lizenztext GPL2).
