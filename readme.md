@@ -1,4 +1,12 @@
-## Time Clock - A WordPress Employee & Volunteer Time Clock Plugin MOD German
+## Time Clock MOD
+
+### A WordPress Employee & Volunteer Time Clock Plugin MOD German
+
+Contributors: scottpaterson,wp-plugin,PBMod
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung
+
 
 ## Why this fork
 
