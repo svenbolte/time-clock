@@ -141,8 +141,14 @@ function etimeclockwp_manage_button_columns( $column, $post_id ) {
 		break;
 
 		case 'post_date' :
-			$etimeclockwp_userdate= get_the_date().' '.get_the_time();
+			$etimeclockwp_userdate = get_the_date('D',$post->ID).' '.get_the_date(etimeclockwp_get_option('date-format'),$post_id).' '.get_the_time();
 			echo $etimeclockwp_userdate;
+			if (function_exists('ago')) { echo ' '. ago(get_post_timestamp($post->ID)); }
+		break;
+
+		case 'postID' :
+			$etimeclockwp_postid = $post_id;
+			echo $etimeclockwp_postid;
 		break;
 		
 		default :
@@ -159,6 +165,7 @@ function etimeclockwp_users_columns($columns) {
 		'cb' => 			'<input type="checkbox" />',
 		'title' => 			__( 'User Name','etimeclockwp'),
 		'user_id' => 		__( 'User ID','etimeclockwp'),
+		'postID' => 		__( 'Record #','etimeclockwp'),
 		'post_date' => 		__( 'created','etimeclockwp'),
 	);
 	return $columns;

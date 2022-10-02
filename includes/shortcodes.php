@@ -31,7 +31,12 @@ function etimevaliduser() {
 		}	
 		// success - user id and password are correct
 	} else {
-		if (!current_user_can('administrator')) echo '<form method="post"><input type="text" id="eid" name="eid"><input type="password" id="epw" name="epw"><input type="submit"></form>';
+		if (!current_user_can('administrator')) {
+			echo '<div style="width:100%;text-align:center;display:block"><form method="post">';
+			echo '<div class="etimeclock-text">'.etimeclockwp_get_option("employee-id").':<br /><input type="text" id="eid" name="eid"></div>';
+			echo '<div class="etimeclock-text">'.etimeclockwp_get_option('employee-password').':<br /><input type="password" id="epw" name="epw"></div>';
+			echo '<input type="submit" value="Anmelden"></form></div>';
+		}	
 	}
 	if (!empty($user_id)) return $user_id; else return '';
 }
@@ -72,10 +77,8 @@ function etimeclockwp_button_shortcode($atts) {
 			$result .= "<div class='etimeclock-break-out etimeclock-button' style='background-color: ".etimeclockwp_get_option('leave-on-break-button-color')."'><a href='#' class='etimeclock-action' data-id='breakon'>".etimeclockwp_get_option('leave-on-break')."</a></div>";
 			$result .= "<div class='etimeclock-break-in etimeclock-button' style='background-color: ".etimeclockwp_get_option('return-from-break-button-color')."'><a href='#' class='etimeclock-action' data-id='breakoff'>".etimeclockwp_get_option('return-from-break')."</a></div>";
 		}
-		// Admin show list
-		if ( current_user_can('administrator') ) {
-			$result .= '<div class="etimeclock-button" style="background-color:#888"><a href="'.home_url($wp->request).'?show=1" class="submit btnbutton">'.__('admin show bookings','etimeclockwp').'</a></div>';
-		}	
+		// show list and export (only admin can export users and all activitiers, user exports his activities)
+		$result .= '<div class="etimeclock-button" style="background-color:#888"><a href="'.home_url($wp->request).'?show=1" class="submit btnbutton">'.__('admin show bookings','etimeclockwp').'</a></div>';
 		// create nonce
 		$ajax_nonce = wp_create_nonce('etimeclock_nonce');
 		$result .= "<input type='hidden' id='etimeclock_nonce' value='$ajax_nonce'>";
@@ -84,8 +87,10 @@ function etimeclockwp_button_shortcode($atts) {
 		$result .= "</div>";
 	} else if ($showmode == 1 && ( current_user_can('administrator') || !empty($validuser = etimevaliduser()) ) ) {
 		// Activity-Anzeige letzte Buchungen 
-		$result .= '<span style="float:right"><i class="fa fa-user"></i> '.$validuser.' &nbsp; <a href="'.home_url($wp->request).'?show=0" class="submit btnbutton"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a> &nbsp; ';
-		$result .= '<a href="'.home_url($wp->request).'?show=2" class="submit btnbutton"><i class="fa fa-download"></i> '.__('export','etimeclockwp').'</a></span>';
+		$result .= '<span style="float:right"><i class="fa fa-user"></i> <b>'.strtoupper($validuser).'</b> &nbsp; <a href="'.home_url($wp->request).'?show=0" class="submit btnbutton"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a> &nbsp; ';
+		$result .= '<a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=2" class="submit btnbutton"><i class="fa fa-download"></i> '.__('activities','etimeclockwp').'</a> &nbsp; ';
+		if ( current_user_can('administrator') ) $result .= '<a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=3" class="submit btnbutton"><i class="fa fa-download"></i> '.__('users','etimeclockwp').'</a>';
+		$result .= '</span>';
 		if ($validuser !=='admin') $userfilter=$validuser; else $userfilter='';
 		$activity = get_posts(
 			array(
@@ -109,7 +114,7 @@ function etimeclockwp_button_shortcode($atts) {
 			$result .= '<thead><th colspan=3 style="text-align:left;width:65%">';
 			$result .= get_the_date('D',$post->ID).' '.get_the_date(etimeclockwp_get_option('date-format'),$post->ID);
 			$result .= ' &nbsp; '.$usersname.' &nbsp; ID ('.$post->post_title.') &nbsp;  activity ('.$post->ID.')</th>';
-			$result .= '<th>ArbZeit</th><th>Pause</th><th>BrtZeit';
+			$result .= '<th>ArbZeit</th><th>'.__('break','etimeclockwp').'</th><th>'.__('totaltime','etimeclockwp');
 			$result .= '</th></thead>';
 			$metavalue = get_post_meta($post->ID);
 			$wp_date_format = etimeclockwp_get_option('date-format');
@@ -203,9 +208,9 @@ function etimeclockwp_button_shortcode($atts) {
 		$result .= '<th>'.sprintf('%02d:%02d:%02d', ($totpau / 3600),($totpau / 60 % 60), $totpau % 60).'</th>';
 		$result .= '<th>'.sprintf('%02d:%02d:%02d', ($totbrutto / 3600),($totbrutto / 60 % 60), $totbrutto % 60).'</th>';
 		$result .= '</thead></table>';
-	} else if ($showmode == 2 && current_user_can('administrator') ) {
-		// CSV Export ---------------------
-		$filename = 'export-timeclock';
+	} else if ($showmode == 2 && ( current_user_can('administrator') || !empty($validuser = etimevaliduser()) ) ) {
+		// CSV Export activities ---------------------
+		$filename = 'export-timeclock-activities-'.$validuser;
 		$date = date("Y-m-d H:i:s");
 		$output = fopen('php://output', 'w');
 		ob_clean();
@@ -217,12 +222,14 @@ function etimeclockwp_button_shortcode($atts) {
 		header("Content-Disposition: attachment; filename=\"" . $filename . " " . $date . ".csv\";" );
 		header("Content-Transfer-Encoding: binary");	
 		fputcsv( $output, array('Username', 'UserID', 'StempeltagID', 'Stempelart', 'StempelUhrzeit', 'Arbeitszeit', 'Pausenzeit', 'AZproTagTotal'), ';');
+		if ($validuser !=='admin') $userfilter=$validuser; else $userfilter='';
 			$result ='';
 			$activity = get_posts(
 				array(
 				'posts_per_page'	=> -1,
 				'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit'),
 				'post_type'			=> 'etimeclockwp_clock',
+				'title' => $userfilter,
 				'orderby'          => 'date',
 				'order'            => 'DESC',
 				)
@@ -261,29 +268,24 @@ function etimeclockwp_button_shortcode($atts) {
 						$day = $timestampdb;
 						$working_status = '1';
 					}
-					
 					if ($key == 'etimeclockwp-out') {
 						$key = etimeclockwp_get_option('clock-out');
 						$keycolor = etimeclockwp_get_option('clock-out-button-color');
 						$working_status = '0';
 					}
-					
 					if ($key == 'etimeclockwp-breakon') {
 						$key = etimeclockwp_get_option('leave-on-break');
 						$keycolor = etimeclockwp_get_option('leave-on-break-button-color');
 						$working_status = '0';
 					}
-					
 					if ($key == 'etimeclockwp-breakoff') {
 						$key = etimeclockwp_get_option('return-from-break');
 						$keycolor = etimeclockwp_get_option('return-from-break-button-color');
 						$working_status = '3';
 					}
-					
 					$datetime = date_i18n($wp_date_format.' '.$wp_time_format,$timestampdb);
 					$date = 	date_i18n($wp_date_format,$timestampdb);
 					$time = 	date_i18n($wp_time_format,$timestampdb);
-
 					$timestamp = 		date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp,$timestampdb);
 					if (!empty($oldtimestampdb)) {
 						$difftime = german_time_diff($oldtimestampdb,$timestampdb);
@@ -294,9 +296,7 @@ function etimeclockwp_button_shortcode($atts) {
 						$difftime='';
 						$diffhhmm='';
 					}	
-
 					if ( $working_status == 3 ) {$az = '';$pau = $diffhhmm;} else {$az = $diffhhmm;$pau = '';}
-
 					if (isset($timestamp_array[1])) {
 						$order = $timestamp_array[1];
 						$modified_values = array(
@@ -315,7 +315,6 @@ function etimeclockwp_button_shortcode($atts) {
 					$oldtimestampdb = $timestampdb;
 				}
 			}
-			
 			// Tages-Footer Zwischensumme Totale Arbeitszeit
 			$modified_values = array(
 				$usersname,
@@ -331,7 +330,34 @@ function etimeclockwp_button_shortcode($atts) {
 		}
 		exit;
 
-	} else { $result = 'kein Zugriff'; }  //////	Ende Showausgabe
+	} else if ($showmode == 3 && current_user_can('administrator') ) {
+		// Export user table
+		$users = get_posts(array( 'posts_per_page' => -1, 'post_type' => 'etimeclockwp_users', ) );
+		$filename = 'export-timeclock-users';
+		$date = date("Y-m-d H:i:s");
+		$output = fopen('php://output', 'w');
+		ob_clean();
+		header("Pragma: public");
+		header("Expires: 0");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Cache-Control: private", false);
+		header('Content-Type: text/csv; charset=utf-8');
+		header("Content-Disposition: attachment; filename=\"" . $filename . " " . $date . ".csv\";" );
+		header("Content-Transfer-Encoding: binary");	
+		fputcsv( $output, array('Username', 'UserID', 'Kennwort', 'RecordNo', 'created'), ';');
+		foreach($users as $user) {
+			$modified_values = array(
+				$user->post_title,
+				sanitize_text_field(get_post_meta($user->ID,'etimeclockwp_id', true)),
+				sanitize_text_field(get_post_meta($user->ID,'etimeclockwp_pwd', true)),
+				$user->ID,
+				$user->post_date,
+			);
+		   fputcsv( $output, $modified_values, ';' );
+		}
+		exit;
+
+	} else { $result = '<div class="newlabel yellow" style="font-size:1em;width:100%;text-align:center">Kein Zugriff. Falscher Benutzername. Bitte korrekt anmelden</div>'; }  //////	Ende Showausgabe
 	return $result;
 }
 add_shortcode('timeclock', 'etimeclockwp_button_shortcode');

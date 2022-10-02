@@ -9,7 +9,6 @@ function etimeclockwp_clock_register_meta_boxes() {
 	
 	add_meta_box('meta-box-id-activity', 		__('Day Details', 'etimeclockwp'), 	'etimeclockwp_callback_activity', 	'etimeclockwp_clock','normal');
 	add_meta_box('meta-box-id-status', 			__( 'Details', 'etimeclockwp' ), 		'etimeclockwp_callback_status', 	'etimeclockwp_clock','side');
-	
 }
 add_action('add_meta_boxes', 'etimeclockwp_clock_register_meta_boxes');
 
@@ -17,7 +16,6 @@ add_action('add_meta_boxes', 'etimeclockwp_clock_register_meta_boxes');
 // activity metabox
 function etimeclockwp_callback_activity($post) {
 	global $meta_box, $post;
-	
 	
 	// see if new post
 	if ($post->post_status == 'auto-draft') {
@@ -49,12 +47,10 @@ function etimeclockwp_callback_activity($post) {
 			echo "<option value='$value'"; if ($current == $value) { echo "SELECTED"; } echo ">$label</option>";
 		}
 		echo "</select>";
-		
 		echo "</td></tr><tr><td>";
 		
-			echo __('Date: ', 'etimeclockwp');
+		echo __('Date: ', 'etimeclockwp');
 		echo "</td><td>";
-		
 		
 		$wp_date_format = 	etimeclockwp_get_option('date-format');
 		$date_now = 		date_i18n($wp_date_format);
@@ -119,21 +115,25 @@ function etimeclockwp_callback_activity($post) {
 							$key = etimeclockwp_get_option('clock-in');
 							$keycolor = etimeclockwp_get_option('clock-in-button-color');
 							$day = $timestampdb;
+							$working_status = '1';
 						}
 						
 						if ($key == 'etimeclockwp-out') {
 							$key = etimeclockwp_get_option('clock-out');
 							$keycolor = etimeclockwp_get_option('clock-out-button-color');
+							$working_status = '0';
 						}
 						
 						if ($key == 'etimeclockwp-breakon') {
 							$key = etimeclockwp_get_option('leave-on-break');
 							$keycolor = etimeclockwp_get_option('leave-on-break-button-color');
+							$working_status = '0';
 						}
 						
 						if ($key == 'etimeclockwp-breakoff') {
 							$key = etimeclockwp_get_option('return-from-break');
 							$keycolor = etimeclockwp_get_option('return-from-break-button-color');
+							$working_status = '3';
 						}
 						
 						$datetime = date_i18n($wp_date_format.' '.$wp_time_format,$timestampdb);
@@ -146,11 +146,13 @@ function etimeclockwp_callback_activity($post) {
 						if (isset($timestamp_array[1])) {
 							$order = $timestamp_array[1];
                             echo "<tr><td class='etimeclockwp_cell_title_width' style='color:white;text-transform:uppercase;background-color: ".$keycolor."'>";
-							echo $key;
-							echo "</td><td>".$datetime.'</td><td>'.ago($timestampdb-date('Z')).'</td><td>'.$difftime."</td><td>&nbsp;";
-							echo " <a href='#' class='etimeclockwp-entry-new' data-nonce='$nonce_add' data-timestamp='".$timestamp."' data-date='".$date."' data-time='".$time."' data-action='".$key_action."' data-pure='".$key_pure."'>".__('New','etimeclockwp')."</a> - ";
-							echo " <a href='#' class='etimeclockwp-entry-edit' data-nonce='$nonce_edit' data-timestamp='".$timestamp."' data-date='".$date."' data-time='".$time."' data-order='".$order."' data-action='".$key_action."' data-pure='".$key_pure."'>".__('Edit','etimeclockwp')."</a> - ";
-							echo " <a href='#' class='etimeclockwp-entry-delete' data-nonce='$nonce_delete' data-date='".$date."' data-time='".$time."' data-pure='".$key_pure."'>".__('Delete','etimeclockwp')."</a></td></tr>";
+							echo $working_status.' &nbsp; '.$key;
+							echo "</td><td>".date_i18n('D',$timestampdb).' '.$datetime.'</td><td>';
+							if (function_exists('ago')) { echo ago($timestampdb-date('Z')); }
+							echo '</td><td>'.$difftime."</td><td>&nbsp;";
+							echo "</td><td><a href='#' class='etimeclockwp-entry-new' data-nonce='$nonce_add' data-timestamp='".$timestamp."' data-date='".$date."' data-time='".$time."' data-action='".$key_action."' data-pure='".$key_pure."'>".__('New','etimeclockwp')."</a> &nbsp; ";
+							echo "</td><td><a href='#' class='etimeclockwp-entry-edit' data-nonce='$nonce_edit' data-timestamp='".$timestamp."' data-date='".$date."' data-time='".$time."' data-order='".$order."' data-action='".$key_action."' data-pure='".$key_pure."'>".__('Edit','etimeclockwp')."</a> &nbsp; ";
+							echo "</td><td><a href='#' class='etimeclockwp-entry-delete' data-nonce='$nonce_delete' data-date='".$date."' data-time='".$time."' data-pure='".$key_pure."'>".__('Delete','etimeclockwp')."</a></td></tr>";
 						} else {
 							echo "<tr><td class='etimeclockwp_cell_title_width'>"; echo $key; echo ": </td><td>".$datetime."</td></tr>";
 						}
@@ -264,11 +266,16 @@ function etimeclockwp_callback_status($post) {
 	echo "<div class='etimeclockwp_meta_box'>";
 		
 		echo '<table width="100%">';
-		
 		echo "<tr><td>";
-		
 		echo "<br />";
-		
+		echo __('Record #','etimeclockwp');
+		echo ":";
+		echo "</td><td align='right'><br />";
+		echo $post->ID;
+		echo "</td></tr>";
+
+		echo "<tr><td>";
+		echo "<br />";
 		echo __('User','etimeclockwp');
 		echo ":";
 		echo "</td><td align='right'><br />";
@@ -279,7 +286,8 @@ function etimeclockwp_callback_status($post) {
 		echo __('Date Worked','etimeclockwp');
 		echo ":";
 		echo "</td><td align='right'><br />";
-		echo get_the_date(etimeclockwp_get_option('date-format'),$post->ID);
+		echo get_the_date('D',$post->ID).' '.get_the_date(etimeclockwp_get_option('date-format'),$post->ID);
+		if (function_exists('ago')) { echo ' '. ago(get_post_timestamp($post->ID)); }
 		echo "</td></tr>";
 		
 		echo "</tr><tr><td><br />";
@@ -295,7 +303,6 @@ function etimeclockwp_callback_status($post) {
 }
 
 
-
 // user table - fill table columns with data
 function etimeclockwp_manage_activity_columns( $column, $post_id ) {
 	global $post;
@@ -308,6 +315,12 @@ function etimeclockwp_manage_activity_columns( $column, $post_id ) {
 		
 		case 'date_work' :
 			echo get_the_date('D',$post->ID).' '.get_the_date(etimeclockwp_get_option('date-format'),$post_id);
+			if (function_exists('ago')) { echo ' '. ago(get_post_timestamp($post->ID)); }
+		break;
+
+		case 'postID' :
+			$etimeclockwp_postid = $post_id;
+			echo $etimeclockwp_postid;
 		break;
 		
 		case 'time_worked' :
@@ -328,6 +341,7 @@ function etimeclockwp_clock_columns($columns) {
 	$columns = array(
 		'cb' => 			'<input type="checkbox" />',
 		'name' => 			__( 'User Name','etimeclockwp'),
+		'postID' => 		__( 'Record #','etimeclockwp'),
 		'date_work' => 		__( 'Work Date','etimeclockwp'),
 		'time_worked' => 	__( 'Time Worked','etimeclockwp'),
 	);

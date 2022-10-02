@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-10-02 14:59+0000\n"
+"POT-Creation-Date: 2022-10-02 17:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -49,6 +49,10 @@ msgstr ""
 msgid "Activate License"
 msgstr ""
 
+#: includes/shortcodes.php:88
+msgid "activities"
+msgstr ""
+
 #: includes/admin/post_types.php:13 includes/admin/post_types.php:14
 #: includes/admin/post_types.php:17 includes/admin/post_types.php:20
 msgid "Activity"
@@ -74,12 +78,16 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: includes/admin/activity.php:423
+#: includes/admin/activity.php:437
 msgid "All users"
 msgstr ""
 
 #. Description of the plugin
 msgid "An employee and volunteer time clock plugin for WordPress"
+msgstr ""
+
+#: includes/shortcodes.php:113
+msgid "break"
 msgstr ""
 
 #: includes/actions.php:126
@@ -90,8 +98,8 @@ msgstr ""
 msgid "Break On"
 msgstr ""
 
-#: includes/admin/activity.php:184 includes/admin/activity.php:217
-#: includes/admin/activity.php:248
+#: includes/admin/activity.php:186 includes/admin/activity.php:219
+#: includes/admin/activity.php:250
 msgid "Cancel"
 msgstr ""
 
@@ -113,12 +121,12 @@ msgstr ""
 msgid "Clock Out - Button Color"
 msgstr ""
 
-#: includes/admin/activity.php:183 includes/admin/activity.php:216
-#: includes/admin/activity.php:247
+#: includes/admin/activity.php:185 includes/admin/activity.php:218
+#: includes/admin/activity.php:249
 msgid "Confirm"
 msgstr ""
 
-#: includes/admin/users.php:162
+#: includes/admin/users.php:169
 msgid "created"
 msgstr ""
 
@@ -134,11 +142,11 @@ msgstr ""
 msgid "Date Format"
 msgstr ""
 
-#: includes/admin/activity.php:279
+#: includes/admin/activity.php:286
 msgid "Date Worked"
 msgstr ""
 
-#: includes/admin/activity.php:55
+#: includes/admin/activity.php:52
 msgid "Date: "
 msgstr ""
 
@@ -158,11 +166,11 @@ msgstr ""
 msgid "Default Text"
 msgstr ""
 
-#: includes/admin/activity.php:153
+#: includes/admin/activity.php:155
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/activity.php:174
+#: includes/admin/activity.php:176
 msgid "Delete Entry"
 msgstr ""
 
@@ -170,11 +178,11 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: includes/admin/activity.php:152
+#: includes/admin/activity.php:154
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/activity.php:197
+#: includes/admin/activity.php:199
 msgid "Edit Entry"
 msgstr ""
 
@@ -205,7 +213,7 @@ msgstr ""
 msgid "Error - Nonce validation failed."
 msgstr ""
 
-#: includes/shortcodes.php:88
+#: includes/shortcodes.php:88 includes/shortcodes.php:89
 msgid "export"
 msgstr ""
 
@@ -253,7 +261,7 @@ msgstr ""
 msgid "Main"
 msgstr ""
 
-#: includes/admin/activity.php:151
+#: includes/admin/activity.php:153
 msgid "New"
 msgstr ""
 
@@ -261,7 +269,7 @@ msgstr ""
 msgid "New Activity"
 msgstr ""
 
-#: includes/admin/activity.php:230
+#: includes/admin/activity.php:232
 msgid "New Entry"
 msgstr ""
 
@@ -293,6 +301,11 @@ msgstr ""
 msgid "Plugin Data"
 msgstr ""
 
+#: includes/admin/activity.php:271 includes/admin/activity.php:344
+#: includes/admin/users.php:168
+msgid "Record #"
+msgstr ""
+
 #: includes/settings/settings_api.php:132
 msgid "Remove all plugin data on uninstall"
 msgstr ""
@@ -314,7 +327,7 @@ msgstr ""
 msgid "Return From Break - Button Color"
 msgstr ""
 
-#: includes/admin/activity.php:65 includes/admin/users.php:9
+#: includes/admin/activity.php:61 includes/admin/users.php:9
 #: includes/admin/users.php:61
 msgid "Save"
 msgstr ""
@@ -359,19 +372,23 @@ msgstr ""
 msgid "Time Format"
 msgstr ""
 
-#: includes/admin/activity.php:332
+#: includes/admin/activity.php:346
 msgid "Time Worked"
 msgstr ""
 
-#: includes/admin/activity.php:286
+#: includes/admin/activity.php:294
 msgid "Total Time Worked"
 msgstr ""
 
-#: includes/admin/activity.php:272 includes/admin/post_types.php:39
+#: includes/shortcodes.php:113
+msgid "totaltime"
+msgstr ""
+
+#: includes/admin/activity.php:279 includes/admin/post_types.php:39
 msgid "User"
 msgstr ""
 
-#: includes/admin/users.php:35 includes/admin/users.php:161
+#: includes/admin/users.php:35 includes/admin/users.php:167
 msgid "User ID"
 msgstr ""
 
@@ -379,16 +396,21 @@ msgstr ""
 msgid "User Information"
 msgstr ""
 
-#: includes/admin/activity.php:330 includes/admin/users.php:160
+#: includes/admin/activity.php:343 includes/admin/users.php:166
 msgid "User Name"
 msgstr ""
 
-#: includes/admin/activity.php:26
+#: includes/admin/activity.php:24
 msgid "User: "
 msgstr ""
 
 #: includes/admin/post_types.php:38 includes/admin/post_types.php:45
 msgid "Users"
+msgstr ""
+
+#: includes/shortcodes.php:88 includes/shortcodes.php:89
+#: includes/shortcodes.php:89
+msgid "users"
 msgstr ""
 
 #: includes/settings/settings_api.php:30
@@ -398,7 +420,7 @@ msgid ""
 "displayed?"
 msgstr ""
 
-#: includes/admin/activity.php:331
+#: includes/admin/activity.php:345
 msgid "Work Date"
 msgstr ""
 
