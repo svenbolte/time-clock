@@ -6,9 +6,7 @@ Contributors: scottpaterson,wp-plugin,PBMod
 
 License: GPLv2 or later
 
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-
-Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung
+Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung, excel-export, user-frontend
 
 
 ## Why this fork
