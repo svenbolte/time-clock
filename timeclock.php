@@ -12,8 +12,8 @@ Domain Path: /languages/
 Requires at least: 4.0
 Tested up to: 6.0.2
 Requires PHP: 5.6
-Stable tag: 9.1.2.1.22
-Version: 9.1.2.1.22
+Stable tag: 9.1.2.1.24
+Version: 9.1.2.1.24
 */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly

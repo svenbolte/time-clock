@@ -59,28 +59,32 @@ function etimeclockwp_button_shortcode($atts) {
 			$result .= "</div>";
 		$result .= "</div>";
 	} else if ($showmode == 1 && current_user_can('administrator') ) {
-		//////   Activity-Anzeige letzte Buchungen - in Arbeit ---
-			$result .= '<span style="float:right"><a href="'.home_url($wp->request).'?show=0" class="submit btnbutton"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a> &nbsp; ';
-			$result .= '<a href="'.home_url($wp->request).'?show=2" class="submit btnbutton"><i class="fa fa-download"></i> '.__('export','etimeclockwp').'</a></span>';
-			$activity = get_posts(
-				array(
-				'posts_per_page'	=> -1,
-				'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit'),
-				'post_type'			=> 'etimeclockwp_clock',
-				'orderby'          => 'date',
-				'order'            => 'DESC',
-				)
-			);
-
+		// Activity-Anzeige letzte Buchungen 
+		$result .= '<span style="float:right"><a href="'.home_url($wp->request).'?show=0" class="submit btnbutton"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a> &nbsp; ';
+		$result .= '<a href="'.home_url($wp->request).'?show=2" class="submit btnbutton"><i class="fa fa-download"></i> '.__('export','etimeclockwp').'</a></span>';
+		$activity = get_posts(
+			array(
+			'posts_per_page'	=> -1,
+			'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit'),
+			'post_type'			=> 'etimeclockwp_clock',
+			'orderby'          => 'date',
+			'order'            => 'DESC',
+			)
+		);
+		$totpau=0;
+		$totaz=0;
+		$totbrutto=0;
 		foreach($activity as $post) {
 			$oldtimestampdb = '';
 			$users = get_posts(array( 'posts_per_page' => -1, 'post_type' => 'etimeclockwp_users', 'post__in' => array($post->post_title) ) );
 			foreach($users as $user) { $usersname = $user->post_title; }
 			$tagessumme = etimeclockwp_get_time_worked($post,$format = true);
 			$result .= '<table>';
-			$result .= '<thead><th colspan=3>'.$usersname.' &nbsp; ID ('.$post->post_title.') &nbsp;  activity ('.$post->ID.')</th>';
-			$result .= '<th>'.get_the_date('D',$post->ID).' ';
-			$result .= get_the_date(etimeclockwp_get_option('date-format'),$post->ID). '</th><th><i class="fa fa-hourglass-3"></i> '. etimeclockwp_get_time_worked($post,$format = true).'</th></thead>';
+			$result .= '<thead><th colspan=3 style="text-align:left;width:65%">';
+			$result .= get_the_date('D',$post->ID).' '.get_the_date(etimeclockwp_get_option('date-format'),$post->ID);
+			$result .= ' &nbsp; '.$usersname.' &nbsp; ID ('.$post->post_title.') &nbsp;  activity ('.$post->ID.')</th>';
+			$result .= '<th>ArbZeit</th><th>Pause</th><th>BrtZeit';
+			$result .= '</th></thead>';
 			$metavalue = get_post_meta($post->ID);
 			$wp_date_format = etimeclockwp_get_option('date-format');
 			$wp_time_format = etimeclockwp_get_option('time-format');
@@ -94,6 +98,8 @@ function etimeclockwp_button_shortcode($atts) {
 			$nonce_delete = wp_create_nonce('etimeclockwp_delete');
 			$nonce_add = 	wp_create_nonce('etimeclockwp_add');
 			$post_excerpt = $post->post_excerpt;
+			$pausum=0;
+			$azsum =0;
 			
 			foreach($metavalue as $key => $val) {
 				if (substr($key, 0, 5) === "etime") {
@@ -107,21 +113,25 @@ function etimeclockwp_button_shortcode($atts) {
 						$key = etimeclockwp_get_option('clock-in');
 						$keycolor = etimeclockwp_get_option('clock-in-button-color');
 						$day = $timestampdb;
+						$working_status = '1';
 					}
 					
 					if ($key == 'etimeclockwp-out') {
 						$key = etimeclockwp_get_option('clock-out');
 						$keycolor = etimeclockwp_get_option('clock-out-button-color');
+						$working_status = '0';
 					}
 					
 					if ($key == 'etimeclockwp-breakon') {
 						$key = etimeclockwp_get_option('leave-on-break');
 						$keycolor = etimeclockwp_get_option('leave-on-break-button-color');
+						$working_status = '0';
 					}
 					
 					if ($key == 'etimeclockwp-breakoff') {
 						$key = etimeclockwp_get_option('return-from-break');
 						$keycolor = etimeclockwp_get_option('return-from-break-button-color');
+						$working_status = '3';
 					}
 					
 					$datetime = date_i18n($wp_date_format.' '.$wp_time_format,$timestampdb);
@@ -132,6 +142,15 @@ function etimeclockwp_button_shortcode($atts) {
 					if (!empty($oldtimestampdb)) {
 						$difftime = german_time_diff($oldtimestampdb,$timestampdb);
 						$diffsecs = round($timestampdb - $oldtimestampdb);
+						if ( $working_status == 3 ) {
+							$pausum +=$diffsecs;
+							$totpau +=$diffsecs;
+							$totbrutto +=$diffsecs;
+						} else {	
+							$azsum +=$diffsecs;
+							$totaz +=$diffsecs;
+							$totbrutto +=$diffsecs;
+						}	
 						$diffhhmm = sprintf('%02d:%02d:%02d', ($diffsecs / 3600),($diffsecs / 60 % 60), $diffsecs % 60);
 					} else {
 						$difftime='';
@@ -141,8 +160,10 @@ function etimeclockwp_button_shortcode($atts) {
 					if (isset($timestamp_array[1])) {
 						$order = $timestamp_array[1];
 						$result .= "<tr><td class='etimeclockwp_cell_title_width' style='color:white;text-transform:uppercase;background-color: ".$keycolor."'>";
-						$result .= $key;
-						$result .= "</td><td>".date_i18n('D',$timestampdb).' '.$datetime.'</td><td>'.ago($timestampdb-date('Z')).'</td><td>'.$diffhhmm."</td><td>".$difftime."</td></tr>";
+						$result .= $working_status.' '.$key;
+						$result .= "</td><td>".date_i18n('D',$timestampdb).' '.$datetime.'</td><td>'.ago($timestampdb-date('Z')).'</td><td style="text-align:center">';
+						if ( $working_status == 3 ) $result .= '</td><td style="text-align:center">'.$diffhhmm.'</td><td>'; else $result .= $diffhhmm.'</td><td></td><td>';
+						$result .= $difftime."</td></tr>";
 					} else {
 						$result .= "<tr><td class='etimeclockwp_cell_title_width'>";
 						$result .= $key;
@@ -152,8 +173,16 @@ function etimeclockwp_button_shortcode($atts) {
 				}
 			}
 			$result .= "</tr>";
+			$result .= '<tfoot><tr><td colspan=3 style="text-align:left"><b>Tagessummen</b></td><td><b>'.sprintf('%02d:%02d:%02d', ($azsum / 3600),($azsum / 60 % 60), $azsum % 60).'</b></td><td><b>';
+			$result .= sprintf('%02d:%02d:%02d', ($pausum / 3600),($pausum / 60 % 60), $pausum % 60).'</b></td><td><b>';
+			$result .= etimeclockwp_get_time_worked($post,$format = true).'</b></td></tr></tfoot>';
 			$result .= '</table>';
 		}
+		$result .= '<table><thead><th colspan=3 style="width:65%"><i class="fa fa-hourglass-3"></i> Gesamtsummen</th>';
+		$result .= '<th>'.sprintf('%02d:%02d:%02d', ($totaz / 3600),($totaz / 60 % 60), $totaz % 60).'</th>';
+		$result .= '<th>'.sprintf('%02d:%02d:%02d', ($totpau / 3600),($totpau / 60 % 60), $totpau % 60).'</th>';
+		$result .= '<th>'.sprintf('%02d:%02d:%02d', ($totbrutto / 3600),($totbrutto / 60 % 60), $totbrutto % 60).'</th>';
+		$result .= '</thead></table>';
 	} else if ($showmode == 2 && current_user_can('administrator') ) {
 		// CSV Export ---------------------
 		$filename = 'export-timeclock';
@@ -167,7 +196,7 @@ function etimeclockwp_button_shortcode($atts) {
 		header('Content-Type: text/csv; charset=utf-8');
 		header("Content-Disposition: attachment; filename=\"" . $filename . " " . $date . ".csv\";" );
 		header("Content-Transfer-Encoding: binary");	
-		fputcsv( $output, array('Username', 'UserID', 'StempeltagID', 'Stempelart', 'StempelUhrzeit', 'Arbeitszeit', 'AZproTagTotal'), ';');
+		fputcsv( $output, array('Username', 'UserID', 'StempeltagID', 'Stempelart', 'StempelUhrzeit', 'Arbeitszeit', 'Pausenzeit', 'AZproTagTotal'), ';');
 			$result ='';
 			$activity = get_posts(
 				array(
@@ -195,17 +224,8 @@ function etimeclockwp_button_shortcode($atts) {
 			$nonce_delete = wp_create_nonce('etimeclockwp_delete');
 			$nonce_add = 	wp_create_nonce('etimeclockwp_add');
 			$post_excerpt = $post->post_excerpt;
-
-				$modified_values = array(
-					$usersname,
-					$post->post_title,
-					'',
-					get_the_date(etimeclockwp_get_option('date-format'),$post->ID),
-					'',
-					'',
-					etimeclockwp_get_time_worked($post,$format = true),
-				);
-			   fputcsv( $output, $modified_values, ';' );
+			$pausum=0;
+			$azsum =0;
 
 			foreach($metavalue as $key => $val) {
 				if (substr($key, 0, 5) === "etime") {
@@ -219,21 +239,25 @@ function etimeclockwp_button_shortcode($atts) {
 						$key = etimeclockwp_get_option('clock-in');
 						$keycolor = etimeclockwp_get_option('clock-in-button-color');
 						$day = $timestampdb;
+						$working_status = '1';
 					}
 					
 					if ($key == 'etimeclockwp-out') {
 						$key = etimeclockwp_get_option('clock-out');
 						$keycolor = etimeclockwp_get_option('clock-out-button-color');
+						$working_status = '0';
 					}
 					
 					if ($key == 'etimeclockwp-breakon') {
 						$key = etimeclockwp_get_option('leave-on-break');
 						$keycolor = etimeclockwp_get_option('leave-on-break-button-color');
+						$working_status = '0';
 					}
 					
 					if ($key == 'etimeclockwp-breakoff') {
 						$key = etimeclockwp_get_option('return-from-break');
 						$keycolor = etimeclockwp_get_option('return-from-break-button-color');
+						$working_status = '3';
 					}
 					
 					$datetime = date_i18n($wp_date_format.' '.$wp_time_format,$timestampdb);
@@ -244,12 +268,15 @@ function etimeclockwp_button_shortcode($atts) {
 					if (!empty($oldtimestampdb)) {
 						$difftime = german_time_diff($oldtimestampdb,$timestampdb);
 						$diffsecs = round($timestampdb - $oldtimestampdb);
+						if ( $working_status == 3 ) $pausum +=$diffsecs; else $azsum +=$diffsecs;
 						$diffhhmm = sprintf('%02d:%02d:%02d', ($diffsecs / 3600),($diffsecs / 60 % 60), $diffsecs % 60);
 					} else {
 						$difftime='';
 						$diffhhmm='';
 					}	
-					
+
+					if ( $working_status == 3 ) {$az = '';$pau = $diffhhmm;} else {$az = $diffhhmm;$pau = '';}
+
 					if (isset($timestamp_array[1])) {
 						$order = $timestamp_array[1];
 						$modified_values = array(
@@ -258,7 +285,8 @@ function etimeclockwp_button_shortcode($atts) {
 							$post->ID,
 							$key,
 							$datetime,
-							$diffhhmm,
+							$az,
+							$pau,
 							'',
 						);
 					   fputcsv( $output, $modified_values, ';' );
@@ -267,6 +295,19 @@ function etimeclockwp_button_shortcode($atts) {
 					$oldtimestampdb = $timestampdb;
 				}
 			}
+			
+			// Tages-Footer Zwischensumme Totale Arbeitszeit
+			$modified_values = array(
+				$usersname,
+				$post->post_title,
+				'',
+				get_the_date(etimeclockwp_get_option('date-format'),$post->ID),
+				'',
+				sprintf('%02d:%02d:%02d', ($azsum / 3600),($azsum / 60 % 60), $azsum % 60),
+				sprintf('%02d:%02d:%02d', ($pausum / 3600),($pausum / 60 % 60), $pausum % 60),
+				etimeclockwp_get_time_worked($post,$format = true),
+			);
+		   fputcsv( $output, $modified_values, ';' );
 		}
 		exit;
 
