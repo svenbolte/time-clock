@@ -134,7 +134,6 @@ if (function_exists('etimeclockwp_pro')) {
 			include_once ('includes/admin/activity.php');
 			include_once ('includes/admin/users.php');
 			include_once ('includes/admin/menu.php');
-			include_once ('includes/admin/extensions.php');
 			include_once ('includes/admin/settings/settings_page.php');
 			include_once ('includes/admin/settings/settings_dashboard_items.php');
 			include_once ('includes/admin/ajax_functions_admin.php');
