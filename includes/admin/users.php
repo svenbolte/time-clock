@@ -139,6 +139,11 @@ function etimeclockwp_manage_button_columns( $column, $post_id ) {
 			$etimeclockwp_id = sanitize_text_field(get_post_meta($post->ID,'etimeclockwp_id', true));
 			echo $etimeclockwp_id;
 		break;
+
+		case 'post_date' :
+			$etimeclockwp_userdate= get_the_date().' '.get_the_time();
+			echo $etimeclockwp_userdate;
+		break;
 		
 		default :
 			break;
@@ -154,8 +159,8 @@ function etimeclockwp_users_columns($columns) {
 		'cb' => 			'<input type="checkbox" />',
 		'title' => 			__( 'User Name','etimeclockwp'),
 		'user_id' => 		__( 'User ID','etimeclockwp'),
+		'post_date' => 		__( 'created','etimeclockwp'),
 	);
-
 	return $columns;
 }
 add_filter('manage_edit-etimeclockwp_users_columns','etimeclockwp_users_columns');

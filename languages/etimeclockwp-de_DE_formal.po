@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Time Clock\n"
 "POT-Creation-Date: 2022-09-25 12:29+0000\n"
-"PO-Revision-Date: 2022-09-29 19:29+0000\n"
+"PO-Revision-Date: 2022-10-02 15:00+0000\n"
 "Last-Translator: Keller Admin\n"
 "Language-Team: Deutsch (Sie)\n"
 "Language: de_DE_formal\n"
@@ -83,7 +83,7 @@ msgstr "Mitarbeitende zufügen"
 msgid "Admin Review"
 msgstr "Admin Ansicht"
 
-#: includes/shortcodes.php:51
+#: includes/shortcodes.php:77
 msgid "admin show bookings"
 msgstr "Buchungen anzeigen"
 
@@ -134,6 +134,10 @@ msgstr "Ausstempeln Farbe"
 #: includes/admin/activity.php:247
 msgid "Confirm"
 msgstr "Bestätigen"
+
+#: includes/admin/users.php:162
+msgid "created"
+msgstr "Erstelldatum"
 
 #: includes/settings/settings_api.php:10 includes/settings/settings_api.php:12
 msgid "Dashboard"
@@ -221,7 +225,7 @@ msgstr ""
 msgid "Error - Nonce validation failed."
 msgstr "Fehler - Nonce Validierung fehlgeschlagen"
 
-#: includes/shortcodes.php:62
+#: includes/shortcodes.php:88
 msgid "export"
 msgstr "Export"
 
@@ -369,7 +373,7 @@ msgstr "Erfolg!"
 msgid "Time Clock"
 msgstr "Time Clock"
 
-#: includes/shortcodes.php:61
+#: includes/shortcodes.php:87
 msgid "time clock"
 msgstr "Stempeluhr"
 
@@ -389,7 +393,7 @@ msgstr "Gesamt Arbeitszeit"
 msgid "User"
 msgstr "Mitarbeitender"
 
-#: includes/admin/users.php:35 includes/admin/users.php:156
+#: includes/admin/users.php:35 includes/admin/users.php:161
 msgid "User ID"
 msgstr "Personal-ID"
 
@@ -397,7 +401,7 @@ msgstr "Personal-ID"
 msgid "User Information"
 msgstr "Benutzerinformation"
 
-#: includes/admin/activity.php:330 includes/admin/users.php:155
+#: includes/admin/activity.php:330 includes/admin/users.php:160
 msgid "User Name"
 msgstr "Mitarbeitenden-Name"
 
