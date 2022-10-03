@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-10-02 17:18+0000\n"
+"POT-Creation-Date: 2022-10-03 10:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "Activate License"
 msgstr ""
 
-#: includes/shortcodes.php:88
+#: includes/shortcodes.php:104
 msgid "activities"
 msgstr ""
 
@@ -66,11 +66,11 @@ msgstr ""
 msgid "Add New User"
 msgstr ""
 
-#: includes/functions.php:107
+#: includes/functions.php:164
 msgid "Admin Review"
 msgstr ""
 
-#: includes/shortcodes.php:77
+#: includes/shortcodes.php:94
 msgid "admin show bookings"
 msgstr ""
 
@@ -78,7 +78,7 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: includes/admin/activity.php:437
+#: includes/shortcodes.php:119 includes/admin/activity.php:437
 msgid "All users"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr ""
 
-#: includes/shortcodes.php:113
+#: includes/shortcodes.php:168
 msgid "break"
 msgstr ""
 
@@ -213,7 +213,7 @@ msgstr ""
 msgid "Error - Nonce validation failed."
 msgstr ""
 
-#: includes/shortcodes.php:88 includes/shortcodes.php:89
+#: includes/shortcodes.php:104 includes/shortcodes.php:105
 msgid "export"
 msgstr ""
 
@@ -364,7 +364,7 @@ msgstr ""
 msgid "Time Clock"
 msgstr ""
 
-#: includes/shortcodes.php:87
+#: includes/shortcodes.php:103
 msgid "time clock"
 msgstr ""
 
@@ -376,11 +376,15 @@ msgstr ""
 msgid "Time Worked"
 msgstr ""
 
+#: includes/shortcodes.php:50
+msgid "time-filter"
+msgstr ""
+
 #: includes/admin/activity.php:294
 msgid "Total Time Worked"
 msgstr ""
 
-#: includes/shortcodes.php:113
+#: includes/shortcodes.php:168
 msgid "totaltime"
 msgstr ""
 
@@ -408,8 +412,8 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: includes/shortcodes.php:88 includes/shortcodes.php:89
-#: includes/shortcodes.php:89
+#: includes/shortcodes.php:104 includes/shortcodes.php:105
+#: includes/shortcodes.php:105
 msgid "users"
 msgstr ""
 

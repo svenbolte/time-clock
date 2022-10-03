@@ -3,9 +3,21 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 function etimevaliduser() {
+	global $datefilter;
 	if ($_POST) {
 		$eid =		sanitize_text_field($_POST['eid']);
 		$epw =		sanitize_text_field($_POST['epw']);
+		// Auf User filtern
+		if (isset($_POST['month']) && !empty($_POST['month']) ) {
+			$datefilt = sanitize_text_field($_POST['month'],true);
+			$filtmon = (int) substr($datefilt,5,2);
+			$filtyr = (int) substr($datefilt,0,4);
+		} else {
+			$datefilt='';
+			$filtmon = NULL;
+			$filtyr = NULL;
+		}
+		$datefilter = array( array( 'year' => $filtyr, 'month' => $filtmon, ), );
 		// check to see if login data is valid
 		$args = array(
 			'post_type'					=> 'etimeclockwp_users',
@@ -35,6 +47,7 @@ function etimevaliduser() {
 			echo '<div style="width:100%;text-align:center;display:block"><form method="post">';
 			echo '<div class="etimeclock-text">'.etimeclockwp_get_option("employee-id").':<br /><input type="text" id="eid" name="eid"></div>';
 			echo '<div class="etimeclock-text">'.etimeclockwp_get_option('employee-password').':<br /><input type="password" id="epw" name="epw"></div>';
+			echo '<div class="etimeclock-text">'.__('time-filter','etimeclockwp').':<br /><input style="padding:4px 0" type="month" name="month"></div>';
 			echo '<input type="submit" value="Anmelden"></form></div>';
 		}	
 	}
@@ -43,7 +56,7 @@ function etimevaliduser() {
 
 
 function etimeclockwp_button_shortcode($atts) {
-	global $current_user,$wp;
+	global $current_user,$wp,$datefilter;
 	if (isset ($_GET['show']) ) $showmode = sanitize_text_field($_GET['show']); else $showmode = 0;
 	// get shortcode attributes
 	$atts = shortcode_atts(array( 'align' 	=> '',	), $atts);
@@ -87,17 +100,55 @@ function etimeclockwp_button_shortcode($atts) {
 		$result .= "</div>";
 	} else if ($showmode == 1 && ( current_user_can('administrator') || !empty($validuser = etimevaliduser()) ) ) {
 		// Activity-Anzeige letzte Buchungen 
-		$result .= '<span style="float:right"><i class="fa fa-user"></i> <b>'.strtoupper($validuser).'</b> &nbsp; <a href="'.home_url($wp->request).'?show=0" class="submit btnbutton"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a> &nbsp; ';
+		$result .= '<div style="float:right"><i class="fa fa-user"></i> <b>'.strtoupper($validuser).'</b> &nbsp; <a href="'.home_url($wp->request).'?show=0" class="submit btnbutton"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a> &nbsp; ';
 		$result .= '<a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=2" class="submit btnbutton"><i class="fa fa-download"></i> '.__('activities','etimeclockwp').'</a> &nbsp; ';
 		if ( current_user_can('administrator') ) $result .= '<a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=3" class="submit btnbutton"><i class="fa fa-download"></i> '.__('users','etimeclockwp').'</a>';
-		$result .= '</span>';
-		if ($validuser !=='admin') $userfilter=$validuser; else $userfilter='';
+		$current='';
+		if (current_user_can('administrator') ) {
+			$result .= ' <form class="noprint" style="display:inline" name="userfilter" method="post" action="'.home_url(add_query_arg(array('show'=>'1'), $wp->request)).'">';
+			// filter on user for admins
+			$users = get_posts(
+				array(
+				'posts_per_page'	=> -1,
+				'post_type'			=> 'etimeclockwp_users'
+				)
+			);
+			foreach($users as $post) {
+				$values[$post->post_title] = $post->ID;
+			}
+			$result .= '<select name="user"><option value="">'. __('All users', 'etimeclockwp').'</option>';
+			if (isset($_POST['user'])) {
+				$current = sanitize_text_field($_POST['user'],true);
+			} else {
+				$current = '';
+			}
+			foreach ($values as $label => $value) {
+				$result .= "<option value='$value'"; if ($current == $value) { $result .= "SELECTED"; } $result .= ">$label</option>";
+			}
+			$result .= '</select>';
+			// Filter on month / year
+			if (isset($_POST['month']) && !empty($_POST['month']) ) {
+				$datefilt = sanitize_text_field($_POST['month'],true);
+				$filtmon = (int) substr($datefilt,5,2);
+				$filtyr = (int) substr($datefilt,0,4);
+			} else {
+				$datefilt='';
+				$filtmon = NULL;
+				$filtyr = NULL;
+			}
+			$result .= ' <input style="padding:4px 0;margin-bottom:4px" type="month" name="month" value="'.$datefilt.'"> ';
+			$datefilter = array( array( 'year' => $filtyr, 'month' => $filtmon, ), );
+			$result .= '<input type="submit" style="font-family: FontAwesome" value="&#xf0b0;"></form>';
+		} 		
+		$result .= '</div>';
+		if ($validuser !=='admin') $userfilter=$validuser; else $userfilter=$current;
 		$activity = get_posts(
 			array(
 			'posts_per_page'	=> -1,
 			'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit'),
 			'post_type'			=> 'etimeclockwp_clock',
 			'title' => $userfilter,
+			'date_query' => $datefilter,
 			'orderby'          => 'date',
 			'order'            => 'DESC',
 			)
@@ -198,7 +249,8 @@ function etimeclockwp_button_shortcode($atts) {
 				}
 			}
 			$result .= "</tr>";
-			$result .= '<tfoot><tr><td colspan=3 style="text-align:left"><b>Tagessummen</b></td><td><b>'.sprintf('%02d:%02d:%02d', ($azsum / 3600),($azsum / 60 % 60), $azsum % 60).'</b></td><td><b>';
+			if ($azsum > 60*60*10) $tenhourwarn = 'background-color:tomato;color:white'; else $tenhourwarn ='';
+			$result .= '<tfoot><tr><td colspan=3 style="text-align:left"><b>Tagessummen</b></td><td style="'.$tenhourwarn.'"><b>'.sprintf('%02d:%02d:%02d', ($azsum / 3600),($azsum / 60 % 60), $azsum % 60).'</b></td><td><b>';
 			$result .= sprintf('%02d:%02d:%02d', ($pausum / 3600),($pausum / 60 % 60), $pausum % 60).'</b></td><td><b>';
 			$result .= etimeclockwp_get_time_worked($post,$format = true).'</b></td></tr></tfoot>';
 			$result .= '</table>';
@@ -321,7 +373,7 @@ function etimeclockwp_button_shortcode($atts) {
 				$post->post_title,
 				'',
 				get_the_date(etimeclockwp_get_option('date-format'),$post->ID),
-				'',
+				get_the_date('F Y',$post->ID),
 				sprintf('%02d:%02d:%02d', ($azsum / 3600),($azsum / 60 % 60), $azsum % 60),
 				sprintf('%02d:%02d:%02d', ($pausum / 3600),($pausum / 60 % 60), $pausum % 60),
 				etimeclockwp_get_time_worked($post,$format = true),

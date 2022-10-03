@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Time Clock\n"
 "POT-Creation-Date: 2022-09-25 12:29+0000\n"
-"PO-Revision-Date: 2022-10-02 17:19+0000\n"
+"PO-Revision-Date: 2022-10-03 10:59+0000\n"
 "Last-Translator: Keller Admin\n"
 "Language-Team: Deutsch (Sie)\n"
 "Language: de_DE_formal\n"
@@ -66,7 +66,7 @@ msgstr "Version"
 msgid "Activate License"
 msgstr "Lizenz aktivieren"
 
-#: includes/shortcodes.php:88
+#: includes/shortcodes.php:104
 msgid "activities"
 msgstr "Aktivitäten"
 
@@ -83,11 +83,11 @@ msgstr "Neue Aktivität zufügen"
 msgid "Add New User"
 msgstr "Mitarbeitende zufügen"
 
-#: includes/functions.php:107
+#: includes/functions.php:164
 msgid "Admin Review"
 msgstr "Admin Ansicht"
 
-#: includes/shortcodes.php:77
+#: includes/shortcodes.php:94
 msgid "admin show bookings"
 msgstr "Buchungen anzeigen"
 
@@ -95,7 +95,7 @@ msgstr "Buchungen anzeigen"
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: includes/admin/activity.php:437
+#: includes/shortcodes.php:119 includes/admin/activity.php:437
 msgid "All users"
 msgstr "Alle Benutzer"
 
@@ -103,7 +103,7 @@ msgstr "Alle Benutzer"
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr "Ein Mitarbeiter- und Freiwilligen-Stempeluhr-Plugin für WordPress"
 
-#: includes/shortcodes.php:113
+#: includes/shortcodes.php:168
 msgid "break"
 msgstr "Pause"
 
@@ -213,7 +213,7 @@ msgstr "Personalkürzel"
 
 #: includes/settings/settings_api.php:73 includes/settings/settings_api.php:76
 msgid "Employee Password"
-msgstr "Kennwort"
+msgstr "Personal PIN"
 
 #: timeclock.php:68
 msgid "Employee Time Clock has been auto-deactivated."
@@ -233,7 +233,7 @@ msgstr ""
 msgid "Error - Nonce validation failed."
 msgstr "Fehler - Nonce Validierung fehlgeschlagen"
 
-#: includes/shortcodes.php:88 includes/shortcodes.php:89
+#: includes/shortcodes.php:104 includes/shortcodes.php:105
 msgid "export"
 msgstr "Export"
 
@@ -386,7 +386,7 @@ msgstr "Erfolg!"
 msgid "Time Clock"
 msgstr "Time Clock"
 
-#: includes/shortcodes.php:87
+#: includes/shortcodes.php:103
 msgid "time clock"
 msgstr "Stempeluhr"
 
@@ -398,11 +398,15 @@ msgstr "Zeitformat"
 msgid "Time Worked"
 msgstr "Arbeitszeit"
 
+#: includes/shortcodes.php:50
+msgid "time-filter"
+msgstr "Zeitfilter"
+
 #: includes/admin/activity.php:294
 msgid "Total Time Worked"
 msgstr "Gesamt Arbeitszeit"
 
-#: includes/shortcodes.php:113
+#: includes/shortcodes.php:168
 msgid "totaltime"
 msgstr "BrtZeit"
 
@@ -430,8 +434,8 @@ msgstr "Mitarbeitende"
 msgid "Users"
 msgstr "Mitarbeitende"
 
-#: includes/shortcodes.php:88 includes/shortcodes.php:89
-#: includes/shortcodes.php:89
+#: includes/shortcodes.php:104 includes/shortcodes.php:105
+#: includes/shortcodes.php:105
 msgid "users"
 msgstr "Benutzer"
 

@@ -1,9 +1,66 @@
 <?php
-
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-
 // This page is for general functions
+
+// Zeitdifferenz ermitteln und gestern/vorgestern/morgen schreiben
+if( !function_exists('ago')) {
+	function ago($timestamp) {
+		if (empty($timestamp)) return;
+		$xlang = get_bloginfo("language");
+		date_default_timezone_set('Europe/Berlin');
+		$now = time();
+		if ($timestamp > $now) {
+			$prepo = __('in', 'penguin');
+			$postpo = '';
+		} else {
+			if ($xlang == 'de-DE') {
+				$prepo = __('vor', 'penguin');
+				$postpo = '';
+			} else {
+				$prepo = '';
+				$postpo = __('ago', 'penguin');
+			}
+		}
+		$her = intval($now) - intval($timestamp);
+		if ($her > 86400 and $her < 172800) {
+			$hdate = __('yesterday', 'penguin');
+		} else if ($her > 172800 and $her < 259200) {
+			$hdate = __('1 day before yesterday', 'penguin');
+		} else if ($her < - 86400 and $her > - 172800) {
+			$hdate = __('tomorrow', 'penguin');
+		} else if ($her < - 172800 and $her > - 259200) {
+			$hdate = __('1 day after tomorrow', 'penguin');
+		} else {
+			$hdate = ' ' . $prepo . ' ' . human_time_diff(intval($timestamp), $now) . ' ' . $postpo;
+		}
+		return $hdate;
+	}
+}	
+
+// Differenz zwischen 2 Beiträgen (kurz)
+if( !function_exists('german_time_diff')) {
+	function german_time_diff( $from, $to ) {
+		$days_old = abs(round(( $to - $from ) / 86400 , 0 ));
+		if ( $days_old < 30 ) $newclass = 'yellow'; else $newclass = 'white';
+		$diff = human_time_diff($from,$to);
+		$longreplace = array(   // Grammatik bei Anzeige langer Differenz (Monate statt Monaten)
+			'Tagen' => 'Tage',	'Monaten' => 'Monate',	'Jahren' => 'Jahre'
+		);
+		$replace = array(  // Auf Kurzform umstellen
+			'Sekunde'  => 's', 'Sekunden'  => 's',
+			'Minute'  => 'm', 'Minuten'  => 'm',
+			'Stunde'  => 'h', 'Stunden' => 'h',
+			'Tag'   => 'T', 'Tage'  => 'T',
+			'Woche'  => 'W', 'Wochen'  => 'W',
+			'Monat'  => 'M', 'Monate'  => 'M',
+			'Jahr'  => 'J', 'Jahre'  => 'J',
+			'n' =>''
+		);
+		$aetitle = __('time since previous post','penguin').'&#10;'.strtr($diff,$longreplace).'&#10;'.$days_old.' Tage';
+		return '<abbr title="'.$aetitle.'" class="newlabel '.$newclass.'"><i title="'.$aetitle.'" class="fa fa-arrows-v"></i>&nbsp;' . strtr($diff,$replace) . '</abbr>';
+	}
+}
 
 
 // get options with defaults - used in settings_api.php to load defaults for settings page

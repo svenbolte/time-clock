@@ -11,8 +11,8 @@ Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung, ex
 
 ## Why this fork
 
-Die Ursprüngliche Lösung von Herrn Paterson war weder komplett in deutsch, noch bot sie die benötigten Funktionen.
-Dennoch eine tolle und schlanke Basis, um das Werkzeug zu erweitern.
+Die Ursprüngliche Lösung von Herrn Paterson in der Wordpress plugin repository war nur in englisch
+und bot auch nicht die benötigten Funktionen. Dennoch eine tolle und schlanke Basis, um das Werkzeug zu erweitern.
 
 ## Beschreibung
 
@@ -24,13 +24,12 @@ die aktuelle Zeit erfassen (einstempeln, ausstelmepln, Pause beginnen, Pause bee
 oder eine Stempelzeit mit angeben (die auch in der Zukunft liegen kann) oder Zeiten nacherfassen.
 Das neue Ansicht Frontend listet die Stempelvorgänge nach Tagen gruppiert übersichtlich und bildet Zwischensummen und eine Gesamtsumme.
 Die Aktivitäten kann jeder Mitarbeitende für sich nach Excel sportieren.
+Admins können auf Mitarbeitende und auf Monat filtern, User nur auf Monat.
 
 Ist ein (Wordpress) Administrator angemeldet (z.B. Personalchef), kann er die Aktivitäten von allen Mitarbeitenden sehen,
 nach Excel exportieren und auswerten.
 
-So können Arbeitszeitverstöße (mehr als 10 Stunden pro Tag arbeiten) leicht erkannt werden.
-
-In einem weiteren Release werden diese Verstöße rot hinterlegt. Zusätzlich lässt sich eine Stundenvorgabe pro Arbeitswoche festlegen und berechnen, ob überstunden angefallen sind.
+So können Arbeitszeitverstöße (mehr als 10 Stunden pro Tag arbeiten) leicht erkannt werden (Arbeitszeit ist dann rot hinterlegt).
 
 
 ## Disclaimer
