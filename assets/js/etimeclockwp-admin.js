@@ -1,26 +1,5 @@
 jQuery(document).ready(function($) {
 
-	
-	// Tooltips
-	jQuery('.etimeclockwp-help-tip').tooltip( {
-		content: function() {
-			return jQuery(this).prop('title');
-		},
-		tooltipClass: 'etimeclockwp-ui-tooltip',
-		position: {
-			my: 'center top',
-			at: 'center bottom+10',
-			collision: 'flipfit',
-		},
-		hide: {
-			duration: 200,
-		},
-		show: {
-			duration: 200,
-		},
-	});
-	
-	
 	// colorpicker
 	jQuery(function () {
 		jQuery('.etimeclockwp_colorpicker').wpColorPicker();
@@ -40,7 +19,7 @@ jQuery(document).ready(function($) {
 			controlType: 	'select',
 			oneLine: 		true,
 			altField: 		'#etimeclockwp-new-activity-real',
-			altFormat: 		'yy-mm-dd',
+			altFormat: 		'yyyy-mm-dd',
 			altFieldTimeOnly: false,
 	});
 	
@@ -240,93 +219,3 @@ jQuery(document).ready(function($) {
 	
 });
 
-
-
-// Deactive survey form
-(function($) {
-	$(function() {
-
-	var pluginSlug = 'time-clock';
-
-	$(document).on('click', 'tr[data-slug="' + pluginSlug + '"] .deactivate', function(e) {
-		e.preventDefault();
-		$('.etimeclockwp-popup-overlay').addClass('etimeclockwp-active');
-		$('body').addClass('etimeclockwp-hidden');
-	});
-	
-	$(document).on('click', '.etimeclockwp-popup-button-close', function () {
-		close_popup();
-	});
-	
-	$(document).on('click', ".etimeclockwp-serveypanel,tr[data-slug='" + pluginSlug + "'] .deactivate",function(e) {
-		e.stopPropagation();
-	});
-
-	$(document).click(function() {
-		close_popup();
-	});
-	
-	$('.etimeclockwp-reason label').on('click', function() {
-		if($(this).find('input[type="radio"]').is(':checked')) {
-			$(this).next().next('.etimeclockwp-reason-input').show().end().end().parent().siblings().find('.etimeclockwp-reason-input').hide();
-		}
-	});
-	
-	$('input[type="radio"][name="etimeclockwp-selected-reason"]').on('click', function(event) {
-		$(".etimeclockwp-popup-allow-deactivate").removeAttr('disabled');
-		$('.etimeclockwp_input_field_error').removeClass('etimeclockwp_input_error');
-	});
-	
-	$(document).on('submit', '#etimeclockwp-deactivate-form', function(event) {
-		event.preventDefault();
-		
-		var _reason =  $(this).find('input[type="radio"][name="etimeclockwp-selected-reason"]:checked').val();
-		var _reason_details = '';
-		
-		if ( _reason == 2 ) {
-			_reason_details = $(this).find("textarea[name='better_plugin']").val();
-		} else if ( _reason == 7 ) {
-			_reason_details = $(this).find("textarea[name='other_reason']").val();
-		} else if ( _reason == 1 ) {
-			_reason_details = $(this).find("textarea[name='feature']").val();
-		}
-		
-		if ( ( _reason == 7 || _reason == 2 || _reason == 1 ) && _reason_details == '' ) {
-			$('.etimeclockwp_input_field_error').addClass('etimeclockwp_input_error');
-			return ;
-		}
-		
-		$.ajax({
-			url: ajaxurl,
-			type: 'POST',
-			data: {
-				action        : 'etimeclockwp_deactivate_survey',
-				reason        : _reason,
-				reason_detail : _reason_details,
-			},
-			beforeSend: function(){
-				$(".etimeclockwp-spinner").show();
-				$(".etimeclockwp-popup-allow-deactivate").attr("disabled", "disabled");
-			}
-		})
-		.done(function() {
-			$(".etimeclockwp-spinner").hide();
-			$(".etimeclockwp-popup-allow-deactivate").removeAttr("disabled");
-			window.location.href =  $("tr[data-slug='"+ pluginSlug +"'] .deactivate a").attr('href');
-		});
-	});
-
-	$('.loginpress-popup-skip-feedback').on('click', function(e) {
-		window.location.href =  $("tr[data-slug='"+ pluginSlug +"'] .deactivate a").attr('href');
-	})
-
-	function close_popup() {
-		$('.etimeclockwp-popup-overlay').removeClass('etimeclockwp-active');
-		$('#etimeclockwp-deactivate-form').trigger("reset");
-		$(".etimeclockwp-popup-allow-deactivate").attr('disabled', 'disabled');
-		$(".etimeclockwp-reason-input").hide();
-		$('body').removeClass('etimeclockwp-hidden');
-		$('.etimeclockwp_input_field_error').removeClass('etimeclockwp_input_error');
-	}
-	});
-})(jQuery);

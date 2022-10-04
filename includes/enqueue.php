@@ -2,13 +2,9 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-
 // admin enqueue
 function etimeclockwp_admin_enqueue() {
 
-	// jquery ui tooltips
-	wp_enqueue_script('jquery-ui-tooltip');
-	
 	// admin css
 	wp_register_style('etimeclockwp-admin-css',plugins_url('/assets/css/etimeclockwp-admin.css',dirname(__FILE__)),false,ETIMECLOCKWP_VERSION);
 	wp_enqueue_style('etimeclockwp-admin-css');
@@ -40,8 +36,6 @@ function etimeclockwp_admin_enqueue() {
 	
 }
 add_action('admin_enqueue_scripts','etimeclockwp_admin_enqueue');
-
-
 
 
 // public enqueue
