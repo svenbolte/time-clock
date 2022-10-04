@@ -111,14 +111,14 @@ function etimeclockwp_settings() {
 					'title' 		=> __( 'Date Format', 'etimeclockwp' ),
 					'name' 			=> 'date-format',
 					'type' 			=> 'date',
-					'default'		=> 'n/j/Y',
+					'default'		=> 'j. M Y',
 					'help' 			=> '',
 				),
 				array(
 					'title' 		=> __( 'Time Format', 'etimeclockwp' ),
 					'name' 			=> 'time-format',
 					'type' 			=> 'time',
-					'default'		=> 'g:i:s A',
+					'default'		=> 'h:i:s',
 					'help' 			=> '',
 				),
 			),
@@ -445,18 +445,14 @@ function etimeclockwp_settings_render_option($item) {
 		echo "<table><tr><td class='etimeclockwp_cell_title_width'>";
 		echo "$title:</td><td>";
 		echo "<select name='etimeclockwp_settings[$name]' class='etimeclockwp_cell_width'>";
-				echo "<option value='F j, Y'"; 	 if (etimeclockwp_get_option($name) == 'F j, Y') 	{ 	echo " SELECTED "; }  	echo ">January 25, ".date_i18n('Y')."</option>";
-                echo "<option value='M j, Y'"; 	 if (etimeclockwp_get_option($name) == 'M j, Y') 	{ 	echo " SELECTED "; } 	echo ">Jan 25, ".date_i18n(' Y')."</option>";
-                echo "<option value='M j'"; 	 if (etimeclockwp_get_option($name) == 'M j') 		{ 	echo " SELECTED "; }	echo ">Jan 25</option>";
-                echo "<option value='n/j/Y'"; 	 if (etimeclockwp_get_option($name) == 'n/j/Y') 	{ 	echo " SELECTED "; }  	echo ">1/25/".date_i18n('Y')."</option>";
-                echo "<option value='n/j/y'"; 	 if (etimeclockwp_get_option($name) == 'n/j/y') 	{ 	echo " SELECTED "; }  	echo ">1/25/".date_i18n('y')."</option>";
-                echo "<option value='n/j'"; 	 if (etimeclockwp_get_option($name) == 'n/j') 		{ 	echo " SELECTED "; }  	echo ">1/".date_i18n('j')."</option>";
-                echo "<option value='j F Y'"; 	 if (etimeclockwp_get_option($name) == 'j F Y') 	{ 	echo " SELECTED "; }	echo ">25 January ".date_i18n('Y')."</option>";
-                echo "<option value='j M Y'"; 	 if (etimeclockwp_get_option($name) == 'j M Y') 	{ 	echo " SELECTED "; }  	echo ">25 Jan ".date_i18n('Y')."</option>";
-                echo "<option value='j M'"; 	 if (etimeclockwp_get_option($name) == 'j M') 		{ 	echo " SELECTED "; }	echo ">25 Jan</option>";
-                echo "<option value='j-n-Y'"; 	 if (etimeclockwp_get_option($name) == 'j-n-Y') 	{ 	echo " SELECTED "; }	echo ">25-1-".date_i18n('Y')."</option>";
-                echo "<option value='j-n-y'"; 	 if (etimeclockwp_get_option($name) == 'j-n-y') 	{ 	echo " SELECTED "; }	echo ">25-1-".date_i18n('y')."</option>";
-                echo "<option value='j-n'"; 	 if (etimeclockwp_get_option($name) == 'j-n') 		{ 	echo " SELECTED "; }	echo ">25-1</option>";
+				echo "<option value='j. M Y'"; 	 if (etimeclockwp_get_option($name) == 'j. M Y') 	{ 	echo " SELECTED "; }  	echo ">".date_i18n('j').". ".date_i18n('M')." ".date_i18n('Y')."</option>";
+				echo "<option value='j. F Y'"; 	 if (etimeclockwp_get_option($name) == 'j. F Y') 	{ 	echo " SELECTED "; }  	echo ">".date_i18n('j').". ".date_i18n('F')." ".date_i18n('Y')."</option>";
+				echo "<option value='F j, Y'"; 	 if (etimeclockwp_get_option($name) == 'F j, Y') 	{ 	echo " SELECTED "; }  	echo ">".date_i18n('F')." ".date_i18n('j').", ".date_i18n('Y')."</option>";
+                echo "<option value='M j, Y'"; 	 if (etimeclockwp_get_option($name) == 'M j, Y') 	{ 	echo " SELECTED "; } 	echo ">".date_i18n('M')." ".date_i18n('j').", ".date_i18n('Y')."</option>";
+                echo "<option value='M j'"; 	 if (etimeclockwp_get_option($name) == 'M j') 		{ 	echo " SELECTED "; }	echo ">".date_i18n('M')." ".date_i18n('j')."</option>";
+                echo "<option value='j.n.Y'"; 	 if (etimeclockwp_get_option($name) == 'n.j.Y') 	{ 	echo " SELECTED "; }	echo ">".date_i18n('n').".".date_i18n('j').".".date_i18n('Y')."</option>";
+                echo "<option value='j.n.y'"; 	 if (etimeclockwp_get_option($name) == 'n.j.y') 	{ 	echo " SELECTED "; }	echo ">".date_i18n('n').".".date_i18n('j').".".date_i18n('y')."</option>";
+                echo "<option value='n.j.'"; 	 if (etimeclockwp_get_option($name) == 'n.j.') 		{ 	echo " SELECTED "; }	echo ">".date_i18n('n').".".date_i18n('j')."."."</option>";
 		echo "</select>";
 		echo "</td></tr></table>";
 	}
@@ -467,12 +463,12 @@ function etimeclockwp_settings_render_option($item) {
 		echo "<table><tr><td class='etimeclockwp_cell_title_width'>";
 		echo "$title:</td><td>";
 		echo "<select name='etimeclockwp_settings[$name]' class='etimeclockwp_cell_width'>";
+			echo "<option value='H:i:s'"; 	 	if (etimeclockwp_get_option($name) == 'H:i:s') 		{ 	echo " SELECTED "; }	echo ">".date_i18n('H:i:s')."</option>";		
+			echo "<option value='H:i'"; 	 	if (etimeclockwp_get_option($name) == 'H:i') 		{ 	echo " SELECTED "; }	echo ">".date_i18n('H:i')."</option>";	
 			echo "<option value='g:i:s a'"; 	if (etimeclockwp_get_option($name) == 'g:i:s a') 	{ 	echo " SELECTED "; }  	echo ">".date_i18n('g:i:s a')."</option>";
 			echo "<option value='g:i:s A'"; 	if (etimeclockwp_get_option($name) == 'g:i:s A') 	{ 	echo " SELECTED "; } 	echo ">".date_i18n('g:i:s A')."</option>";
 			echo "<option value='g:i a'"; 	 	if (etimeclockwp_get_option($name) == 'g:i a') 		{ 	echo " SELECTED "; } 	echo ">".date_i18n('g:i a')."</option>";
 			echo "<option value='g:i A'"; 	 	if (etimeclockwp_get_option($name) == 'g:i A') 		{ 	echo " SELECTED "; } 	echo ">".date_i18n('g:i A')."</option>";
-			echo "<option value='H:i:s'"; 	 	if (etimeclockwp_get_option($name) == 'H:i:s') 		{ 	echo " SELECTED "; }	echo ">".date_i18n('H:i:s')."</option>";		
-			echo "<option value='H:i'"; 	 	if (etimeclockwp_get_option($name) == 'H:i') 		{ 	echo " SELECTED "; }	echo ">".date_i18n('H:i')."</option>";	
 		echo "</select>";
 		echo "</td></tr></table>";
 	}

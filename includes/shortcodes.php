@@ -68,30 +68,33 @@ function etimeclockwp_button_shortcode($atts) {
 		$action_url = add_query_arg('etimeclockwp-action','charge',home_url( 'index.php'));
 		$result = "<div class='etimeclock-main'>";
 		$result .= "<div class='etimeclock-body'>";
+		// show and export link
+		$result .= '<div class="etimeclock-button" style="background-color:#888;margin-bottom:1em"><a href="'.home_url($wp->request).'?show=1" class="submit btnbutton">'.__('admin show bookings','etimeclockwp').'</a></div>';
+		// status line section
+		$result .= '<div id="etimeclock-status">Bereit</div>';
 		// time section
-		$result .= "<span class='etimeclock-date'></span> &nbsp; ";
-		$result .= "<span class='etimeclock-time'></span><br>";
-		$result .= '<input id="manualdate" name="manualdate" type="date"> &nbsp; ';
+		$result .= '<span style="font-size:1.7em">KW '.date_i18n('W').' &nbsp; '.date_i18n('D').'</span> &nbsp; ';
+		$result .= '<span class="etimeclock-date"></span> &nbsp; ';
+		$result .= "<span class='etimeclock-time'></span><br />";
+		$result .= '<input id="manualdate" name="manualdate" type="date" value="'.date('Y-m-d').'"> &nbsp; ';
 		$result .= '<input id="manualtime" name="manualtime" type="time" style="padding:6px">';
 		$result .= "<br /><br>";
-		// status line section
-		$result .= '<div id="etimeclock-status">Bereit</div><br />';
 		// login section
 		$result .= "<div class='etimeclock-text'>".etimeclockwp_get_option('employee-id').":<br /><input id='etimeclock-eid' class='etimeclock-button etimeclock-input' style='color:#000' type='text' autocomplete='on' autocomplete='true'></div>";
 		$result .= "<div class='etimeclock-text'>".etimeclockwp_get_option('employee-password').":<br /><input id='etimeclock-epw' class='etimeclock-button etimeclock-input' style='color:#000' type='password' autocomplete='on' autocomplete='true'></div>";
 		$result .= "<br /><br />";
 		$result .= "<input id='etimeclock-hash' type='hidden' value='false'>";
 		// button section
+		$result .= '<div class="buttongrid">';
 		$result .= "<div class='etimeclock-in etimeclock-button' style='background-color: ".etimeclockwp_get_option('clock-in-button-color')."'><a class='etimeclock-action' data-id='in' href='#'>".etimeclockwp_get_option('clock-in')."</a></div>";
 		$result .= "<div class='etimeclock-out etimeclock-button' style='background-color: ".etimeclockwp_get_option('clock-out-button-color')."'><a class='etimeclock-action' data-id='out' href='#'>".etimeclockwp_get_option('clock-out')."</a></div>";
-		$result .= "<br />";
 		$show_break_options = etimeclockwp_get_option('show_break_options');
 		if ($show_break_options == '0') {
 			$result .= "<div class='etimeclock-break-out etimeclock-button' style='background-color: ".etimeclockwp_get_option('leave-on-break-button-color')."'><a href='#' class='etimeclock-action' data-id='breakon'>".etimeclockwp_get_option('leave-on-break')."</a></div>";
 			$result .= "<div class='etimeclock-break-in etimeclock-button' style='background-color: ".etimeclockwp_get_option('return-from-break-button-color')."'><a href='#' class='etimeclock-action' data-id='breakoff'>".etimeclockwp_get_option('return-from-break')."</a></div>";
 		}
 		// show list and export (only admin can export users and all activitiers, user exports his activities)
-		$result .= '<div class="etimeclock-button" style="background-color:#888"><a href="'.home_url($wp->request).'?show=1" class="submit btnbutton">'.__('admin show bookings','etimeclockwp').'</a></div>';
+		$result .= '</div>';
 		// create nonce
 		$ajax_nonce = wp_create_nonce('etimeclock_nonce');
 		$result .= "<input type='hidden' id='etimeclock_nonce' value='$ajax_nonce'>";
@@ -100,12 +103,13 @@ function etimeclockwp_button_shortcode($atts) {
 		$result .= "</div>";
 	} else if ($showmode == 1 && ( current_user_can('administrator') || !empty($validuser = etimevaliduser()) ) ) {
 		// Activity-Anzeige letzte Buchungen 
-		$result .= '<div style="float:right"><i class="fa fa-user"></i> <b>'.strtoupper($validuser).'</b> &nbsp; <a href="'.home_url($wp->request).'?show=0" class="submit btnbutton"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a> &nbsp; ';
-		$result .= '<a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=2" class="submit btnbutton"><i class="fa fa-download"></i> '.__('activities','etimeclockwp').'</a> &nbsp; ';
-		if ( current_user_can('administrator') ) $result .= '<a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=3" class="submit btnbutton"><i class="fa fa-download"></i> '.__('users','etimeclockwp').'</a>';
+		$result .= '<div style="float:right"><i class="fa fa-user"></i> <b>'.strtoupper($validuser).'</b> &nbsp; ';
+		$result .= '<span class="btn"><a href="'.home_url($wp->request).'?show=0" class="submit"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a></span> &nbsp; ';
+		$result .= '<span class="btn"><a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=2" class="submit btnbutton"><i class="fa fa-download"></i> '.__('activities','etimeclockwp').'</a></span> &nbsp; ';
+		if ( current_user_can('administrator') ) $result .= '<span class="btn"><a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=3" class="submit btnbutton"><i class="fa fa-download"></i> '.__('users','etimeclockwp').'</a></span>';
 		$current='';
 		if (current_user_can('administrator') ) {
-			$result .= ' <form class="noprint" style="display:inline" name="userfilter" method="post" action="'.home_url(add_query_arg(array('show'=>'1'), $wp->request)).'">';
+			$result .= ' &nbsp; <form class="noprint" style="display:inline" name="userfilter" method="post" action="'.home_url(add_query_arg(array('show'=>'1'), $wp->request)).'">';
 			// filter on user for admins
 			$users = get_posts(
 				array(
