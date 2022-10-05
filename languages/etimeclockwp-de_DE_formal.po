@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Time Clock\n"
 "POT-Creation-Date: 2022-09-25 12:29+0000\n"
-"PO-Revision-Date: 2022-10-03 10:59+0000\n"
+"PO-Revision-Date: 2022-10-05 09:51+0000\n"
 "Last-Translator: Keller Admin\n"
 "Language-Team: Deutsch (Sie)\n"
 "Language: de_DE_formal\n"
@@ -62,11 +62,11 @@ msgstr ""
 msgid " Version "
 msgstr "Version"
 
-#: includes/settings/settings_api.php:601
+#: includes/settings/settings_api.php:597
 msgid "Activate License"
 msgstr "Lizenz aktivieren"
 
-#: includes/shortcodes.php:104
+#: includes/shortcodes.php:108
 msgid "activities"
 msgstr "Aktivitäten"
 
@@ -87,7 +87,7 @@ msgstr "Mitarbeitende zufügen"
 msgid "Admin Review"
 msgstr "Admin Ansicht"
 
-#: includes/shortcodes.php:94
+#: includes/shortcodes.php:72
 msgid "admin show bookings"
 msgstr "Buchungen anzeigen"
 
@@ -95,7 +95,7 @@ msgstr "Buchungen anzeigen"
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: includes/shortcodes.php:119 includes/admin/activity.php:437
+#: includes/shortcodes.php:123 includes/admin/activity.php:467
 msgid "All users"
 msgstr "Alle Benutzer"
 
@@ -103,7 +103,7 @@ msgstr "Alle Benutzer"
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr "Ein Mitarbeiter- und Freiwilligen-Stempeluhr-Plugin für WordPress"
 
-#: includes/shortcodes.php:168
+#: includes/shortcodes.php:172
 msgid "break"
 msgstr "Pause"
 
@@ -171,7 +171,7 @@ msgstr "Datum:"
 msgid "Day Details"
 msgstr "Tages-Details"
 
-#: includes/settings/settings_api.php:598
+#: includes/settings/settings_api.php:594
 msgid "Deactivate License"
 msgstr "Lizenz deaktivieren"
 
@@ -215,25 +215,11 @@ msgstr "Personalkürzel"
 msgid "Employee Password"
 msgstr "Personal PIN"
 
-#: timeclock.php:68
-msgid "Employee Time Clock has been auto-deactivated."
-msgstr "Die Mitarbeiter-Stempeluhr wurde automatisch deaktiviert."
-
-#: timeclock.php:66
-msgid ""
-"Employee Time Clock requires PHP 5.6+ and WordPress 4.0+ to function "
-"properly. Your current configuration does not meet one or more of these "
-"requirements."
-msgstr ""
-"Employee Time Clock erfordert PHP 5.6+ und WordPress 4.0+, um richtig zu "
-"funktionieren. Ihre aktuelle Konfiguration erfüllt eine oder mehrere dieser "
-"Anforderungen nicht."
-
 #: includes/actions.php:37
 msgid "Error - Nonce validation failed."
 msgstr "Fehler - Nonce Validierung fehlgeschlagen"
 
-#: includes/shortcodes.php:104 includes/shortcodes.php:105
+#: includes/shortcodes.php:108 includes/shortcodes.php:109
 msgid "export"
 msgstr "Export"
 
@@ -245,7 +231,7 @@ msgstr "Vollständiger Name"
 msgid "General"
 msgstr "Allgemein"
 
-#: includes/settings/settings_api.php:550
+#: includes/settings/settings_api.php:546
 msgid "Generate Report"
 msgstr "Bericht erzeugen"
 
@@ -265,7 +251,7 @@ msgstr "https://github.com/svenbolte/time-clock/"
 msgid "Incorrect ID or Password."
 msgstr "Falsches Kennwort"
 
-#: includes/settings/settings_api.php:587
+#: includes/settings/settings_api.php:583
 msgid "Key"
 msgstr "Aktion"
 
@@ -321,7 +307,7 @@ msgstr "Kennwort"
 msgid "Plugin Data"
 msgstr "Plugin Daten"
 
-#: includes/admin/activity.php:271 includes/admin/activity.php:344
+#: includes/admin/activity.php:271 includes/admin/activity.php:372
 #: includes/admin/users.php:168
 msgid "Record #"
 msgstr "Datensatz Nr."
@@ -374,7 +360,7 @@ msgstr "Einstellungen"
 msgid "Show Break In / Break Out Options"
 msgstr "Pause/Pausenoptionen anzeigen"
 
-#: includes/settings/settings_api.php:608
+#: includes/settings/settings_api.php:604
 msgid "Status"
 msgstr "Status"
 
@@ -386,7 +372,7 @@ msgstr "Erfolg!"
 msgid "Time Clock"
 msgstr "Time Clock"
 
-#: includes/shortcodes.php:103
+#: includes/shortcodes.php:107
 msgid "time clock"
 msgstr "Stempeluhr"
 
@@ -394,19 +380,23 @@ msgstr "Stempeluhr"
 msgid "Time Format"
 msgstr "Zeitformat"
 
-#: includes/admin/activity.php:346
-msgid "Time Worked"
-msgstr "Arbeitszeit"
-
 #: includes/shortcodes.php:50
 msgid "time-filter"
 msgstr "Zeitfilter"
 
-#: includes/admin/activity.php:294
+#: includes/admin/activity.php:304 includes/admin/activity.php:375
+msgid "total time breaks"
+msgstr "Gesamt Pausenzeit"
+
+#: includes/admin/activity.php:312 includes/admin/activity.php:376
+msgid "total time with breaks"
+msgstr "Gesamt Arbeitszeit mit Pausen"
+
+#: includes/admin/activity.php:296 includes/admin/activity.php:374
 msgid "Total Time Worked"
 msgstr "Gesamt Arbeitszeit"
 
-#: includes/shortcodes.php:168
+#: includes/shortcodes.php:172
 msgid "totaltime"
 msgstr "BrtZeit"
 
@@ -422,7 +412,7 @@ msgstr "Personal-ID"
 msgid "User Information"
 msgstr "Benutzerinformation"
 
-#: includes/admin/activity.php:343 includes/admin/users.php:166
+#: includes/admin/activity.php:371 includes/admin/users.php:166
 msgid "User Name"
 msgstr "Mitarbeitenden-Name"
 
@@ -434,8 +424,8 @@ msgstr "Mitarbeitende"
 msgid "Users"
 msgstr "Mitarbeitende"
 
-#: includes/shortcodes.php:104 includes/shortcodes.php:105
-#: includes/shortcodes.php:105
+#: includes/shortcodes.php:108 includes/shortcodes.php:109
+#: includes/shortcodes.php:109
 msgid "users"
 msgstr "Benutzer"
 
@@ -449,7 +439,7 @@ msgstr ""
 "Schaltflächen Kommen/Gehen angezeigt. Sollen auch die Schaltflächen Leave On "
 "Break / Return From Break angezeigt werden?"
 
-#: includes/admin/activity.php:345
+#: includes/admin/activity.php:373
 msgid "Work Date"
 msgstr "Arbeitsdatum"
 

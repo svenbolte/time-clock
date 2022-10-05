@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-10-03 10:57+0000\n"
+"POT-Creation-Date: 2022-10-05 09:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -45,11 +45,11 @@ msgstr ""
 msgid " Version "
 msgstr ""
 
-#: includes/settings/settings_api.php:601
+#: includes/settings/settings_api.php:597
 msgid "Activate License"
 msgstr ""
 
-#: includes/shortcodes.php:104
+#: includes/shortcodes.php:108
 msgid "activities"
 msgstr ""
 
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Admin Review"
 msgstr ""
 
-#: includes/shortcodes.php:94
+#: includes/shortcodes.php:72
 msgid "admin show bookings"
 msgstr ""
 
@@ -78,7 +78,7 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: includes/shortcodes.php:119 includes/admin/activity.php:437
+#: includes/shortcodes.php:123 includes/admin/activity.php:467
 msgid "All users"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr ""
 
-#: includes/shortcodes.php:168
+#: includes/shortcodes.php:172
 msgid "break"
 msgstr ""
 
@@ -154,7 +154,7 @@ msgstr ""
 msgid "Day Details"
 msgstr ""
 
-#: includes/settings/settings_api.php:598
+#: includes/settings/settings_api.php:594
 msgid "Deactivate License"
 msgstr ""
 
@@ -198,22 +198,11 @@ msgstr ""
 msgid "Employee Password"
 msgstr ""
 
-#: timeclock.php:68
-msgid "Employee Time Clock has been auto-deactivated."
-msgstr ""
-
-#: timeclock.php:66
-msgid ""
-"Employee Time Clock requires PHP 5.6+ and WordPress 4.0+ to function "
-"properly. Your current configuration does not meet one or more of these "
-"requirements."
-msgstr ""
-
 #: includes/actions.php:37
 msgid "Error - Nonce validation failed."
 msgstr ""
 
-#: includes/shortcodes.php:104 includes/shortcodes.php:105
+#: includes/shortcodes.php:108 includes/shortcodes.php:109
 msgid "export"
 msgstr ""
 
@@ -225,7 +214,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: includes/settings/settings_api.php:550
+#: includes/settings/settings_api.php:546
 msgid "Generate Report"
 msgstr ""
 
@@ -245,7 +234,7 @@ msgstr ""
 msgid "Incorrect ID or Password."
 msgstr ""
 
-#: includes/settings/settings_api.php:587
+#: includes/settings/settings_api.php:583
 msgid "Key"
 msgstr ""
 
@@ -301,7 +290,7 @@ msgstr ""
 msgid "Plugin Data"
 msgstr ""
 
-#: includes/admin/activity.php:271 includes/admin/activity.php:344
+#: includes/admin/activity.php:271 includes/admin/activity.php:372
 #: includes/admin/users.php:168
 msgid "Record #"
 msgstr ""
@@ -352,7 +341,7 @@ msgstr ""
 msgid "Show Break In / Break Out Options"
 msgstr ""
 
-#: includes/settings/settings_api.php:608
+#: includes/settings/settings_api.php:604
 msgid "Status"
 msgstr ""
 
@@ -364,7 +353,7 @@ msgstr ""
 msgid "Time Clock"
 msgstr ""
 
-#: includes/shortcodes.php:103
+#: includes/shortcodes.php:107
 msgid "time clock"
 msgstr ""
 
@@ -372,19 +361,23 @@ msgstr ""
 msgid "Time Format"
 msgstr ""
 
-#: includes/admin/activity.php:346
-msgid "Time Worked"
-msgstr ""
-
 #: includes/shortcodes.php:50
 msgid "time-filter"
 msgstr ""
 
-#: includes/admin/activity.php:294
+#: includes/admin/activity.php:304 includes/admin/activity.php:375
+msgid "total time breaks"
+msgstr ""
+
+#: includes/admin/activity.php:312 includes/admin/activity.php:376
+msgid "total time with breaks"
+msgstr ""
+
+#: includes/admin/activity.php:296 includes/admin/activity.php:374
 msgid "Total Time Worked"
 msgstr ""
 
-#: includes/shortcodes.php:168
+#: includes/shortcodes.php:172
 msgid "totaltime"
 msgstr ""
 
@@ -400,7 +393,7 @@ msgstr ""
 msgid "User Information"
 msgstr ""
 
-#: includes/admin/activity.php:343 includes/admin/users.php:166
+#: includes/admin/activity.php:371 includes/admin/users.php:166
 msgid "User Name"
 msgstr ""
 
@@ -412,8 +405,8 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: includes/shortcodes.php:104 includes/shortcodes.php:105
-#: includes/shortcodes.php:105
+#: includes/shortcodes.php:108 includes/shortcodes.php:109
+#: includes/shortcodes.php:109
 msgid "users"
 msgstr ""
 
@@ -424,7 +417,7 @@ msgid ""
 "displayed?"
 msgstr ""
 
-#: includes/admin/activity.php:345
+#: includes/admin/activity.php:373
 msgid "Work Date"
 msgstr ""
 

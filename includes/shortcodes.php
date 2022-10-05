@@ -302,10 +302,6 @@ function etimeclockwp_button_shortcode($atts) {
 			$timestamp_now = 	date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp);
 			$date_now = 		date_i18n($wp_date_format);
 			$time_now = 		date_i18n($wp_time_format);
-			// url nonnces
-			$nonce_edit = 	wp_create_nonce('etimeclockwp_edit');
-			$nonce_delete = wp_create_nonce('etimeclockwp_delete');
-			$nonce_add = 	wp_create_nonce('etimeclockwp_add');
 			$post_excerpt = $post->post_excerpt;
 			$pausum=0;
 			$azsum =0;

@@ -50,6 +50,10 @@ Admins can:
 
 == Changelog ==
 
+= 9.1.2.1.44 = 05.10.2022
+Admin backend activity list with work time, pause time and total times
+worktime marked red when over 10 hrs/day
+
 = 9.1.2.1.33 = 03.10.2022
 * over 10 hrs work red warning
 * admin filter activity frontend by users and a month

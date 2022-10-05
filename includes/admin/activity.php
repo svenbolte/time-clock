@@ -290,8 +290,26 @@ function etimeclockwp_callback_status($post) {
 		if (function_exists('ago')) { echo ' '. ago(get_post_timestamp($post->ID)); }
 		echo "</td></tr>";
 		
-		echo "</tr><tr><td><br />";
+		$workpause = etimeclockwp_calculate_workpausetotal($post->ID);
+
+		echo '</tr><tr><td style="color:#fff;background-color:'.etimeclockwp_get_option('clock-in-button-color').'"><br />';
 		echo __('Total Time Worked','etimeclockwp');
+		echo ":";
+		if ($workpause[2] >=36000) $overtime='color:#fff;background-color:tomato'; else $overtime='';
+		echo '</td><td style="'.$overtime.'"align="right"><br />';
+		echo $workpause[5];
+		echo "</td></tr>";
+
+		echo '</tr><tr><td style="color:#fff;background-color:'.etimeclockwp_get_option('leave-on-break-button-color').'"><br />';
+		echo __('total time breaks','etimeclockwp');
+		echo ":";
+		echo "</td><td align='right'><br />";
+		echo $workpause[6];
+		echo "</td></tr>";
+
+
+		echo "</tr><tr><td><br />";
+		echo __('total time with breaks','etimeclockwp');
 		echo ":";
 		echo "</td><td align='right'><br />";
 		echo etimeclockwp_get_time_worked($post);
@@ -324,6 +342,16 @@ function etimeclockwp_manage_activity_columns( $column, $post_id ) {
 		break;
 		
 		case 'time_worked' :
+			$workpause = etimeclockwp_calculate_workpausetotal($post_id);
+			if ($workpause[2] >=36000) $overtime='color:#fff;background-color:tomato'; else $overtime='';
+			echo '<span style="'.$overtime.'">'.$workpause[5].'</span>';
+		break;
+
+		case 'time_paused' :
+			echo etimeclockwp_calculate_workpausetotal($post_id)[6];
+		break;
+
+		case 'time_with_pause' :
 			echo etimeclockwp_get_time_worked($post);
 		break;
 		
@@ -343,7 +371,9 @@ function etimeclockwp_clock_columns($columns) {
 		'name' => 			__( 'User Name','etimeclockwp'),
 		'postID' => 		__( 'Record #','etimeclockwp'),
 		'date_work' => 		__( 'Work Date','etimeclockwp'),
-		'time_worked' => 	__( 'Time Worked','etimeclockwp'),
+		'time_worked' => 	__( 'Total Time Worked','etimeclockwp'),
+		'time_paused' => 	__( 'total time breaks','etimeclockwp'),
+		'time_with_pause' => 	__( 'total time with breaks','etimeclockwp'),
 	);
 
 	return $columns;

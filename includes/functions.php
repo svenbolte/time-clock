@@ -168,8 +168,51 @@ function etimeclock_get_notices($post_id) {
 	return $notices;
 }
 
+// calculate arbeitszeit, pause und total and return in an array
+function etimeclockwp_calculate_workpausetotal($post_id) {
+	$oldtimestampdb = '';
+	$metavalue = get_post_meta($post_id);
+	$wp_date_format = etimeclockwp_get_option('date-format');
+	$wp_time_format = etimeclockwp_get_option('time-format');
+	$wp_date_format_timestamp = 'Y-m-d';
+	$wp_time_format_timestamp = 'H:i:s';
+	$timestamp_now = 	date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp);
+	$date_now = 		date_i18n($wp_date_format);
+	$time_now = 		date_i18n($wp_time_format);
+	$pausum=0;
+	$azsum =0;
+	foreach($metavalue as $key => $val) {
+		if (substr($key, 0, 5) === "etime") {
+			$key = explode('_', $key);
+			$key = $key[0];
+			$timestamp_array = explode('|', $val[0]);			
+			$timestampdb = $timestamp_array[0];
+			if ($key == 'etimeclockwp-in') { $working_status = '1';	}
+			if ($key == 'etimeclockwp-out') { $working_status = '0'; }
+			if ($key == 'etimeclockwp-breakon') { $working_status = '0'; }
+			if ($key == 'etimeclockwp-breakoff') { $working_status = '3'; }
+			if (!empty($oldtimestampdb)) {
+				$diffsecs = round($timestampdb - $oldtimestampdb);
+				if ( $working_status == 3 ) $pausum +=$diffsecs; else $azsum +=$diffsecs;
+			}	
+			$oldtimestampdb = $timestampdb;
+		}
+	}
+	$modified_values = array(
+		get_the_date(etimeclockwp_get_option('date-format'),$post_id),
+		get_the_date('F Y',$post_id),
+		$azsum,
+		$pausum,
+		($azsum + $pausum),
+		sprintf('%02d:%02d:%02d', ($azsum / 3600),($azsum / 60 % 60), $azsum % 60),
+		sprintf('%02d:%02d:%02d', ($pausum / 3600),($pausum / 60 % 60), $pausum % 60),
+		sprintf('%02d:%02d:%02d', (($azsum + $pausum) / 3600),(($azsum + $pausum) / 60 % 60), ($azsum + $pausum) % 60),
+	);
+	return $modified_values;
+}
 
-// caculate total time given post id
+
+// calculate total time given post id
 function etimeclockwp_caculate_total_time($post_id) {
 
 	// do a full recaculation based on entry order and don't worry about the existing total time value
