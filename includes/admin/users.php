@@ -37,6 +37,7 @@ function etimeclockwp_callback_general($post) {
 		echo "</tr><tr>";
 		
 		$etimeclockwp_pwd = sanitize_text_field(get_post_meta($post->ID,'etimeclockwp_pwd', true));
+		if (empty($etimeclockwp_pwd)) $etimeclockwp_pwd = rand(1023,9876);
 		echo "<td class='etimeclockwp_cell_width_product'>"; echo __('Password','etimeclockwp'); echo ": </td><td><input size='40' type='text' name='etimeclockwp_pwd' value='$etimeclockwp_pwd'> ("; echo __( 'Required', 'etimeclockwp' ); echo ")</td>";
 		
 		echo '</tr></table>';
