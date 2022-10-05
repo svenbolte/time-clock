@@ -1,6 +1,6 @@
 ## Time Clock MOD
 
-![Stempeluhr](https://github.com/svenbolte/time-clock/assets/screenshot-1.jpg)
+![Stempeluhr](https://github.com/svenbolte/time-clock/tree/main/assets/screenshot-1.jpg)
 
 ### A WordPress Employee & Volunteer Time Clock Plugin MOD German
 
