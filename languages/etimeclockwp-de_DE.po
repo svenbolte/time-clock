@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Time Clock\n"
 "POT-Creation-Date: 2022-09-25 12:29+0000\n"
-"PO-Revision-Date: 2022-10-05 09:52+0000\n"
+"PO-Revision-Date: 2022-10-06 11:22+0000\n"
 "Last-Translator: Keller Admin\n"
 "Language-Team: Deutsch\n"
 "Language: de_DE\n"
@@ -66,7 +66,7 @@ msgstr "Version"
 msgid "Activate License"
 msgstr "Lizenz aktivieren"
 
-#: includes/shortcodes.php:108
+#: includes/shortcodes.php:109
 msgid "activities"
 msgstr "Aktivitäten"
 
@@ -83,7 +83,7 @@ msgstr "Neue Aktivität zufügen"
 msgid "Add New User"
 msgstr "Mitarbeitende zufügen"
 
-#: includes/functions.php:164
+#: includes/functions.php:243
 msgid "Admin Review"
 msgstr "Admin Ansicht"
 
@@ -95,7 +95,7 @@ msgstr "Buchungen anzeigen"
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: includes/shortcodes.php:123 includes/admin/activity.php:467
+#: includes/shortcodes.php:124 includes/admin/activity.php:467
 msgid "All users"
 msgstr "Alle Benutzer"
 
@@ -103,7 +103,7 @@ msgstr "Alle Benutzer"
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr "Ein Mitarbeiter- und Freiwilligen-Stempeluhr-Plugin für WordPress"
 
-#: includes/shortcodes.php:172
+#: includes/shortcodes.php:174
 msgid "break"
 msgstr "Pause"
 
@@ -143,7 +143,7 @@ msgstr "Ausstempeln Farbe"
 msgid "Confirm"
 msgstr "Bestätigen"
 
-#: includes/admin/users.php:169
+#: includes/admin/users.php:175
 msgid "created"
 msgstr "Erstelldatum"
 
@@ -219,7 +219,7 @@ msgstr "Personal PIN"
 msgid "Error - Nonce validation failed."
 msgstr "Fehler - Nonce Validierung fehlgeschlagen"
 
-#: includes/shortcodes.php:108 includes/shortcodes.php:109
+#: includes/shortcodes.php:109 includes/shortcodes.php:110
 msgid "export"
 msgstr "Export"
 
@@ -254,6 +254,10 @@ msgstr "Falsches Kennwort"
 #: includes/settings/settings_api.php:583
 msgid "Key"
 msgstr "Aktion"
+
+#: includes/shortcodes.php:150 includes/admin/users.php:176
+msgid "last booking"
+msgstr "Neuste Buchung"
 
 #: includes/settings/settings_api.php:94 includes/settings/settings_api.php:97
 msgid "Leave On Break"
@@ -299,7 +303,7 @@ msgstr "keine Aktivitäten gefunden"
 msgid "No Users Found"
 msgstr "keine Mitarbeitenden gefunden"
 
-#: includes/admin/users.php:40
+#: includes/admin/users.php:41
 msgid "Password"
 msgstr "Kennwort"
 
@@ -308,7 +312,7 @@ msgid "Plugin Data"
 msgstr "Plugin Daten"
 
 #: includes/admin/activity.php:271 includes/admin/activity.php:372
-#: includes/admin/users.php:168
+#: includes/admin/users.php:174
 msgid "Record #"
 msgstr "Datensatz Nr."
 
@@ -316,7 +320,7 @@ msgstr "Datensatz Nr."
 msgid "Remove all plugin data on uninstall"
 msgstr "Beim Deinstallieren alle Daten entfernen!"
 
-#: includes/admin/users.php:40
+#: includes/admin/users.php:41
 msgid "Required"
 msgstr "erforderlich"
 
@@ -336,7 +340,7 @@ msgid "Return From Break - Button Color"
 msgstr "Pause beenden Farbe"
 
 #: includes/admin/activity.php:61 includes/admin/users.php:9
-#: includes/admin/users.php:61
+#: includes/admin/users.php:62
 msgid "Save"
 msgstr "Speichern"
 
@@ -372,7 +376,7 @@ msgstr "Erfolg!"
 msgid "Time Clock"
 msgstr "Time Clock"
 
-#: includes/shortcodes.php:107
+#: includes/shortcodes.php:108
 msgid "time clock"
 msgstr "Stempeluhr"
 
@@ -396,7 +400,7 @@ msgstr "Gesamt Arbeitszeit mit Pausen"
 msgid "Total Time Worked"
 msgstr "Gesamt Arbeitszeit"
 
-#: includes/shortcodes.php:172
+#: includes/shortcodes.php:174
 msgid "totaltime"
 msgstr "BrtZeit"
 
@@ -404,7 +408,7 @@ msgstr "BrtZeit"
 msgid "User"
 msgstr "Mitarbeitender"
 
-#: includes/admin/users.php:35 includes/admin/users.php:167
+#: includes/admin/users.php:35 includes/admin/users.php:173
 msgid "User ID"
 msgstr "Personal-ID"
 
@@ -412,7 +416,7 @@ msgstr "Personal-ID"
 msgid "User Information"
 msgstr "Benutzerinformation"
 
-#: includes/admin/activity.php:371 includes/admin/users.php:166
+#: includes/admin/activity.php:371 includes/admin/users.php:172
 msgid "User Name"
 msgstr "Mitarbeitenden-Name"
 
@@ -424,8 +428,8 @@ msgstr "Mitarbeitende"
 msgid "Users"
 msgstr "Mitarbeitende"
 
-#: includes/shortcodes.php:108 includes/shortcodes.php:109
-#: includes/shortcodes.php:109
+#: includes/shortcodes.php:109 includes/shortcodes.php:110
+#: includes/shortcodes.php:110
 msgid "users"
 msgstr "Benutzer"
 

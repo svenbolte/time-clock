@@ -8,8 +8,8 @@ Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung
 Requires at least: 5.0
 Tested up to: 6.0.2
 Requires PHP: 5.7
-Stable tag: 9.1.2.1.40
-Version: 9.1.2.1.40
+Stable tag: 9.1.2.1.45
+Version: 9.1.2.1.45
 
 An MOD with german translations and more functions of the cool employee / volunteer time clock for WordPress
 

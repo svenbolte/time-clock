@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // This page is for general functions
 
-// Zeitdifferenz ermitteln und gestern/vorgestern/morgen schreiben
+// Zeitdifferenz ermitteln und gestern/vorgestern/morgen schreiben: chartscodes, dedo, foldergallery, timeclock, w4-post-list
 if( !function_exists('ago')) {
 	function ago($timestamp) {
 		if (empty($timestamp)) return;
@@ -22,14 +22,14 @@ if( !function_exists('ago')) {
 				$postpo = __('ago', 'penguin');
 			}
 		}
-		$her = intval($now) - intval($timestamp);
-		if ($her > 86400 and $her < 172800) {
+		$her = date( 'd.m.Y', intval($timestamp) );
+		if ($her == date('d.m.Y',$now - (24 * 3600))) {
 			$hdate = __('yesterday', 'penguin');
-		} else if ($her > 172800 and $her < 259200) {
+		} else if ($her == date('d.m.Y',$now - (48 * 3600))) {
 			$hdate = __('1 day before yesterday', 'penguin');
-		} else if ($her < - 86400 and $her > - 172800) {
+		} else if ($her == date('d.m.Y',$now + (24 * 3600))) {
 			$hdate = __('tomorrow', 'penguin');
-		} else if ($her < - 172800 and $her > - 259200) {
+		} else if ($her == date('d.m.Y',$now + (48 * 3600))) {
 			$hdate = __('1 day after tomorrow', 'penguin');
 		} else {
 			$hdate = ' ' . $prepo . ' ' . human_time_diff(intval($timestamp), $now) . ' ' . $postpo;
@@ -37,6 +37,7 @@ if( !function_exists('ago')) {
 		return $hdate;
 	}
 }	
+
 
 // Differenz zwischen 2 Beiträgen (kurz)
 if( !function_exists('german_time_diff')) {
@@ -139,6 +140,84 @@ function etimeclockwp_convert_time($seconds) {
 	$t = round((int) $seconds);
 	return sprintf('%02d:%02d:%02d', ($t/3600),($t/60%60), $t%60);
 }
+
+
+// get users last booking
+function user_last_booking($userfilter, $csvformat = NULL) {		
+	$result='';
+	$datefilter='';
+	$activity = get_posts(
+		array(
+		'posts_per_page'	=> -1,
+		'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit'),
+		'post_type'			=> 'etimeclockwp_clock',
+		'title' => $userfilter,
+		'date_query' => $datefilter,
+		'orderby'          => 'date',
+		'order'            => 'DESC',
+		)
+	);
+	$latesttimestampdb = 0;
+	foreach($activity as $post) {
+		$metavalue = get_post_meta($post->ID);
+		// get newest timestamp
+		foreach($metavalue as $key => $val) {
+			if (substr($key, 0, 5) === "etime") {
+				$timestamp_array = explode('|', $val[0]);			
+				$timestampdb = $timestamp_array[0];
+				if ($timestampdb >= $latesttimestampdb ) $latesttimestampdb = $timestampdb;
+			}
+		}	
+		//display newest timestamp
+		foreach($metavalue as $key => $val) {
+			if (substr($key, 0, 5) === "etime") {
+				$key = explode('_', $key);
+				$key = $key[0];
+				$timestamp_array = explode('|', $val[0]);			
+				$timestampdb = $timestamp_array[0];
+				if ($timestampdb == $latesttimestampdb) {
+					if ($key == 'etimeclockwp-in') {
+						$key = etimeclockwp_get_option('clock-in');
+						$keycolor = etimeclockwp_get_option('clock-in-button-color');
+						$working_status = '1';
+					}
+					if ($key == 'etimeclockwp-out') {
+						$key = etimeclockwp_get_option('clock-out');
+						$keycolor = etimeclockwp_get_option('clock-out-button-color');
+						$working_status = '0';
+					}
+					if ($key == 'etimeclockwp-breakon') {
+						$key = etimeclockwp_get_option('leave-on-break');
+						$keycolor = etimeclockwp_get_option('leave-on-break-button-color');
+						$working_status = '0';
+					}
+					if ($key == 'etimeclockwp-breakoff') {
+						$key = etimeclockwp_get_option('return-from-break');
+						$keycolor = etimeclockwp_get_option('return-from-break-button-color');
+						$working_status = '3';
+					}
+					if (isset($timestamp_array[1])) {
+						if (!isset($csvformat)) $result .= '<span style="color:white;text-transform:uppercase;background-color:'.$keycolor.'">';
+						if (empty($userfilter)) {
+							$users = get_posts(array( 'posts_per_page' => -1, 'post_type' => 'etimeclockwp_users', 'post__in' => array($post->post_title) ) );
+							foreach($users as $user) { $usersname = $user->post_title; }
+							$result .= $post->post_title.' | '.$usersname.' | ';
+						}	
+						$result .= $working_status.' | '.$key;
+						$result .= ' | '.date_i18n('D j. F Y H:i:s',$timestampdb).' | '.ago(($timestampdb - date('Z')));
+						if (!isset($csvformat)) $result .= '</span><br>';
+					} else {
+						$result .= '<span>';
+						$result .= $key;
+						$result .= ' '.$timestampdb.'</span>';
+					}
+				}
+			}
+		}
+	}
+	return $result;
+}
+
 
 
 // get total time worked
@@ -263,24 +342,15 @@ function etimeclockwp_caculate_total_time($post_id) {
 	
 	// reorder array values
 	$total_time_array = array_values($total_time_array);
-	
 	$total_time = 0;
-	
 	foreach ($total_time_array as $key => $value) {
-		
 		$val = explode('|', $value);
-		
 		if ($val[1] == 0) {
-			
 			$previous = $total_time_array[$key-1];
 			$previous = explode('|', $previous);
-			
 			$total_time_previous = $total_time;
-			
 			$total_time += $val[0] - $previous[0];
-			
 		}
-		
 	}
 	
 	// error in date - clock out is probably newer then clock in, so we should mark this as 00:00:00 with a review flag
@@ -291,7 +361,6 @@ function etimeclockwp_caculate_total_time($post_id) {
 		// remove notices flag if it exists
 		delete_post_meta($post_id,'notices');
 	}
-	
 	update_post_meta($post_id, 'total', $total_time);
 }
 

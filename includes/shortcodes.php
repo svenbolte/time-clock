@@ -102,8 +102,9 @@ function etimeclockwp_button_shortcode($atts) {
 		$result .= "</div>";
 		$result .= "</div>";
 	} else if ($showmode == 1 && ( current_user_can('administrator') || !empty($validuser = etimevaliduser()) ) ) {
-		// Activity-Anzeige letzte Buchungen 
-		$result .= '<div style="float:right"><i class="fa fa-user"></i> <b>'.strtoupper($validuser).'</b> &nbsp; ';
+
+		// ---------------------------- Activity-Anzeige letzte Buchungen -------------------------------------
+		$result .= '<div style="text-align:right"><i class="fa fa-user"></i> <b>'.strtoupper($validuser).'</b> &nbsp; ';
 		$result .= '<span class="btn"><a href="'.home_url($wp->request).'?show=0" class="submit"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a></span> &nbsp; ';
 		$result .= '<span class="btn"><a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=2" class="submit btnbutton"><i class="fa fa-download"></i> '.__('activities','etimeclockwp').'</a></span> &nbsp; ';
 		if ( current_user_can('administrator') ) $result .= '<span class="btn"><a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=3" class="submit btnbutton"><i class="fa fa-download"></i> '.__('users','etimeclockwp').'</a></span>';
@@ -146,6 +147,7 @@ function etimeclockwp_button_shortcode($atts) {
 		} 		
 		$result .= '</div>';
 		if ($validuser !=='admin') $userfilter=$validuser; else $userfilter=$current;
+		$result .= '<strong>'.__('last booking','etimeclockwp').':</strong><br>'. user_last_booking($userfilter);
 		$activity = get_posts(
 			array(
 			'posts_per_page'	=> -1,
@@ -179,26 +181,17 @@ function etimeclockwp_button_shortcode($atts) {
 			$timestamp_now = 	date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp);
 			$date_now = 		date_i18n($wp_date_format);
 			$time_now = 		date_i18n($wp_time_format);
-			// url nonnces
-			$nonce_edit = 	wp_create_nonce('etimeclockwp_edit');
-			$nonce_delete = wp_create_nonce('etimeclockwp_delete');
-			$nonce_add = 	wp_create_nonce('etimeclockwp_add');
-			$post_excerpt = $post->post_excerpt;
 			$pausum=0;
 			$azsum =0;
-			
 			foreach($metavalue as $key => $val) {
 				if (substr($key, 0, 5) === "etime") {
-					$key_pure = $key;
 					$key = explode('_', $key);
 					$key = $key[0];
-					$key_action = $key;
 					$timestamp_array = explode('|', $val[0]);			
 					$timestampdb = $timestamp_array[0];
 					if ($key == 'etimeclockwp-in') {
 						$key = etimeclockwp_get_option('clock-in');
 						$keycolor = etimeclockwp_get_option('clock-in-button-color');
-						$day = $timestampdb;
 						$working_status = '1';
 					}
 					if ($key == 'etimeclockwp-out') {
@@ -241,7 +234,7 @@ function etimeclockwp_button_shortcode($atts) {
 						$order = $timestamp_array[1];
 						$result .= "<tr><td class='etimeclockwp_cell_title_width' style='color:white;text-transform:uppercase;background-color: ".$keycolor."'>";
 						$result .= $working_status.' '.$key;
-						$result .= "</td><td>".date_i18n('D',$timestampdb).' '.$datetime.'</td><td>'.ago($timestampdb-date('Z')).'</td><td style="text-align:center">';
+						$result .= "</td><td>".date_i18n('D',$timestampdb).' '.$datetime.'</td><td>'.ago( $timestampdb - date('Z') ).'</td><td style="text-align:center">';
 						if ( $working_status == 3 ) $result .= '</td><td style="text-align:center">'.$diffhhmm.'</td><td>'; else $result .= $diffhhmm.'</td><td></td><td>';
 						$result .= $difftime."</td></tr>";
 					} else {
@@ -265,7 +258,8 @@ function etimeclockwp_button_shortcode($atts) {
 		$result .= '<th>'.sprintf('%02d:%02d:%02d', ($totbrutto / 3600),($totbrutto / 60 % 60), $totbrutto % 60).'</th>';
 		$result .= '</thead></table>';
 	} else if ($showmode == 2 && ( current_user_can('administrator') || !empty($validuser = etimevaliduser()) ) ) {
-		// CSV Export activities ---------------------
+
+		// -------------------------------------------CSV Export activities ---------------------
 		$filename = 'export-timeclock-activities-'.$validuser;
 		$date = date("Y-m-d H:i:s");
 		$output = fopen('php://output', 'w');
@@ -302,22 +296,18 @@ function etimeclockwp_button_shortcode($atts) {
 			$timestamp_now = 	date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp);
 			$date_now = 		date_i18n($wp_date_format);
 			$time_now = 		date_i18n($wp_time_format);
-			$post_excerpt = $post->post_excerpt;
 			$pausum=0;
 			$azsum =0;
 
 			foreach($metavalue as $key => $val) {
 				if (substr($key, 0, 5) === "etime") {
-					$key_pure = $key;
 					$key = explode('_', $key);
 					$key = $key[0];
-					$key_action = $key;
 					$timestamp_array = explode('|', $val[0]);			
 					$timestampdb = $timestamp_array[0];
 					if ($key == 'etimeclockwp-in') {
 						$key = etimeclockwp_get_option('clock-in');
 						$keycolor = etimeclockwp_get_option('clock-in-button-color');
-						$day = $timestampdb;
 						$working_status = '1';
 					}
 					if ($key == 'etimeclockwp-out') {
@@ -383,7 +373,8 @@ function etimeclockwp_button_shortcode($atts) {
 		exit;
 
 	} else if ($showmode == 3 && current_user_can('administrator') ) {
-		// Export user table
+
+		// -------------------------------------------CSV Export users for admin ---------------------
 		$users = get_posts(array( 'posts_per_page' => -1, 'post_type' => 'etimeclockwp_users', ) );
 		$filename = 'export-timeclock-users';
 		$date = date("Y-m-d H:i:s");
@@ -396,7 +387,7 @@ function etimeclockwp_button_shortcode($atts) {
 		header('Content-Type: text/csv; charset=utf-8');
 		header("Content-Disposition: attachment; filename=\"" . $filename . " " . $date . ".csv\";" );
 		header("Content-Transfer-Encoding: binary");	
-		fputcsv( $output, array('Username', 'UserID', 'Kennwort', 'RecordNo', 'created'), ';');
+		fputcsv( $output, array('Username', 'UserID', 'Kennwort', 'RecordNo', 'created', 'lastBooking'), ';');
 		foreach($users as $user) {
 			$modified_values = array(
 				$user->post_title,
@@ -404,6 +395,7 @@ function etimeclockwp_button_shortcode($atts) {
 				sanitize_text_field(get_post_meta($user->ID,'etimeclockwp_pwd', true)),
 				$user->ID,
 				$user->post_date,
+				user_last_booking($user->ID, true),
 			);
 		   fputcsv( $output, $modified_values, ';' );
 		}

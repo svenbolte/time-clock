@@ -151,6 +151,11 @@ function etimeclockwp_manage_button_columns( $column, $post_id ) {
 			$etimeclockwp_postid = $post_id;
 			echo $etimeclockwp_postid;
 		break;
+
+		case 'laststatus' :
+			$etimeclockwp_postid = $post_id;
+			echo user_last_booking($post_id);
+		break;
 		
 		default :
 			break;
@@ -168,6 +173,7 @@ function etimeclockwp_users_columns($columns) {
 		'user_id' => 		__( 'User ID','etimeclockwp'),
 		'postID' => 		__( 'Record #','etimeclockwp'),
 		'post_date' => 		__( 'created','etimeclockwp'),
+		'laststatus' => 		__( 'last booking','etimeclockwp'),
 	);
 	return $columns;
 }

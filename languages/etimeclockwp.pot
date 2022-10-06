@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-10-05 09:50+0000\n"
+"POT-Creation-Date: 2022-10-06 11:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "Activate License"
 msgstr ""
 
-#: includes/shortcodes.php:108
+#: includes/shortcodes.php:109
 msgid "activities"
 msgstr ""
 
@@ -66,7 +66,7 @@ msgstr ""
 msgid "Add New User"
 msgstr ""
 
-#: includes/functions.php:164
+#: includes/functions.php:243
 msgid "Admin Review"
 msgstr ""
 
@@ -78,7 +78,7 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: includes/shortcodes.php:123 includes/admin/activity.php:467
+#: includes/shortcodes.php:124 includes/admin/activity.php:467
 msgid "All users"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr ""
 
-#: includes/shortcodes.php:172
+#: includes/shortcodes.php:174
 msgid "break"
 msgstr ""
 
@@ -126,7 +126,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: includes/admin/users.php:169
+#: includes/admin/users.php:175
 msgid "created"
 msgstr ""
 
@@ -202,7 +202,7 @@ msgstr ""
 msgid "Error - Nonce validation failed."
 msgstr ""
 
-#: includes/shortcodes.php:108 includes/shortcodes.php:109
+#: includes/shortcodes.php:109 includes/shortcodes.php:110
 msgid "export"
 msgstr ""
 
@@ -236,6 +236,10 @@ msgstr ""
 
 #: includes/settings/settings_api.php:583
 msgid "Key"
+msgstr ""
+
+#: includes/shortcodes.php:150 includes/admin/users.php:176
+msgid "last booking"
 msgstr ""
 
 #: includes/settings/settings_api.php:94 includes/settings/settings_api.php:97
@@ -282,7 +286,7 @@ msgstr ""
 msgid "No Users Found"
 msgstr ""
 
-#: includes/admin/users.php:40
+#: includes/admin/users.php:41
 msgid "Password"
 msgstr ""
 
@@ -291,7 +295,7 @@ msgid "Plugin Data"
 msgstr ""
 
 #: includes/admin/activity.php:271 includes/admin/activity.php:372
-#: includes/admin/users.php:168
+#: includes/admin/users.php:174
 msgid "Record #"
 msgstr ""
 
@@ -299,7 +303,7 @@ msgstr ""
 msgid "Remove all plugin data on uninstall"
 msgstr ""
 
-#: includes/admin/users.php:40
+#: includes/admin/users.php:41
 msgid "Required"
 msgstr ""
 
@@ -317,7 +321,7 @@ msgid "Return From Break - Button Color"
 msgstr ""
 
 #: includes/admin/activity.php:61 includes/admin/users.php:9
-#: includes/admin/users.php:61
+#: includes/admin/users.php:62
 msgid "Save"
 msgstr ""
 
@@ -353,7 +357,7 @@ msgstr ""
 msgid "Time Clock"
 msgstr ""
 
-#: includes/shortcodes.php:107
+#: includes/shortcodes.php:108
 msgid "time clock"
 msgstr ""
 
@@ -377,7 +381,7 @@ msgstr ""
 msgid "Total Time Worked"
 msgstr ""
 
-#: includes/shortcodes.php:172
+#: includes/shortcodes.php:174
 msgid "totaltime"
 msgstr ""
 
@@ -385,7 +389,7 @@ msgstr ""
 msgid "User"
 msgstr ""
 
-#: includes/admin/users.php:35 includes/admin/users.php:167
+#: includes/admin/users.php:35 includes/admin/users.php:173
 msgid "User ID"
 msgstr ""
 
@@ -393,7 +397,7 @@ msgstr ""
 msgid "User Information"
 msgstr ""
 
-#: includes/admin/activity.php:371 includes/admin/users.php:166
+#: includes/admin/activity.php:371 includes/admin/users.php:172
 msgid "User Name"
 msgstr ""
 
@@ -405,8 +409,8 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: includes/shortcodes.php:108 includes/shortcodes.php:109
-#: includes/shortcodes.php:109
+#: includes/shortcodes.php:109 includes/shortcodes.php:110
+#: includes/shortcodes.php:110
 msgid "users"
 msgstr ""
 

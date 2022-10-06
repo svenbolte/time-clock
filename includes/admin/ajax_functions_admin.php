@@ -18,35 +18,13 @@ function etimeclockwp_load_function_callback() {
 add_action( 'wp_ajax_etimeclockwp_load_function', 'etimeclockwp_load_function_callback' );
 add_action( 'wp_ajax_nopriv_etimeclockwp_load_function', 'etimeclockwp_load_function_callback' );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // activty page - process delete
 function etimeclockwp_date_delete_callback() {
 
 	$postid =		sanitize_text_field($_POST['postid']);
 	$datepure =		sanitize_text_field($_POST['datepure']);
 	$nonce =		sanitize_text_field($_POST['nonce']);
-	
-	
+
 	if (!wp_verify_nonce($nonce, 'etimeclockwp_delete')) {
 		wp_die('Security check fail');
 	}
