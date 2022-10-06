@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-10-06 11:22+0000\n"
+"POT-Creation-Date: 2022-10-06 15:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "Activate License"
 msgstr ""
 
-#: includes/shortcodes.php:109
+#: includes/shortcodes.php:112
 msgid "activities"
 msgstr ""
 
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Admin Review"
 msgstr ""
 
-#: includes/shortcodes.php:72
+#: includes/shortcodes.php:72 includes/shortcodes.php:410
 msgid "admin show bookings"
 msgstr ""
 
@@ -78,7 +78,7 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: includes/shortcodes.php:124 includes/admin/activity.php:467
+#: includes/shortcodes.php:127 includes/admin/activity.php:467
 msgid "All users"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr ""
 
-#: includes/shortcodes.php:174
+#: includes/shortcodes.php:177
 msgid "break"
 msgstr ""
 
@@ -198,11 +198,15 @@ msgstr ""
 msgid "Employee Password"
 msgstr ""
 
+#: includes/shortcodes.php:73 includes/shortcodes.php:412
+msgid "employee status"
+msgstr ""
+
 #: includes/actions.php:37
 msgid "Error - Nonce validation failed."
 msgstr ""
 
-#: includes/shortcodes.php:109 includes/shortcodes.php:110
+#: includes/shortcodes.php:112 includes/shortcodes.php:113
 msgid "export"
 msgstr ""
 
@@ -238,7 +242,8 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: includes/shortcodes.php:150 includes/admin/users.php:176
+#: includes/shortcodes.php:153 includes/shortcodes.php:415
+#: includes/admin/users.php:176
 msgid "last booking"
 msgstr ""
 
@@ -284,6 +289,10 @@ msgstr ""
 
 #: includes/admin/post_types.php:44
 msgid "No Users Found"
+msgstr ""
+
+#: includes/shortcodes.php:111
+msgid "Panel"
 msgstr ""
 
 #: includes/admin/users.php:41
@@ -357,7 +366,7 @@ msgstr ""
 msgid "Time Clock"
 msgstr ""
 
-#: includes/shortcodes.php:108
+#: includes/shortcodes.php:110 includes/shortcodes.php:409
 msgid "time clock"
 msgstr ""
 
@@ -381,7 +390,7 @@ msgstr ""
 msgid "Total Time Worked"
 msgstr ""
 
-#: includes/shortcodes.php:174
+#: includes/shortcodes.php:177
 msgid "totaltime"
 msgstr ""
 
@@ -409,8 +418,8 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: includes/shortcodes.php:109 includes/shortcodes.php:110
-#: includes/shortcodes.php:110
+#: includes/shortcodes.php:112 includes/shortcodes.php:113
+#: includes/shortcodes.php:113
 msgid "users"
 msgstr ""
 

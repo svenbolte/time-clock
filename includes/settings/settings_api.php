@@ -56,7 +56,7 @@ function etimeclockwp_settings() {
 					'title' 		=> __( 'Return From Break - Button Color', 'etimeclockwp' ),
 					'name' 			=> 'return-from-break-button-color',
 					'type' 			=> 'color',
-					'default'		=> '#ead410',
+					'default'		=> '#a9d300',
 					'help' 			=> '',
 				),
 			),

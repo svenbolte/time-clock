@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Time Clock\n"
 "POT-Creation-Date: 2022-09-25 12:29+0000\n"
-"PO-Revision-Date: 2022-10-06 11:22+0000\n"
+"PO-Revision-Date: 2022-10-06 15:12+0000\n"
 "Last-Translator: Keller Admin\n"
 "Language-Team: Deutsch (Sie)\n"
 "Language: de_DE_formal\n"
@@ -66,7 +66,7 @@ msgstr "Version"
 msgid "Activate License"
 msgstr "Lizenz aktivieren"
 
-#: includes/shortcodes.php:109
+#: includes/shortcodes.php:112
 msgid "activities"
 msgstr "Aktivitäten"
 
@@ -87,7 +87,7 @@ msgstr "Mitarbeitende zufügen"
 msgid "Admin Review"
 msgstr "Admin Ansicht"
 
-#: includes/shortcodes.php:72
+#: includes/shortcodes.php:72 includes/shortcodes.php:410
 msgid "admin show bookings"
 msgstr "Buchungen anzeigen"
 
@@ -95,7 +95,7 @@ msgstr "Buchungen anzeigen"
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: includes/shortcodes.php:124 includes/admin/activity.php:467
+#: includes/shortcodes.php:127 includes/admin/activity.php:467
 msgid "All users"
 msgstr "Alle Benutzer"
 
@@ -103,7 +103,7 @@ msgstr "Alle Benutzer"
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr "Ein Mitarbeiter- und Freiwilligen-Stempeluhr-Plugin für WordPress"
 
-#: includes/shortcodes.php:174
+#: includes/shortcodes.php:177
 msgid "break"
 msgstr "Pause"
 
@@ -215,11 +215,15 @@ msgstr "Personalkürzel"
 msgid "Employee Password"
 msgstr "Personal PIN"
 
+#: includes/shortcodes.php:73 includes/shortcodes.php:412
+msgid "employee status"
+msgstr "Personal-Status"
+
 #: includes/actions.php:37
 msgid "Error - Nonce validation failed."
 msgstr "Fehler - Nonce Validierung fehlgeschlagen"
 
-#: includes/shortcodes.php:109 includes/shortcodes.php:110
+#: includes/shortcodes.php:112 includes/shortcodes.php:113
 msgid "export"
 msgstr "Export"
 
@@ -255,7 +259,8 @@ msgstr "Falsches Kennwort"
 msgid "Key"
 msgstr "Aktion"
 
-#: includes/shortcodes.php:150 includes/admin/users.php:176
+#: includes/shortcodes.php:153 includes/shortcodes.php:415
+#: includes/admin/users.php:176
 msgid "last booking"
 msgstr "Neuste Buchung"
 
@@ -302,6 +307,10 @@ msgstr "keine Aktivitäten gefunden"
 #: includes/admin/post_types.php:44
 msgid "No Users Found"
 msgstr "keine Mitarbeitenden gefunden"
+
+#: includes/shortcodes.php:111
+msgid "Panel"
+msgstr "Panel"
 
 #: includes/admin/users.php:41
 msgid "Password"
@@ -376,7 +385,7 @@ msgstr "Erfolg!"
 msgid "Time Clock"
 msgstr "Time Clock"
 
-#: includes/shortcodes.php:108
+#: includes/shortcodes.php:110 includes/shortcodes.php:409
 msgid "time clock"
 msgstr "Stempeluhr"
 
@@ -400,7 +409,7 @@ msgstr "Gesamt Arbeitszeit mit Pausen"
 msgid "Total Time Worked"
 msgstr "Gesamt Arbeitszeit"
 
-#: includes/shortcodes.php:174
+#: includes/shortcodes.php:177
 msgid "totaltime"
 msgstr "BrtZeit"
 
@@ -428,8 +437,8 @@ msgstr "Mitarbeitende"
 msgid "Users"
 msgstr "Mitarbeitende"
 
-#: includes/shortcodes.php:109 includes/shortcodes.php:110
-#: includes/shortcodes.php:110
+#: includes/shortcodes.php:112 includes/shortcodes.php:113
+#: includes/shortcodes.php:113
 msgid "users"
 msgstr "Benutzer"
 

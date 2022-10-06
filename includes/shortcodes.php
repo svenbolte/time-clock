@@ -69,7 +69,9 @@ function etimeclockwp_button_shortcode($atts) {
 		$result = "<div class='etimeclock-main'>";
 		$result .= "<div class='etimeclock-body'>";
 		// show and export link
-		$result .= '<div class="etimeclock-button" style="background-color:#888;margin-bottom:1em"><a href="'.home_url($wp->request).'?show=1" class="submit btnbutton">'.__('admin show bookings','etimeclockwp').'</a></div>';
+		$result .= '<div class="buttongrid"><div class="etimeclock-button" style="background-color:#888;margin-bottom:1em"><a href="'.home_url($wp->request).'?show=1" class="submit btnbutton">'.__('admin show bookings','etimeclockwp').'</a></div>';
+		$result .= '<div class="etimeclock-button" style="background-color:#666;margin-bottom:1em"><a href="'.home_url($wp->request).'?show=4" class="submit btnbutton">'.__('employee status','etimeclockwp').'</a></div>';
+		$result .= '</div>';
 		// status line section
 		$result .= '<div id="etimeclock-status">Bereit</div>';
 		// time section
@@ -106,6 +108,7 @@ function etimeclockwp_button_shortcode($atts) {
 		// ---------------------------- Activity-Anzeige letzte Buchungen -------------------------------------
 		$result .= '<div style="text-align:right"><i class="fa fa-user"></i> <b>'.strtoupper($validuser).'</b> &nbsp; ';
 		$result .= '<span class="btn"><a href="'.home_url($wp->request).'?show=0" class="submit"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a></span> &nbsp; ';
+		if ( current_user_can('administrator') ) $result .= '<span class="btn"><a href="'.home_url($wp->request).'?show=4" class="submit"><i class="fa fa-heartbeat"></i> '.__('Panel','etimeclockwp').'</a></span> &nbsp; ';
 		$result .= '<span class="btn"><a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=2" class="submit btnbutton"><i class="fa fa-download"></i> '.__('activities','etimeclockwp').'</a></span> &nbsp; ';
 		if ( current_user_can('administrator') ) $result .= '<span class="btn"><a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=3" class="submit btnbutton"><i class="fa fa-download"></i> '.__('users','etimeclockwp').'</a></span>';
 		$current='';
@@ -298,7 +301,6 @@ function etimeclockwp_button_shortcode($atts) {
 			$time_now = 		date_i18n($wp_time_format);
 			$pausum=0;
 			$azsum =0;
-
 			foreach($metavalue as $key => $val) {
 				if (substr($key, 0, 5) === "etime") {
 					$key = explode('_', $key);
@@ -401,7 +403,23 @@ function etimeclockwp_button_shortcode($atts) {
 		}
 		exit;
 
-	} else { $result = '<div class="newlabel yellow" style="font-size:1em;width:100%;text-align:center">Kein Zugriff. Falscher Benutzername. Bitte korrekt anmelden</div>'; }  //////	Ende Showausgabe
+	} else if ($showmode == 4 && current_user_can('administrator') ) {
+
+		// -------------------------------------------CSV Export users for admin ---------------------
+		$result .= '<span class="btn"><a href="'.home_url($wp->request).'?show=0" class="submit"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a></span> &nbsp; ';
+		$result .= '<span class="btn"><a href="'.home_url($wp->request).'?show=1" class="submit"><i class="fa fa-list"></i> '.__('admin show bookings','etimeclockwp').'</a></span> &nbsp; ';
+		$users = get_posts(array( 'posts_per_page' => -1, 'post_type' => 'etimeclockwp_users', ) );
+		$result .= '<blockquote><h6 class="widget-title" style="margin: -8px -16px 10px -16px">'.__('employee status','etimeclockwp').'</h6>';
+		foreach($users as $user) {
+			$usersname = $user->post_title;
+			$result .= '<strong style="font-size:1.2em">'.__('last booking','etimeclockwp').': '.$usersname.'</strong><br>'. user_last_booking($user->ID);
+		}
+		$result .= '</blockquote>';
+
+	} else {
+		// kein Zugriff, Meldung anzeigen -------------------------------
+		$result = '<div class="newlabel yellow" style="font-size:1em;width:100%;text-align:center">Kein Zugriff. Falscher Benutzername. Bitte korrekt anmelden</div>';
+	} //////	Ende Showausgabe
 	return $result;
 }
 add_shortcode('timeclock', 'etimeclockwp_button_shortcode');
