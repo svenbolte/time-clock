@@ -98,4 +98,5 @@ if (is_admin()) {
 	include_once ('includes/admin/settings/settings_page.php');
 	include_once ('includes/admin/settings/settings_dashboard_items.php');
 	include_once ('includes/admin/ajax_functions_admin.php');
+	include_once ('includes/admin/uninstall.php');
 }
