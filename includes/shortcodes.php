@@ -70,7 +70,7 @@ function etimeclockwp_button_shortcode($atts) {
 		$result .= "<div class='etimeclock-body'>";
 		// show and export link
 		$result .= '<div class="buttongrid"><div class="etimeclock-button" style="background-color:#888;margin-bottom:1em"><a href="'.home_url($wp->request).'?show=1" class="submit btnbutton">'.__('admin show bookings','etimeclockwp').'</a></div>';
-		$result .= '<div class="etimeclock-button" style="background-color:#666;margin-bottom:1em"><a href="'.home_url($wp->request).'?show=4" class="submit btnbutton">'.__('employee status','etimeclockwp').'</a></div>';
+		if ( current_user_can('administrator') ) $result .= '<div class="etimeclock-button" style="background-color:#666;margin-bottom:1em"><a href="'.home_url($wp->request).'?show=4" class="submit btnbutton">'.__('employee status','etimeclockwp').'</a></div>';
 		$result .= '</div>';
 		// status line section
 		$result .= '<div id="etimeclock-status">Bereit</div>';
