@@ -2,10 +2,73 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+
+// Calendar display month - draws a calendar with the bookings
+if( !function_exists('timeclock_event_calendar')) {
+	function timeclock_event_calendar($month,$year,$eventarray){
+		setlocale (LC_ALL, 'de_DE.utf8', 'de_DE@euro', 'de_DE', 'de', 'ge'); 
+		$calheader = date('Y-m-d',mktime(2,0,0,$month,1,$year));
+		$running_day = date('w',mktime(2,0,0,$month,1,$year));
+		if ( $running_day == 0 ) { $running_day = 7; }
+		$daytoday = date('d',time());
+		$monthtoday = date('m',time());
+		$yeartoday = date('Y',time());
+		$days_in_month = date('t',mktime(2,0,0,$month,1,$year));
+		$days_in_this_week = 1;
+		$day_counter = 0;
+		$dates_array = array();
+		$calendar = '<style>.weekline{border-bottom:1px dotted #888;font-weight:700;text-align:center}</style>';
+		$calendar .= '<table style="border-bottom:1px dotted #888"><thead><th style="text-align:center" colspan=8>' . date_i18n('F Y', mktime(2,0,0,$month,1,$year) ) . '</th></thead>';
+		$headings = array('MO','DI','MI','DO','FR','SA','SO','Kw');
+		$calendar .= '<tr><td class="weekline">'.implode('</td><td class="weekline">',$headings).'</td></tr>';
+		$calendar .= '<tr style="padding:2px">';
+		for($x = 1; $x < $running_day; $x++) {
+			$calendar.= '<td style="text-align:center;padding:2px"></td>';
+			$days_in_this_week++;
+		}
+		for ($list_day = 1; $list_day <= $days_in_month; $list_day++) {
+			$calendar.= '<td style="padding:2px;text-align:center;vertical-align:top"">';
+			$running_week = date('W',mktime(2,0,0,$month,$list_day,$year));
+			$istoday = (int) $daytoday == (int) $list_day && (int) $monthtoday == (int) $month && (int) $yeartoday == (int) $year;
+			if ( $istoday ) $todaycolor='#ffd80088;border:1px dotted black'; else $todaycolor='transparent';
+			// QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY
+			$dailyevents = '';
+			$onlyfirst = 0;
+			foreach ($eventarray as $calevent => $fields) {
+				if ( substr($fields['verandatum'],0,10) == date('Y-m-d',mktime(0,0,0,$month,$list_day,$year)) ) {
+					$todaycolor = '#ffd80088;font-weight:700';
+					 $dailyevents .= '<span style="word-break:break-all;font-size:0.8em" title="'.esc_html($fields['veranstaltung']).'">' . $fields['veranstaltung'] . '</span><br>';
+					$onlyfirst += 1;
+				}
+			}	
+			if ( $onlyfirst > 0 ) $dailyevents .= ' <span class="newlabel white">'. $onlyfirst.'</span>';
+			$calendar.= '<div title="'.ago(mktime(2,0,0,$month,$list_day,$year)).'" style="width:100%;background-color:'.$todaycolor.'">'.$list_day.'<br><div style="font-weight:normal;line-height:1.1em">'.$dailyevents.'</div></div>';
+			// Database Query ende
+			$calendar.= '</td>';
+			if ($running_day == 7) {
+				$calendar.= '<td style="max-width:32px;width:30px;text-align:center"><span class="newlabel">'.$running_week.'</span></td></tr>';
+				if(($day_counter+1) != $days_in_month) { $calendar.= '<tr>'; }
+				$running_day = 0;
+				$days_in_this_week = 0;
+			}
+			$days_in_this_week++; $running_day++; $day_counter++;
+		}
+		if ($days_in_this_week < 8 && $days_in_this_week > 1) {
+			for ($x = 1; $x <= (8 - $days_in_this_week); $x++) {
+				$calendar.= '<td style="text-align:center;padding:2px"></td>';
+			}
+			$calendar.= '<td style="max-width:32px;width:30px;text-align:center"><span class="newlabel">'.$running_week.'</span></td></tr>';
+		}	
+		$calendar.= '</table>';
+		return $calendar;
+	}
+}
+
 function etimevaliduser() {
 	global $datefilter;
 	if ($_POST) {
 		$eid =		sanitize_text_field($_POST['eid']);
+		setcookie("etime_usercookie", $eid, time()+24000);
 		$epw =		sanitize_text_field($_POST['epw']);
 		// Auf User filtern
 		if (isset($_POST['month']) && !empty($_POST['month']) ) {
@@ -44,8 +107,9 @@ function etimevaliduser() {
 		// success - user id and password are correct
 	} else {
 		if (!current_user_can('administrator')) {
+			$usercookie = isset( $_COOKIE['etime_usercookie'] ) ? $_COOKIE['etime_usercookie'] : '';
 			echo '<div style="width:100%;text-align:center;display:block"><form method="post">';
-			echo '<div class="etimeclock-text">'.etimeclockwp_get_option("employee-id").':<br /><input type="text" id="eid" name="eid"></div>';
+			echo '<div class="etimeclock-text">'.etimeclockwp_get_option("employee-id").':<br /><input type="text" id="eid" name="eid" value="'.$usercookie.'"></div>';
 			echo '<div class="etimeclock-text">'.etimeclockwp_get_option('employee-password').':<br /><input type="password" id="epw" name="epw"></div>';
 			echo '<div class="etimeclock-text">'.__('time-filter','etimeclockwp').':<br /><input style="padding:4px 0" type="month" name="month"></div>';
 			echo '<input type="submit" value="Anmelden"></form></div>';
@@ -54,6 +118,18 @@ function etimevaliduser() {
 	if (!empty($user_id)) return $user_id; else return '';
 }
 
+
+function etime_menu($selectedmenu,$validuser) {
+	global $wp;
+		$mtext = '<li><a title="admin dashboard" href="'.site_url().'/wp-admin/edit.php?post_type=etimeclockwp_clock"><i class="fa fa-user"></i> '.strtoupper($validuser).'</a></li>'; 
+		$mtext .= '<li><a href="'.home_url($wp->request).'?show=0" class="submit"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a></li>';
+		if ( $selectedmenu !== 1 ) $mtext .= '<li><a title="'.__('admin show bookings','etimeclockwp').'" href="'.home_url($wp->request).'?show=1" class="submit"><i class="fa fa-list"></i></a></li>';
+		if ( $selectedmenu !== 4 && current_user_can('administrator') ) $mtext .= '<li><a title="'.__('Panel','etimeclockwp').'" href="'.home_url($wp->request).'?show=4" class="submit"><i class="fa fa-heartbeat"></i></a></li>';
+		if ( $selectedmenu !== 5 ) $mtext .= '<li><a title="'.__('view as calendar','etimeclockwp').'" href="'.home_url($wp->request).'?show=5" class="submit btnbutton"><i class="fa fa-calendar-o"></i></a></li>';
+		$mtext .= '<li><a title="'.__('export','etimeclockwp').' '.__('activities','etimeclockwp').'" href="'.home_url($wp->request).'?show=2" class="submit btnbutton"><i class="fa fa-download"></i>|<i class="fa fa-list"></i></a></li>';
+		if ( current_user_can('administrator') ) $mtext .= '<li><a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=3" class="submit btnbutton"><i class="fa fa-download"></i>|<i class="fa fa-users"></i></a></span>';
+	return $mtext;
+}
 
 function etimeclockwp_button_shortcode($atts) {
 	global $current_user,$wp,$datefilter;
@@ -82,9 +158,10 @@ function etimeclockwp_button_shortcode($atts) {
 		$result .= '<input id="manualtime" name="manualtime" type="time" style="padding:6px">';
 		$result .= "<br /><br>";
 		// login section
-		$result .= "<div class='etimeclock-text'>".etimeclockwp_get_option('employee-id').":<br /><input id='etimeclock-eid' class='etimeclock-button etimeclock-input' style='color:#000' type='text' autocomplete='on' autocomplete='true'></div>";
-		$result .= "<div class='etimeclock-text'>".etimeclockwp_get_option('employee-password').":<br /><input id='etimeclock-epw' class='etimeclock-button etimeclock-input' style='color:#000' type='password' autocomplete='on' autocomplete='true'></div>";
-		$result .= "<br /><br />";
+		$usercookie = isset( $_COOKIE['etime_usercookie'] ) ? $_COOKIE['etime_usercookie'] : '';
+		$result .= '<div class="etimeclock-text">'.etimeclockwp_get_option('employee-id').'<br><input id="etimeclock-eid" class="etimeclock-button etimeclock-input" style="color:#000" type="text" value="'.$usercookie.'" autocomplete="off" autocomplete="false"></div>';
+		$result .= "<div class='etimeclock-text'>".etimeclockwp_get_option('employee-password').":<br /><input id='etimeclock-epw' class='etimeclock-button etimeclock-input' style='color:#000' type='password' autocomplete='off' autocomplete='false'></div>";
+		$result .= "<br><br>";
 		$result .= "<input id='etimeclock-hash' type='hidden' value='false'>";
 		// button section
 		$result .= '<div class="buttongrid">';
@@ -106,11 +183,8 @@ function etimeclockwp_button_shortcode($atts) {
 	} else if ($showmode == 1 && ( current_user_can('administrator') || !empty($validuser = etimevaliduser()) ) ) {
 
 		// ---------------------------- Activity-Anzeige letzte Buchungen -------------------------------------
-		$result .= '<div style="text-align:right"><i class="fa fa-user"></i> <b>'.strtoupper($validuser).'</b> &nbsp; ';
-		$result .= '<span class="btn"><a href="'.home_url($wp->request).'?show=0" class="submit"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a></span> &nbsp; ';
-		if ( current_user_can('administrator') ) $result .= '<span class="btn"><a href="'.home_url($wp->request).'?show=4" class="submit"><i class="fa fa-heartbeat"></i> '.__('Panel','etimeclockwp').'</a></span> &nbsp; ';
-		$result .= '<span class="btn"><a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=2" class="submit btnbutton"><i class="fa fa-download"></i> '.__('activities','etimeclockwp').'</a></span> &nbsp; ';
-		if ( current_user_can('administrator') ) $result .= '<span class="btn"><a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=3" class="submit btnbutton"><i class="fa fa-download"></i> '.__('users','etimeclockwp').'</a></span>';
+		$result .= '<div style="text-align:right"><ul class="footer-menu">';
+		$result .= etime_menu(1,$validuser);
 		$current='';
 		if (current_user_can('administrator') ) {
 			$result .= ' &nbsp; <form class="noprint" style="display:inline" name="userfilter" method="post" action="'.home_url(add_query_arg(array('show'=>'1'), $wp->request)).'">';
@@ -148,7 +222,7 @@ function etimeclockwp_button_shortcode($atts) {
 			$datefilter = array( array( 'year' => $filtyr, 'month' => $filtmon, ), );
 			$result .= '<input type="submit" style="font-family: FontAwesome" value="&#xf0b0;"></form>';
 		} 		
-		$result .= '</div>';
+		$result .= '</ul></div>';
 		if ($validuser !=='admin') $userfilter=$validuser; else $userfilter=$current;
 		$result .= '<strong>'.__('last booking','etimeclockwp').':</strong><br>'. user_last_booking($userfilter);
 		$activity = get_posts(
@@ -405,9 +479,8 @@ function etimeclockwp_button_shortcode($atts) {
 
 	} else if ($showmode == 4 && current_user_can('administrator') ) {
 
-		// -------------------------------------------CSV Export users for admin ---------------------
-		$result .= '<span class="btn"><a href="'.home_url($wp->request).'?show=0" class="submit"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a></span> &nbsp; ';
-		$result .= '<span class="btn"><a href="'.home_url($wp->request).'?show=1" class="submit"><i class="fa fa-list"></i> '.__('admin show bookings','etimeclockwp').'</a></span> &nbsp; ';
+		// ------------------------------------------- show admin panel with last user status ---------------------
+		$result .= '<div style="text-align:right"><ul class="footer-menu"><ul class="footer-menu">' . etime_menu(4,$validuser) . '</ul></div>';
 		$users = get_posts(array( 'posts_per_page' => -1, 'post_type' => 'etimeclockwp_users', ) );
 		$result .= '<blockquote><h6 class="widget-title" style="margin: -8px -16px 10px -16px">'.__('employee status','etimeclockwp').'</h6>';
 		foreach($users as $user) {
@@ -416,9 +489,90 @@ function etimeclockwp_button_shortcode($atts) {
 		}
 		$result .= '</blockquote>';
 
+	} else if ($showmode == 5 && ( current_user_can('administrator') || !empty($validuser = etimevaliduser()) ) ) {
+
+		// ---------------------------- Activity-Anzeige im Kalender wenn calendar func --------------------------------
+		$result .= '<div style="text-align:right"><ul class="footer-menu"><li><i class="fa fa-user"></i> <b>'.strtoupper($validuser).'</b></li>';
+		$result .= etime_menu(5,$validuser);
+		$current='';
+		if (current_user_can('administrator') ) {
+			$result .= ' &nbsp; <form class="noprint" style="display:inline" name="userfilter" method="post" action="'.home_url(add_query_arg(array('show'=>'5'), $wp->request)).'">';
+			// filter on user for admins
+			$users = get_posts(
+				array(
+				'posts_per_page'	=> -1,
+				'post_type'			=> 'etimeclockwp_users'
+				)
+			);
+			foreach($users as $post) {
+				$values[$post->post_title] = $post->ID;
+			}
+			$result .= '<select name="user"><option value="">'. __('All users', 'etimeclockwp').'</option>';
+			if (isset($_POST['user'])) {
+				$current = sanitize_text_field($_POST['user'],true);
+			} else {
+				$current = '';
+			}
+			foreach ($values as $label => $value) {
+				$result .= "<option value='$value'"; if ($current == $value) { $result .= "SELECTED"; } $result .= ">$label</option>";
+			}
+			$result .= '</select>';
+			// Filter on month / year
+			if (isset($_POST['month']) && !empty($_POST['month']) ) {
+				$datefilt = sanitize_text_field($_POST['month'],true);
+				$filtmon = (int) substr($datefilt,5,2);
+				$filtyr = (int) substr($datefilt,0,4);
+			} else {
+				$datefilt='';
+				$filtmon = NULL;
+				$filtyr = NULL;
+			}
+			$result .= ' <input style="padding:4px 0;margin-bottom:4px" type="month" name="month" value="'.$datefilt.'"> ';
+			$datefilter = array( array( 'year' => $filtyr, 'month' => $filtmon, ), );
+			$result .= '<input type="submit" style="font-family: FontAwesome" value="&#xf0b0;"></form>';
+		} 		
+		$result .= '</ul></div>';
+		if ($validuser !=='admin') $userfilter=$validuser; else $userfilter=$current;
+		$activity = get_posts(
+			array(
+			'posts_per_page'	=> -1,
+			'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit'),
+			'post_type'			=> 'etimeclockwp_clock',
+			'title' => $userfilter,
+			'date_query' => $datefilter,
+			'orderby'          => 'date',
+			'order'            => 'DESC',
+			)
+		);
+		$totpau=0;
+		$totaz=0;
+		$totbrutto=0;
+		$customers = array();
+		foreach($activity as $post) {
+			$users = get_posts(array( 'posts_per_page' => -1, 'post_type' => 'etimeclockwp_users', 'post__in' => array($post->post_title) ) );
+			foreach($users as $user) { $usersname = $user->post_title; }
+			$tagessumme = etimeclockwp_get_time_worked($post,$format = true);
+			// Datum ins Array for Calendar
+			$customers[] = array ('verandatum' => get_the_date('Y-m-d H:i:s',$post->ID), 'veranstaltung' => $usersname.' '.etimeclockwp_get_time_worked($post,$format = true) );
+		}
+		if ( !empty($customers)) {
+			// Monatskalender mit Events zeigen
+			$month=substr($customers[0]['verandatum'],5,2);
+			$year=substr($customers[0]['verandatum'],0,4);
+			if ( !empty($month) ) $result .= timeclock_event_calendar($month,$year,$customers);
+			foreach($customers as $customer ) {
+				if ( substr($customer['verandatum'],0,7) <> $year.'-'.$month ) {
+					$month=substr($customer['verandatum'],5,2);
+					$year=substr($customer['verandatum'],0,4);
+					$result .= timeclock_event_calendar($month,$year,$customers);
+				}	
+			}
+		} else { $result .= __('no records','etimeclockwp'); }	
 	} else {
+
 		// kein Zugriff, Meldung anzeigen -------------------------------
-		$result = '<div class="newlabel yellow" style="font-size:1em;width:100%;text-align:center">Kein Zugriff. Falscher Benutzername. Bitte korrekt anmelden</div>';
+		$result = '<div class="newlabel yellow" style="font-size:1em;width:100%;text-align:center">'.__('access denied, wrong username or password','etimeclockwp').'</div>';
+
 	} //////	Ende Showausgabe
 	return $result;
 }

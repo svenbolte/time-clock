@@ -66,9 +66,7 @@ if( !function_exists('german_time_diff')) {
 
 // get options with defaults - used in settings_api.php to load defaults for settings page
 function etimeclockwp_get_option($key) {
-	
 	$etimeclockwp_options = get_option('etimeclockwp_settings');
-	
 	$result = '';
 	
 	// check if option has been saved
@@ -104,13 +102,9 @@ function etimeclockwp_get_option($key) {
 
 // load and save all options - the loop should only run on install
 function etimeclockwp_get_options() {
-	
 	$etimeclockwp_options = get_option('etimeclockwp_settings');
-	
 	if (!isset($etimeclockwp_options['tab'])) {
-		
 		$settings = etimeclockwp_settings();
-		
 		foreach ($settings as $tabs ) {
 			foreach ($tabs as $page) {
 				foreach ($page as $option) {
@@ -293,15 +287,10 @@ function etimeclockwp_calculate_workpausetotal($post_id) {
 
 // calculate total time given post id
 function etimeclockwp_caculate_total_time($post_id) {
-
 	// do a full recaculation based on entry order and don't worry about the existing total time value
-	
 	$metavalue = get_post_meta($post_id);
-	
 	$total_time_array = array();
-	
 	$count = '0'; // this is used if the event does not have a working order, this should only happen if the user is between upgrading from version 1.1 to 1.2
-	
 	foreach($metavalue as $key => $val) {
 		
 		if (substr($key, 0, 5) === "etime") {
@@ -314,27 +303,20 @@ function etimeclockwp_caculate_total_time($post_id) {
 			if ($key == 'etimeclockwp-in') {
 				$working_status = '1';
 			}
-			
 			if ($key == 'etimeclockwp-breakon') {
 				$working_status = '0';
 			}
-			
 			if ($key == 'etimeclockwp-breakoff') {
 				$working_status = '1';
 			}
-			
 			if ($key == 'etimeclockwp-out') {
 				$working_status = '0';	
 			}
-			
 			$timestamp_array = explode('|', $val[0]);
-			
 			if (!isset($timestamp_array[1])) {
 				$timestamp_array[1] = $count;
 			}
-			
 			$total_time_array[$timestamp_array[1]] = $timestamp_array[0].'|'.$working_status;
-			
 			$count++;
 		}
 		

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-10-06 15:11+0000\n"
+"POT-Creation-Date: 2022-10-22 12:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -45,11 +45,15 @@ msgstr ""
 msgid " Version "
 msgstr ""
 
+#: includes/shortcodes.php:571
+msgid "access denied, wrong username or password"
+msgstr ""
+
 #: includes/settings/settings_api.php:597
 msgid "Activate License"
 msgstr ""
 
-#: includes/shortcodes.php:112
+#: includes/shortcodes.php:178 includes/shortcodes.php:492
 msgid "activities"
 msgstr ""
 
@@ -66,11 +70,12 @@ msgstr ""
 msgid "Add New User"
 msgstr ""
 
-#: includes/functions.php:243
+#: includes/functions.php:237
 msgid "Admin Review"
 msgstr ""
 
-#: includes/shortcodes.php:72 includes/shortcodes.php:410
+#: includes/shortcodes.php:136 includes/shortcodes.php:476
+#: includes/shortcodes.php:490
 msgid "admin show bookings"
 msgstr ""
 
@@ -78,7 +83,8 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: includes/shortcodes.php:127 includes/admin/activity.php:467
+#: includes/shortcodes.php:193 includes/shortcodes.php:507
+#: includes/admin/activity.php:467
 msgid "All users"
 msgstr ""
 
@@ -86,15 +92,15 @@ msgstr ""
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr ""
 
-#: includes/shortcodes.php:177
+#: includes/shortcodes.php:243
 msgid "break"
 msgstr ""
 
-#: includes/actions.php:126
+#: includes/actions.php:127
 msgid "Break Off"
 msgstr ""
 
-#: includes/actions.php:121
+#: includes/actions.php:122
 msgid "Break On"
 msgstr ""
 
@@ -103,7 +109,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: includes/actions.php:116 includes/settings/settings_api.php:80
+#: includes/actions.php:117 includes/settings/settings_api.php:80
 #: includes/settings/settings_api.php:83
 msgid "Clock In"
 msgstr ""
@@ -112,7 +118,7 @@ msgstr ""
 msgid "Clock In - Button Color"
 msgstr ""
 
-#: includes/actions.php:131 includes/settings/settings_api.php:87
+#: includes/actions.php:132 includes/settings/settings_api.php:87
 #: includes/settings/settings_api.php:90
 msgid "Clock Out"
 msgstr ""
@@ -198,15 +204,16 @@ msgstr ""
 msgid "Employee Password"
 msgstr ""
 
-#: includes/shortcodes.php:73 includes/shortcodes.php:412
+#: includes/shortcodes.php:137 includes/shortcodes.php:478
 msgid "employee status"
 msgstr ""
 
-#: includes/actions.php:37
+#: includes/actions.php:38
 msgid "Error - Nonce validation failed."
 msgstr ""
 
-#: includes/shortcodes.php:112 includes/shortcodes.php:113
+#: includes/shortcodes.php:178 includes/shortcodes.php:179
+#: includes/shortcodes.php:492 includes/shortcodes.php:493
 msgid "export"
 msgstr ""
 
@@ -234,7 +241,7 @@ msgstr ""
 msgid "https://github.com/svenbolte/time-clock/"
 msgstr ""
 
-#: includes/actions.php:185
+#: includes/actions.php:186
 msgid "Incorrect ID or Password."
 msgstr ""
 
@@ -242,7 +249,7 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: includes/shortcodes.php:153 includes/shortcodes.php:415
+#: includes/shortcodes.php:219 includes/shortcodes.php:481
 #: includes/admin/users.php:176
 msgid "last booking"
 msgstr ""
@@ -287,11 +294,15 @@ msgstr ""
 msgid "No Activity found"
 msgstr ""
 
+#: includes/shortcodes.php:567
+msgid "no records"
+msgstr ""
+
 #: includes/admin/post_types.php:44
 msgid "No Users Found"
 msgstr ""
 
-#: includes/shortcodes.php:111
+#: includes/shortcodes.php:176 includes/shortcodes.php:491
 msgid "Panel"
 msgstr ""
 
@@ -358,7 +369,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: includes/actions.php:180
+#: includes/actions.php:181
 msgid "Success"
 msgstr ""
 
@@ -366,7 +377,8 @@ msgstr ""
 msgid "Time Clock"
 msgstr ""
 
-#: includes/shortcodes.php:110 includes/shortcodes.php:409
+#: includes/shortcodes.php:175 includes/shortcodes.php:475
+#: includes/shortcodes.php:489
 msgid "time clock"
 msgstr ""
 
@@ -374,7 +386,7 @@ msgstr ""
 msgid "Time Format"
 msgstr ""
 
-#: includes/shortcodes.php:50
+#: includes/shortcodes.php:114
 msgid "time-filter"
 msgstr ""
 
@@ -390,7 +402,7 @@ msgstr ""
 msgid "Total Time Worked"
 msgstr ""
 
-#: includes/shortcodes.php:177
+#: includes/shortcodes.php:243
 msgid "totaltime"
 msgstr ""
 
@@ -418,9 +430,14 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: includes/shortcodes.php:112 includes/shortcodes.php:113
-#: includes/shortcodes.php:113
+#: includes/shortcodes.php:178 includes/shortcodes.php:179
+#: includes/shortcodes.php:179 includes/shortcodes.php:492
+#: includes/shortcodes.php:493 includes/shortcodes.php:493
 msgid "users"
+msgstr ""
+
+#: includes/shortcodes.php:177
+msgid "view as calendar"
 msgstr ""
 
 #: includes/settings/settings_api.php:30

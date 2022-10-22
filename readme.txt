@@ -6,10 +6,10 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung
 Requires at least: 5.0
-Tested up to: 6.0.2
+Tested up to: 6.0.3
 Requires PHP: 5.7
-Stable tag: 9.1.2.1.45
-Version: 9.1.2.1.45
+Stable tag: 9.1.2.1.50
+Version: 9.1.2.1.50
 
 An MOD with german translations and more functions of the cool employee / volunteer time clock for WordPress
 
@@ -27,6 +27,7 @@ Users can:
 *	set time/date for clock in out and take break (even in future for planning)
 *	review their own bookings, work time, break time and total time (work and break)
 *	filter on month basis
+* 	show their bookings in a calendar view
 
 Admins can: 
 *	 view user bookings and filter on username and/or on month basis
@@ -35,6 +36,7 @@ Admins can:
 *	 change the color and text of the time clock
 *    Export Activity to CSV File
 *	 list all activities of all users
+* 	 show all users bookings in a calendar view
 
 *	if worktime is >10hrs time field will be marked red
 * 	if using html in widgets enabled in your wordpress theme you can use time clock in a widget
@@ -49,6 +51,11 @@ Admins can:
 5. Create a page (or post, page is better) and add a title like "Stempeluhr" and the shortcode [timeclock]
 
 == Changelog ==
+
+= 9.1.2.1.50 = 22.10.2022
+add calendar view with month calendars showing users per day with total times (admin) or for logged in user/selected month
+login name will be stored in a session cookie "etime_usercookie" and displayed in login mask
+admin panel to see last users status (last booking/working status for each user)
 
 = 9.1.2.1.44 = 05.10.2022
 Admin backend activity list with work time, pause time and total times

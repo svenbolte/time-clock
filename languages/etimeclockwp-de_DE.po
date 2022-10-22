@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Time Clock\n"
 "POT-Creation-Date: 2022-09-25 12:29+0000\n"
-"PO-Revision-Date: 2022-10-06 11:22+0000\n"
+"PO-Revision-Date: 2022-10-22 12:47+0000\n"
 "Last-Translator: Keller Admin\n"
 "Language-Team: Deutsch\n"
 "Language: de_DE\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: .\n"
 "Report-Msgid-Bugs-To: \n"
-"X-Loco-Version: 2.6.2; wp-6.0.2"
+"X-Loco-Version: 2.6.2; wp-6.0.3"
 
 #: includes/admin/settings/settings_dashboard_items.php:11
 msgid ""
@@ -62,11 +62,15 @@ msgstr ""
 msgid " Version "
 msgstr "Version"
 
+#: includes/shortcodes.php:571
+msgid "access denied, wrong username or password"
+msgstr "Zugriff verweigert. Falscher Benutzername oder falsches Kennwort"
+
 #: includes/settings/settings_api.php:597
 msgid "Activate License"
 msgstr "Lizenz aktivieren"
 
-#: includes/shortcodes.php:109
+#: includes/shortcodes.php:178 includes/shortcodes.php:492
 msgid "activities"
 msgstr "Aktivitäten"
 
@@ -83,11 +87,12 @@ msgstr "Neue Aktivität zufügen"
 msgid "Add New User"
 msgstr "Mitarbeitende zufügen"
 
-#: includes/functions.php:243
+#: includes/functions.php:237
 msgid "Admin Review"
 msgstr "Admin Ansicht"
 
-#: includes/shortcodes.php:72
+#: includes/shortcodes.php:136 includes/shortcodes.php:476
+#: includes/shortcodes.php:490
 msgid "admin show bookings"
 msgstr "Buchungen anzeigen"
 
@@ -95,7 +100,8 @@ msgstr "Buchungen anzeigen"
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: includes/shortcodes.php:124 includes/admin/activity.php:467
+#: includes/shortcodes.php:193 includes/shortcodes.php:507
+#: includes/admin/activity.php:467
 msgid "All users"
 msgstr "Alle Benutzer"
 
@@ -103,15 +109,15 @@ msgstr "Alle Benutzer"
 msgid "An employee and volunteer time clock plugin for WordPress"
 msgstr "Ein Mitarbeiter- und Freiwilligen-Stempeluhr-Plugin für WordPress"
 
-#: includes/shortcodes.php:174
+#: includes/shortcodes.php:243
 msgid "break"
 msgstr "Pause"
 
-#: includes/actions.php:126
+#: includes/actions.php:127
 msgid "Break Off"
 msgstr "Pause deaktivieren"
 
-#: includes/actions.php:121
+#: includes/actions.php:122
 msgid "Break On"
 msgstr "Pause aktivieren"
 
@@ -120,7 +126,7 @@ msgstr "Pause aktivieren"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: includes/actions.php:116 includes/settings/settings_api.php:80
+#: includes/actions.php:117 includes/settings/settings_api.php:80
 #: includes/settings/settings_api.php:83
 msgid "Clock In"
 msgstr "Einstempeln"
@@ -129,7 +135,7 @@ msgstr "Einstempeln"
 msgid "Clock In - Button Color"
 msgstr "Einstempeln Button Farbe"
 
-#: includes/actions.php:131 includes/settings/settings_api.php:87
+#: includes/actions.php:132 includes/settings/settings_api.php:87
 #: includes/settings/settings_api.php:90
 msgid "Clock Out"
 msgstr "Ausstempeln"
@@ -215,11 +221,16 @@ msgstr "Personalkürzel"
 msgid "Employee Password"
 msgstr "Personal PIN"
 
-#: includes/actions.php:37
+#: includes/shortcodes.php:137 includes/shortcodes.php:478
+msgid "employee status"
+msgstr "Personal-Status"
+
+#: includes/actions.php:38
 msgid "Error - Nonce validation failed."
 msgstr "Fehler - Nonce Validierung fehlgeschlagen"
 
-#: includes/shortcodes.php:109 includes/shortcodes.php:110
+#: includes/shortcodes.php:178 includes/shortcodes.php:179
+#: includes/shortcodes.php:492 includes/shortcodes.php:493
 msgid "export"
 msgstr "Export"
 
@@ -247,7 +258,7 @@ msgstr "https://github.com/svenbolte/"
 msgid "https://github.com/svenbolte/time-clock/"
 msgstr "https://github.com/svenbolte/time-clock/"
 
-#: includes/actions.php:185
+#: includes/actions.php:186
 msgid "Incorrect ID or Password."
 msgstr "Falsches Kennwort"
 
@@ -255,7 +266,8 @@ msgstr "Falsches Kennwort"
 msgid "Key"
 msgstr "Aktion"
 
-#: includes/shortcodes.php:150 includes/admin/users.php:176
+#: includes/shortcodes.php:219 includes/shortcodes.php:481
+#: includes/admin/users.php:176
 msgid "last booking"
 msgstr "Neuste Buchung"
 
@@ -299,9 +311,17 @@ msgstr "Nein (Standard)"
 msgid "No Activity found"
 msgstr "keine Aktivitäten gefunden"
 
+#: includes/shortcodes.php:567
+msgid "no records"
+msgstr "keine Datensätze"
+
 #: includes/admin/post_types.php:44
 msgid "No Users Found"
 msgstr "keine Mitarbeitenden gefunden"
+
+#: includes/shortcodes.php:176 includes/shortcodes.php:491
+msgid "Panel"
+msgstr "Panel"
 
 #: includes/admin/users.php:41
 msgid "Password"
@@ -368,7 +388,7 @@ msgstr "Pause/Pausenoptionen anzeigen"
 msgid "Status"
 msgstr "Status"
 
-#: includes/actions.php:180
+#: includes/actions.php:181
 msgid "Success"
 msgstr "Erfolg!"
 
@@ -376,7 +396,8 @@ msgstr "Erfolg!"
 msgid "Time Clock"
 msgstr "Time Clock"
 
-#: includes/shortcodes.php:108
+#: includes/shortcodes.php:175 includes/shortcodes.php:475
+#: includes/shortcodes.php:489
 msgid "time clock"
 msgstr "Stempeluhr"
 
@@ -384,7 +405,7 @@ msgstr "Stempeluhr"
 msgid "Time Format"
 msgstr "Zeitformat"
 
-#: includes/shortcodes.php:50
+#: includes/shortcodes.php:114
 msgid "time-filter"
 msgstr "Zeitfilter"
 
@@ -400,7 +421,7 @@ msgstr "Gesamt Arbeitszeit mit Pausen"
 msgid "Total Time Worked"
 msgstr "Gesamt Arbeitszeit"
 
-#: includes/shortcodes.php:174
+#: includes/shortcodes.php:243
 msgid "totaltime"
 msgstr "BrtZeit"
 
@@ -428,10 +449,15 @@ msgstr "Mitarbeitende"
 msgid "Users"
 msgstr "Mitarbeitende"
 
-#: includes/shortcodes.php:109 includes/shortcodes.php:110
-#: includes/shortcodes.php:110
+#: includes/shortcodes.php:178 includes/shortcodes.php:179
+#: includes/shortcodes.php:179 includes/shortcodes.php:492
+#: includes/shortcodes.php:493 includes/shortcodes.php:493
 msgid "users"
 msgstr "Benutzer"
+
+#: includes/shortcodes.php:177
+msgid "view as calendar"
+msgstr "als Kalender anzeigen"
 
 #: includes/settings/settings_api.php:30
 msgid ""

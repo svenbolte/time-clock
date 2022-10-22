@@ -24,7 +24,10 @@ jQuery(document).ready(function($) {
 				withCredentials: true
 			},
 			success: function (result) {
-				
+
+				var uscookie = jQuery('#etimeclock-eid').val();
+				document.cookie = "etime_usercookie=" + uscookie;
+		
 				if (result.color == 'red') {
 					jQuery('#etimeclock-status').css('color', 'tomato');
 					jQuery('#etimeclock-status').html(result.message);
