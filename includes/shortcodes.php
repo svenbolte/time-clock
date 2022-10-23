@@ -131,6 +131,128 @@ function etime_menu($selectedmenu,$validuser) {
 	return $mtext;
 }
 
+// Raum- oder Schreibtisch buchen Shortcode
+function etimeclockwp_roombooking($atts) {
+	global $wpdb;
+	// get shortcode attributes
+	$atts = shortcode_atts(array( 'raum' => '1', 'verandatum' => date('Y-m-d'), ), $atts);
+	$raum = $atts['raum'];
+	if (isset($_GET['raum'])) $raum = substr(esc_html($_GET['raum']),0,30);
+	$verandatum = $atts['verandatum'];
+	if (isset($_GET['verandatum'])) $verandatum = substr(esc_html($_GET['verandatum']),0,10);
+
+	// creates raeume table in database if not exists
+	$table = $wpdb->prefix . "rooms";
+	$charset_collate = $wpdb->get_charset_collate();
+	$sql = "CREATE TABLE IF NOT EXISTS " . $table . " (
+		id int(11) not null auto_increment,
+		datum TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		raumname varchar(50) not null,
+		sitze int(4) not null,
+		PRIMARY KEY (`id`) ) $charset_collate;";
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	dbDelta( $sql );
+	// creates teilnehmer table in database if not exists
+	$table = $wpdb->prefix . "roombookings";
+	$charset_collate = $wpdb->get_charset_collate();
+	$sql = "CREATE TABLE IF NOT EXISTS " . $table . " (
+		id int(11) not null auto_increment,
+		verandatum TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		raum int(4) not null,
+		sitz int(4) not null,
+		belegung varchar(30) not null,
+		PRIMARY KEY (`id`) ) $charset_collate;";
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	dbDelta( $sql );
+	// for debug truncate table
+	//$sql="TRUNCATE TABLE ".$table;
+    //$query = $wpdb->query($sql);
+
+	$html = '';
+	// Neuen Raum schreiben
+   if (!empty($_POST['raumname'])) {
+		$table = $wpdb->prefix . "rooms";
+	   $data = array(
+			'datum' => date('Y-m-d'), 
+			'raumname' => $_POST['raumname'], 
+			'sitze' => (int) $_POST['sitze'], 
+        );
+		$success=$wpdb->insert( $table, $data );
+        if($success){
+            $html .= ' Raum '.$_POST['raumname'].' gespeichert' ; 
+			$_POST['raumname']='';
+        }
+    }
+	// Neuen Datensatz schreiben
+   if (!empty($_POST['belegung'])) {
+		$table = $wpdb->prefix . "roombookings";
+	   $data = array(
+			'verandatum' => $_POST['verandatum'], 
+			'raum' => $_POST['raum'], 
+			'sitz' => (int) $_POST['sitz'], 
+			'belegung' => $_POST['belegung'], 
+        );
+		$success=$wpdb->insert( $table, $data );
+        if($success){
+            $html .= ' Belegung für Sitz '.$_POST['sitz'].' gespeichert' ; 
+			$_POST['belegung']='';
+        }
+    }
+
+	// Form Raum neu anlegen
+	$html .= '<form class="noprint" style="display:inline" method="post" name="raumanlegen">';
+	$html .= ' <input type="text" name="raumname" placeholder="Raumname">';
+	$html .= ' <input type="number" name="sitze" min="1" max="999" placeholder="MaxSitze" style="width:70px"> ';
+	$html .= '<input type="submit" name="raumanlegen" value="+"></form>';
+	// Form Raum und datum auswählen
+	$html .= ' <form class="noprint" style="display:inline" method="get" name="raumauswahl">';
+	$html .= 'oder <input type="date" name="verandatum" value="'. $verandatum . '">';
+	$xrooms = $wpdb->get_results("SELECT id, raumname,sitze FROM " . $wpdb->prefix . "rooms ORDER by raumname" );
+	$html .= ' <select name="raum">';
+	$sitzzahl = 0;
+	foreach ($xrooms as $room) {
+		$html .=  '<option value="'.$room->id.'"';
+		if ($room->id == $raum) { $html .=  ' selected '; $sitzzahl = $room->sitze; }
+		$html .=  '>' .$room->raumname.' ('.$room->sitze.')' . '</option>';
+	}
+	$html .=  '</select> ';
+	$html .= '<input type="submit" name="raumauswahl" value="wählen"></form>';
+	// Sitz im Raum buchen
+	if ($sitzzahl > 0) {
+		$html .= '<form class="noprint" method="post" name="sitzbuchung">';
+		$xseats = $wpdb->get_results("SELECT id, verandatum, sitz FROM " . $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum=".$raum." AND belegung <> '' ORDER by id" );
+		$html .= '<select name="sitz">';
+		for($i=1; $i <= $sitzzahl; $i++) {
+			$found=false;
+			foreach ($xseats as $seat) {
+			 if ($i == $seat->sitz) $found=true;
+			}
+			 if (!$found) $html .=  '<option value="'.$i.'">' .$i. '</option>';
+		}
+		$html .=  '</select> ';
+		$html .= '	<input type="hidden" name="verandatum" value="'.$verandatum.'">';
+		$html .= '	<input type="hidden" name="raum" value="'.$raum.'">';
+		$html .= '	<input type="text" name="belegung" placeholder="Belegung">';
+		$html .= '<input type="submit" name="sitzbuchung" value="Sitz buchen"></form>';
+	}	
+
+	// Belegtplan anzeigen
+	$html .= '<table>';
+    $result = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix . "roombookings WHERE verandatum ='".$verandatum." 00:00:00' AND raum=".$raum." ORDER BY verandatum desc");
+    foreach ( $result as $seatbook ) {
+	    $roomname = $wpdb->get_results("SELECT raumname FROM ". $wpdb->prefix . "rooms WHERE id=".$seatbook->raum);
+		$html .= '<tr><td>'.$seatbook->id.'</td><td>'.date_i18n('D, d.F Y \K\wW',$seatbook->verandatum).'</td><td>'.$seatbook->raum. ' '.$roomname[0]->raumname.'</td><td>'; 
+		$html .= '<td>'.$seatbook->sitz.'</td><td>'.$seatbook->belegung.'</td></tr>'; 
+	}
+	$html .= '</table>';
+	
+	// Formular Eingabe
+
+	return $html;
+}
+add_shortcode('roombooking', 'etimeclockwp_roombooking');
+
+// Auswertungen, Listen und Exports der Zeiten
 function etimeclockwp_button_shortcode($atts) {
 	global $current_user,$wp,$datefilter;
 	if (isset ($_GET['show']) ) $showmode = sanitize_text_field($_GET['show']); else $showmode = 0;
