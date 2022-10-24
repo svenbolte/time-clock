@@ -4,20 +4,21 @@ Author URI: https://github.com/svenbolte/
 Plugin URI: https://github.com/svenbolte/time-clock/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung
+Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung, sitzreservierung, seat booking, events, rooms
 Requires at least: 5.0
 Tested up to: 6.0.3
 Requires PHP: 5.7
 Stable tag: 9.1.2.1.50
 Version: 9.1.2.1.50
 
-An MOD with german translations and more functions of the cool employee / volunteer time clock for WordPress
+A MOD with german translations and more functions of time clock plugin. book seats (or desktops) in rooms.
 
 == Description ==
 
 = Overview =
 
 This plugin allows employees or volunteers to clock in and out for their work shifts and review and export their bookings to excel.
+You can book seats (or desktops) in rooms (for mobile workers and events)
 
 = Time Clock Features =
 
@@ -50,9 +51,17 @@ Admins can:
 4. Search for TimeClock and click install.
 5. Create a page (or post, page is better) and add a title like "Stempeluhr" and the shortcode [timeclock]
 
+If you want to use the seat reservation/room planner:
+6. Create a page (or post, page is better) and add a title like "Raumbuchungen" and the shortcode [roombooking]
+
+
 == Changelog ==
 
-= 9.1.2.1.50 = 22.10.2022
+= 9.1.2.1.50 = 24.10.2022
+[roombooking] shortcode added.
+* admins can create and delete rooms with max-seats. and delete seat reservations
+* users can create seat reservations in rooms (one per date)
+
 add calendar view with month calendars showing users per day with total times (admin) or for logged in user/selected month
 login name will be stored in a session cookie "etime_usercookie" and displayed in login mask
 admin panel to see last users status (last booking/working status for each user)

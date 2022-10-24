@@ -133,7 +133,7 @@ function etime_menu($selectedmenu,$validuser) {
 
 // Raum- oder Schreibtisch buchen Shortcode
 function etimeclockwp_roombooking($atts) {
-	global $wpdb;
+	global $wp, $wpdb;
 	// get shortcode attributes
 	$atts = shortcode_atts(array( 'raum' => '1', 'verandatum' => date('Y-m-d'), ), $atts);
 	$raum = $atts['raum'];
@@ -169,19 +169,40 @@ function etimeclockwp_roombooking($atts) {
     //$query = $wpdb->query($sql);
 
 	$html = '';
+
+	//// Buchung löschen (nur admin) - Sitznummer übergeben
+	if (current_user_can('administrator') && isset($_GET['delseat'])) {
+		$postingid = (int) sanitize_text_field($_GET['delseat']);
+		if ($postingid > 0) $wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum = ".$raum." AND sitz = " . $postingid);
+		wp_redirect( home_url( remove_query_arg( 'delseat' ) ) ); exit;
+	}
+
+	//// Raum mit buchungen löschen (nur admin) - Raumnummer übergeben
+	if (current_user_can('administrator') && isset($_GET['delroom'])) {
+		$table = $wpdb->prefix . "rooms";
+		$postingid = (int) sanitize_text_field($_GET['delroom']);
+		if ($postingid > 0) {
+			$wpdb->query("DELETE FROM ". $wpdb->prefix . "rooms WHERE id = ".$postingid);
+			$wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE raum = ".$postingid);
+		}	
+		wp_redirect( home_url( remove_query_arg( array ('delroom','raum') ) ) ); exit;
+	}
+
 	// Neuen Raum schreiben
    if (!empty($_POST['raumname'])) {
 		$table = $wpdb->prefix . "rooms";
-	   $data = array(
+		$data = array(
 			'datum' => date('Y-m-d'), 
 			'raumname' => $_POST['raumname'], 
 			'sitze' => (int) $_POST['sitze'], 
-        );
+		);
 		$success=$wpdb->insert( $table, $data );
-        if($success){
-            $html .= ' Raum '.$_POST['raumname'].' gespeichert' ; 
+		if($success){
+			$html .= ' Raum '.$_POST['raumname'].' gespeichert' ; 
 			$_POST['raumname']='';
-        }
+		}
+		wp_redirect( home_url( add_query_arg( NULL, NULL ) )); exit;
+
     }
 	// Neuen Datensatz schreiben
    if (!empty($_POST['belegung'])) {
@@ -197,57 +218,74 @@ function etimeclockwp_roombooking($atts) {
             $html .= ' Belegung für Sitz '.$_POST['sitz'].' gespeichert' ; 
 			$_POST['belegung']='';
         }
+		wp_redirect(  home_url( add_query_arg( NULL, NULL ) ) ); exit;
     }
 
-	// Form Raum neu anlegen
-	$html .= '<form class="noprint" style="display:inline" method="post" name="raumanlegen">';
-	$html .= ' <input type="text" name="raumname" placeholder="Raumname">';
-	$html .= ' <input type="number" name="sitze" min="1" max="999" placeholder="MaxSitze" style="width:70px"> ';
-	$html .= '<input type="submit" name="raumanlegen" value="+"></form>';
 	// Form Raum und datum auswählen
-	$html .= ' <form class="noprint" style="display:inline" method="get" name="raumauswahl">';
-	$html .= 'oder <input type="date" name="verandatum" value="'. $verandatum . '">';
+	$html .='<div class="noprint">';
+	$html .= '<form class="noprint" style="display:inline" method="get" name="raumauswahl">';
+	$html .= '<input type="date" name="verandatum" value="'. $verandatum . '">';
 	$xrooms = $wpdb->get_results("SELECT id, raumname,sitze FROM " . $wpdb->prefix . "rooms ORDER by raumname" );
 	$html .= ' <select name="raum">';
-	$sitzzahl = 0;
+	$sitzzahl = 0; $aktraumname='';
 	foreach ($xrooms as $room) {
 		$html .=  '<option value="'.$room->id.'"';
-		if ($room->id == $raum) { $html .=  ' selected '; $sitzzahl = $room->sitze; }
+		if ($room->id == $raum) { $html .=  ' selected '; $sitzzahl = $room->sitze; $aktraumname = $room->raumname; }
 		$html .=  '>' .$room->raumname.' ('.$room->sitze.')' . '</option>';
 	}
 	$html .=  '</select> ';
 	$html .= '<input type="submit" name="raumauswahl" value="wählen"></form>';
+	// Form Raum neu anlegen (nur Admin)
+	if (current_user_can('administrator')) {
+		$html .= ' oder <form class="noprint" style="display:inline" method="post" name="raumanlegen">';
+		$html .= ' <input type="text" name="raumname" placeholder="neuer Raum Name">';
+		$html .= ' <input type="number" name="sitze" min="1" max="999" placeholder="MaxSitze" style="width:70px"> ';
+		$html .= '<input type="submit" name="raumanlegen" value="+"></form>';
+	}	
 	// Sitz im Raum buchen
 	if ($sitzzahl > 0) {
 		$html .= '<form class="noprint" method="post" name="sitzbuchung">';
-		$xseats = $wpdb->get_results("SELECT id, verandatum, sitz FROM " . $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum=".$raum." AND belegung <> '' ORDER by id" );
+		$xseats = $wpdb->get_results("SELECT id, verandatum, sitz,belegung FROM " . $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum=".$raum." AND belegung <> '' ORDER by id" );
 		$html .= '<select name="sitz">';
 		for($i=1; $i <= $sitzzahl; $i++) {
 			$found=false;
-			foreach ($xseats as $seat) {
-			 if ($i == $seat->sitz) $found=true;
-			}
-			 if (!$found) $html .=  '<option value="'.$i.'">' .$i. '</option>';
+			foreach ($xseats as $seat) { if ($i == $seat->sitz) $found=true; }
+			if (!$found) $html .=  '<option value="'.$i.'">' .$i. '</option>';
 		}
 		$html .=  '</select> ';
 		$html .= '	<input type="hidden" name="verandatum" value="'.$verandatum.'">';
 		$html .= '	<input type="hidden" name="raum" value="'.$raum.'">';
-		$html .= '	<input type="text" name="belegung" placeholder="Belegung">';
+		$html .= '	<input type="text" id="belegung" name="belegung" placeholder="Belegung">';
 		$html .= '<input type="submit" name="sitzbuchung" value="Sitz buchen"></form>';
+
+		// Belegtplan anzeigen
+		$html .='</div>';
+		$xseats = $wpdb->get_results("SELECT  id, verandatum, sitz,belegung FROM " . $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum=".$raum." ORDER by id" );
+		$html .= '<blockquote style="margin-top:1em"><h6 class="widget-title" style="margin: -8px -15px 8px">';
+		if (current_user_can('administrator')) $html .= '<a onclick="return confirm(\'Sind Sie sicher, den Raum zu entfernen?\');" href="'.home_url( add_query_arg( array ('delroom' => $raum) ) ).'"><i class="fa fa-trash"></i></a>';
+		$belegung = count( $xseats );
+		$prozent = round($belegung / $sitzzahl *100,1);
+		$html .= ' Raum '.$raum.' '.$aktraumname.' | '.count( $xseats ).'/'.$sitzzahl.' belegt';
+		$html .= ' <progress max=100 style="width:100px" value="'.$prozent.'"></progress>';
+		$html .= ' | ' . date_i18n('D, d. M Y, \K\w W',$verandatum).'</h6>';
+		$html .='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr">';
+		$belegt = 0;
+		for($i=1; $i <= $sitzzahl; $i++) {
+			$cc = 0; $found =- 1;
+			foreach ($xseats as $seat) { $cc += 1; if ($i == $seat->sitz) $found = $cc-1; }
+			if ($found >=0) {
+				$belegt +=1;
+				$html .= '<div style="background-color:#f42c2c;color:#fff;margin:4px;padding:5px;width:auto;display:inline-block;border:1px solid #888" title="Buchungs-ID: '.$found.'">'; 
+				if (current_user_can('administrator')) $html .= '<a onclick="return confirm(\'Sind Sie sicher, den Sitz zu entfernen?\');" style="color:white" href="'.home_url( add_query_arg( array ('delseat' => $i) ) ).'"><i class="fa fa-trash"></i></a> &nbsp; ';
+				$html .='<b>'.$i.'</b> - '.$xseats[$found]->belegung.'</div>'; 
+			} else {
+				$html .= '<div onclick="javascript:document.sitzbuchung.sitz.value = '.$i.';document.getElementById(\'belegung\').focus();" style="cursor:pointer;background-color:#4ecbab;color:#fff;margin:4px;padding:5px;display:inline-block;width:auto;border:1px solid #888" title="unbelegt, klicken zum Belegen">'; 
+				$html .= '<b>'.$i.'</b> - frei</a></div>'; 
+			}
+		}
+		$html .= '</div></blockquote>';
+
 	}	
-
-	// Belegtplan anzeigen
-	$html .= '<table>';
-    $result = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix . "roombookings WHERE verandatum ='".$verandatum." 00:00:00' AND raum=".$raum." ORDER BY verandatum desc");
-    foreach ( $result as $seatbook ) {
-	    $roomname = $wpdb->get_results("SELECT raumname FROM ". $wpdb->prefix . "rooms WHERE id=".$seatbook->raum);
-		$html .= '<tr><td>'.$seatbook->id.'</td><td>'.date_i18n('D, d.F Y \K\wW',$seatbook->verandatum).'</td><td>'.$seatbook->raum. ' '.$roomname[0]->raumname.'</td><td>'; 
-		$html .= '<td>'.$seatbook->sitz.'</td><td>'.$seatbook->belegung.'</td></tr>'; 
-	}
-	$html .= '</table>';
-	
-	// Formular Eingabe
-
 	return $html;
 }
 add_shortcode('roombooking', 'etimeclockwp_roombooking');
