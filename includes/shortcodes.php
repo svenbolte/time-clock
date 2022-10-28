@@ -221,8 +221,31 @@ function etimeclockwp_roombooking($atts) {
 		wp_redirect(  home_url( add_query_arg( NULL, NULL ) ) ); exit;
     }
 
+	// Belegungskalender
+	$html .='<h6>Raumbelegung (freie Plätze seit 30 Tagen)</h6>';
+	$customers = array();
+	$xbelegung = $wpdb->get_results("SELECT wp_roombookings.verandatum, wp_rooms.raumname, wp_rooms.sitze, count(*) as belegt FROM wp_roombookings join wp_rooms on wp_rooms.id=wp_roombookings.raum WHERE wp_roombookings.verandatum >= CURDATE() - INTERVAL 30 DAY group by wp_roombookings.verandatum, wp_roombookings.raum" );
+	foreach ($xbelegung as $beleg) {
+		$freiesitze = ($beleg->sitze - $beleg->belegt);
+		if ($freiesitze == 0) $zerofree = '#ff888888'; else if ($freiesitze <= 5) $zerofree ='#ffffff88'; else $zerofree ='#88ff8888';
+		$customers[] = array ('verandatum' => $beleg->verandatum, 'veranstaltung' => '<span class="newlabel" style="line-height:10px;font-size:1em;background-color:'.$zerofree.'">' . $beleg->raumname.' | '.$beleg->sitze.'-'.$beleg->belegt.' | '.$freiesitze.'</span>' );
+	}
+	if ( !empty($customers)) {
+		// Monatskalender mit Events zeigen
+		$month=substr($customers[0]['verandatum'],5,2);
+		$year=substr($customers[0]['verandatum'],0,4);
+		if ( !empty($month) ) $html .= timeclock_event_calendar($month,$year,$customers);
+		foreach($customers as $customer ) {
+			if ( substr($customer['verandatum'],0,7) <> $year.'-'.$month ) {
+				$month=substr($customer['verandatum'],5,2);
+				$year=substr($customer['verandatum'],0,4);
+				$html .= timeclock_event_calendar($month,$year,$customers);
+			}	
+		}
+	} else { $html .= __('no records','etimeclockwp'); }	
+
 	// Form Raum und datum auswählen
-	$html .='<div class="noprint">';
+	$html .= '<div class="noprint">';
 	$html .= '<form class="noprint" style="display:inline" method="get" name="raumauswahl">';
 	$html .= '<input type="date" name="verandatum" value="'. $verandatum . '">';
 	$xrooms = $wpdb->get_results("SELECT id, raumname,sitze FROM " . $wpdb->prefix . "rooms ORDER by raumname" );

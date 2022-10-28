@@ -8,8 +8,8 @@ Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung, si
 Requires at least: 5.0
 Tested up to: 6.0.3
 Requires PHP: 5.7
-Stable tag: 9.1.2.1.50
-Version: 9.1.2.1.50
+Stable tag: 9.1.2.1.51
+Version: 9.1.2.1.51
 
 A MOD with german translations and more functions of time clock plugin. book seats (or desktops) in rooms.
 
@@ -18,6 +18,7 @@ A MOD with german translations and more functions of time clock plugin. book sea
 = Overview =
 
 This plugin allows employees or volunteers to clock in and out for their work shifts and review and export their bookings to excel.
+See a room reservations calendar for all rooms and past 30 days and future
 You can book seats (or desktops) in rooms (for mobile workers and events)
 
 = Time Clock Features =
