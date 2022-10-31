@@ -8,8 +8,8 @@ Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung, si
 Requires at least: 5.0
 Tested up to: 6.0.3
 Requires PHP: 5.7
-Stable tag: 9.1.2.1.51
-Version: 9.1.2.1.51
+Stable tag: 9.1.2.1.60
+Version: 9.1.2.1.60
 
 A MOD with german translations and more functions of time clock plugin. book seats (or desktops) in rooms.
 
@@ -57,6 +57,10 @@ If you want to use the seat reservation/room planner:
 
 
 == Changelog ==
+
+= 9.1.2.1.60 = 31.10.2022
+added cookie hash based login system. hashs are valid on current day. cookies are stored 6 hrs
+login is valid for time clock and room bookings
 
 = 9.1.2.1.50 = 24.10.2022
 [roombooking] shortcode added.
