@@ -65,15 +65,6 @@ if( !function_exists('timeclock_event_calendar')) {
 
 function etimevaliduser() {
 
-	// Abmelden und User Cookie löschen
-	if (isset($_GET['logout'])) {
-		unset($_COOKIE['etime_usercookie']); 
-		setcookie('etime_usercookie', '', time()-3600);
-		unset($_COOKIE['etime_session']); 
-		setcookie('etime_session', '', time()-3600);
-		wp_redirect( home_url( remove_query_arg( array('logout') ) ) ); exit;
-	}
-
 	$usercookie = isset( $_COOKIE['etime_usercookie'] ) ? $_COOKIE['etime_usercookie'] : '';
 	$usersession = isset( $_COOKIE['etime_session'] ) ? $_COOKIE['etime_session'] : '';
 	$esession = md5( $usercookie . intval(date('Y-m-d H:i:s')) / 24 * 3600);

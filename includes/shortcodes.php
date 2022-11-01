@@ -37,6 +37,15 @@ function etimeclockwp_roombooking($atts) {
 			$user_name = $users->post_title;
 		}	
 
+		//// Abmelden und User Cookie löschen
+		if (isset($_GET['logout'])) {
+			unset($_COOKIE['etime_usercookie']); 
+			setcookie('etime_usercookie', '', time()-3600);
+			unset($_COOKIE['etime_session']); 
+			setcookie('etime_session', '', time()-3600);
+			wp_redirect( home_url( remove_query_arg( array('logout') ) ) ); exit;
+		}
+
 		//// Buchung löschen (nur admin oder user für sich) - Sitznummer übergeben
 		if (isset($_GET['delseat']) &&  ( current_user_can('administrator') || ( isset($_GET['code']) && esc_html($_GET['code']) == md5(date('Y-m-d H')) ) ) ) {
 			$postingid = (int) sanitize_text_field($_GET['delseat']);
@@ -200,6 +209,16 @@ function etimeclockwp_button_shortcode($atts) {
 	if (isset ($_GET['show']) ) $showmode = sanitize_text_field($_GET['show']); else $showmode = 0;
 	// get shortcode attributes
 	$atts = shortcode_atts(array( 'align' 	=> '',	), $atts);
+
+	// Abmelden und User Cookie löschen
+	if (isset($_GET['logout'])) {
+		unset($_COOKIE['etime_usercookie']); 
+		setcookie('etime_usercookie', '', time()-3600);
+		unset($_COOKIE['etime_session']); 
+		setcookie('etime_session', '', time()-3600);
+		wp_redirect( home_url( remove_query_arg( array('logout') ) ) ); exit;
+	}
+
 	$result = '';
 	$validuser='admin';
 
