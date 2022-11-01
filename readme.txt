@@ -8,8 +8,8 @@ Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung, si
 Requires at least: 5.0
 Tested up to: 6.0.3
 Requires PHP: 5.7
-Stable tag: 9.1.2.1.60
-Version: 9.1.2.1.60
+Stable tag: 9.1.2.1.61
+Version: 9.1.2.1.61
 
 A MOD with german translations and more functions of time clock plugin. book seats (or desktops) in rooms.
 
