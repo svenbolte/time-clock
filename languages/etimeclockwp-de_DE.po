@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Time Clock\n"
 "POT-Creation-Date: 2022-09-25 12:29+0000\n"
-"PO-Revision-Date: 2022-10-31 12:53+0000\n"
+"PO-Revision-Date: 2022-11-01 10:18+0000\n"
 "Last-Translator: Keller Admin\n"
 "Language-Team: Deutsch\n"
 "Language: de_DE\n"
@@ -62,11 +62,17 @@ msgstr ""
 msgid " Version "
 msgstr "Version"
 
+#. Description of the plugin
+msgid "a time clock and seat reservation (desksharing) plugin for WordPress"
+msgstr ""
+"Wordpress Plugin für Zeiterfassung, Stempeluhr und Sitzreservierung "
+"(Desksharing)"
+
 #: includes/settings/settings_api.php:597
 msgid "Activate License"
 msgstr "Lizenz aktivieren"
 
-#: includes/shortcodes.php:143
+#: includes/functions.php:143
 msgid "activities"
 msgstr "Aktivitäten"
 
@@ -83,11 +89,11 @@ msgstr "Neue Aktivität zufügen"
 msgid "Add New User"
 msgstr "Mitarbeitende zufügen"
 
-#: includes/functions.php:237
+#: includes/functions.php:379
 msgid "Admin Review"
 msgstr "Admin Ansicht"
 
-#: includes/shortcodes.php:140 includes/shortcodes.php:375
+#: includes/functions.php:140 includes/shortcodes.php:208
 msgid "admin show bookings"
 msgstr "Buchungen anzeigen"
 
@@ -95,16 +101,12 @@ msgstr "Buchungen anzeigen"
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: includes/shortcodes.php:428 includes/shortcodes.php:738
+#: includes/shortcodes.php:261 includes/shortcodes.php:571
 #: includes/admin/activity.php:467
 msgid "All users"
 msgstr "Alle Benutzer"
 
-#. Description of the plugin
-msgid "An employee and volunteer time clock plugin for WordPress"
-msgstr "Ein Mitarbeiter- und Freiwilligen-Stempeluhr-Plugin für WordPress"
-
-#: includes/shortcodes.php:479
+#: includes/shortcodes.php:312
 msgid "break"
 msgstr "Pause"
 
@@ -216,7 +218,7 @@ msgstr "Personalkürzel"
 msgid "Employee Password"
 msgstr "Personal PIN"
 
-#: includes/shortcodes.php:376 includes/shortcodes.php:713
+#: includes/shortcodes.php:209 includes/shortcodes.php:546
 msgid "employee status"
 msgstr "Personal-Status"
 
@@ -224,7 +226,7 @@ msgstr "Personal-Status"
 msgid "Error - Nonce validation failed."
 msgstr "Fehler - Nonce Validierung fehlgeschlagen"
 
-#: includes/shortcodes.php:143 includes/shortcodes.php:144
+#: includes/functions.php:143 includes/functions.php:144
 msgid "export"
 msgstr "Export"
 
@@ -260,7 +262,7 @@ msgstr "Falsches Kennwort"
 msgid "Key"
 msgstr "Aktion"
 
-#: includes/shortcodes.php:455 includes/shortcodes.php:716
+#: includes/shortcodes.php:288 includes/shortcodes.php:549
 #: includes/admin/users.php:176
 msgid "last booking"
 msgstr "Neuste Buchung"
@@ -273,7 +275,7 @@ msgstr "Pause beginnen"
 msgid "Leave On Break - Button Color"
 msgstr "Pause beginnen Farbe"
 
-#: includes/shortcodes.php:354 includes/shortcodes.php:802
+#: includes/shortcodes.php:187 includes/shortcodes.php:635
 msgid "login required. Enter your timeclock username and password"
 msgstr ""
 "Anmeldung erforderlich. Geben Sie bitte Ihre Timeclock Zugangsdaten ein"
@@ -310,7 +312,7 @@ msgstr "Nein (Standard)"
 msgid "No Activity found"
 msgstr "keine Aktivitäten gefunden"
 
-#: includes/shortcodes.php:282 includes/shortcodes.php:798
+#: includes/shortcodes.php:138 includes/shortcodes.php:631
 msgid "no records"
 msgstr "keine Datensätze"
 
@@ -318,7 +320,7 @@ msgstr "keine Datensätze"
 msgid "No Users Found"
 msgstr "keine Mitarbeitenden gefunden"
 
-#: includes/shortcodes.php:141
+#: includes/functions.php:141
 msgid "Panel"
 msgstr "Panel"
 
@@ -395,7 +397,7 @@ msgstr "Erfolg!"
 msgid "Time Clock"
 msgstr "Time Clock"
 
-#: includes/shortcodes.php:139
+#: includes/functions.php:139
 msgid "time clock"
 msgstr "Stempeluhr"
 
@@ -415,7 +417,7 @@ msgstr "Gesamt Arbeitszeit mit Pausen"
 msgid "Total Time Worked"
 msgstr "Gesamt Arbeitszeit"
 
-#: includes/shortcodes.php:479
+#: includes/shortcodes.php:312
 msgid "totaltime"
 msgstr "BrtZeit"
 
@@ -443,11 +445,11 @@ msgstr "Mitarbeitende"
 msgid "Users"
 msgstr "Mitarbeitende"
 
-#: includes/shortcodes.php:144
+#: includes/functions.php:144
 msgid "users"
 msgstr "Benutzer"
 
-#: includes/shortcodes.php:142
+#: includes/functions.php:142
 msgid "view as calendar"
 msgstr "als Kalender anzeigen"
 

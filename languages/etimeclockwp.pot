@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-10-31 12:52+0000\n"
+"POT-Creation-Date: 2022-11-01 10:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -45,11 +45,15 @@ msgstr ""
 msgid " Version "
 msgstr ""
 
+#. Description of the plugin
+msgid "a time clock and seat reservation (desksharing) plugin for WordPress"
+msgstr ""
+
 #: includes/settings/settings_api.php:597
 msgid "Activate License"
 msgstr ""
 
-#: includes/shortcodes.php:143
+#: includes/functions.php:143
 msgid "activities"
 msgstr ""
 
@@ -66,11 +70,11 @@ msgstr ""
 msgid "Add New User"
 msgstr ""
 
-#: includes/functions.php:237
+#: includes/functions.php:379
 msgid "Admin Review"
 msgstr ""
 
-#: includes/shortcodes.php:140 includes/shortcodes.php:375
+#: includes/functions.php:140 includes/shortcodes.php:208
 msgid "admin show bookings"
 msgstr ""
 
@@ -78,16 +82,12 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: includes/shortcodes.php:428 includes/shortcodes.php:738
+#: includes/shortcodes.php:261 includes/shortcodes.php:571
 #: includes/admin/activity.php:467
 msgid "All users"
 msgstr ""
 
-#. Description of the plugin
-msgid "An employee and volunteer time clock plugin for WordPress"
-msgstr ""
-
-#: includes/shortcodes.php:479
+#: includes/shortcodes.php:312
 msgid "break"
 msgstr ""
 
@@ -199,7 +199,7 @@ msgstr ""
 msgid "Employee Password"
 msgstr ""
 
-#: includes/shortcodes.php:376 includes/shortcodes.php:713
+#: includes/shortcodes.php:209 includes/shortcodes.php:546
 msgid "employee status"
 msgstr ""
 
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Error - Nonce validation failed."
 msgstr ""
 
-#: includes/shortcodes.php:143 includes/shortcodes.php:144
+#: includes/functions.php:143 includes/functions.php:144
 msgid "export"
 msgstr ""
 
@@ -243,7 +243,7 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: includes/shortcodes.php:455 includes/shortcodes.php:716
+#: includes/shortcodes.php:288 includes/shortcodes.php:549
 #: includes/admin/users.php:176
 msgid "last booking"
 msgstr ""
@@ -256,7 +256,7 @@ msgstr ""
 msgid "Leave On Break - Button Color"
 msgstr ""
 
-#: includes/shortcodes.php:354 includes/shortcodes.php:802
+#: includes/shortcodes.php:187 includes/shortcodes.php:635
 msgid "login required. Enter your timeclock username and password"
 msgstr ""
 
@@ -292,7 +292,7 @@ msgstr ""
 msgid "No Activity found"
 msgstr ""
 
-#: includes/shortcodes.php:282 includes/shortcodes.php:798
+#: includes/shortcodes.php:138 includes/shortcodes.php:631
 msgid "no records"
 msgstr ""
 
@@ -300,7 +300,7 @@ msgstr ""
 msgid "No Users Found"
 msgstr ""
 
-#: includes/shortcodes.php:141
+#: includes/functions.php:141
 msgid "Panel"
 msgstr ""
 
@@ -375,7 +375,7 @@ msgstr ""
 msgid "Time Clock"
 msgstr ""
 
-#: includes/shortcodes.php:139
+#: includes/functions.php:139
 msgid "time clock"
 msgstr ""
 
@@ -395,7 +395,7 @@ msgstr ""
 msgid "Total Time Worked"
 msgstr ""
 
-#: includes/shortcodes.php:479
+#: includes/shortcodes.php:312
 msgid "totaltime"
 msgstr ""
 
@@ -423,11 +423,11 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: includes/shortcodes.php:144
+#: includes/functions.php:144
 msgid "users"
 msgstr ""
 
-#: includes/shortcodes.php:142
+#: includes/functions.php:142
 msgid "view as calendar"
 msgstr ""
 

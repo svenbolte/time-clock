@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Time Clock
-Description: An employee and volunteer time clock plugin for WordPress
+Description: a time clock and seat reservation (desksharing) plugin for WordPress
 Author: Scott Paterson and PBMod
 Author URI: https://github.com/svenbolte/
 Plugin URI: https://github.com/svenbolte/time-clock/
@@ -12,8 +12,8 @@ Domain Path: /languages/
 Requires at least: 5.0
 Tested up to: 6.0.3
 Requires PHP: 5.7
-Stable tag: 9.1.2.1.61
-Version: 9.1.2.1.61
+Stable tag: 9.1.2.1.62
+Version: 9.1.2.1.62
 */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -33,7 +33,7 @@ if (!defined('ETIMECLOCKWP_NAME')) {
 	define('ETIMECLOCKWP_NAME', 				'Time Clock');
 }
 if (!defined('ETIMECLOCKWP_VERSION')) {
-	define('ETIMECLOCKWP_VERSION', 				'9.1.2.1.61');
+	define('ETIMECLOCKWP_VERSION', 				'9.1.2.1.62');
 }
 if (!defined('ETIMECLOCKWP_SETTINGS_PAGE')) {
 	define('ETIMECLOCKWP_SETTINGS_PAGE', 		'etimeclockwp_settings_page');

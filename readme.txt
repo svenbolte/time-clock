@@ -8,18 +8,18 @@ Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung, si
 Requires at least: 5.0
 Tested up to: 6.0.3
 Requires PHP: 5.7
-Stable tag: 9.1.2.1.61
-Version: 9.1.2.1.61
+Stable tag: 9.1.2.1.62
+Version: 9.1.2.1.62
 
-A MOD with german translations and more functions of time clock plugin. book seats (or desktops) in rooms.
+a time clock and seat reservation (desksharing) plugin for WordPress
 
 == Description ==
 
 = Overview =
 
-This plugin allows employees or volunteers to clock in and out for their work shifts and review and export their bookings to excel.
-See a room reservations calendar for all rooms and past 30 days and future
-You can book seats (or desktops) in rooms (for mobile workers and events)
+This plugin allows employees or external coworkers to clock in and out and review and export their bookings to excel.
+Use it for Desksharing and events: You can book seats (or desktops) in rooms (for mobile workers and events)
+See a room reservations calendar for all rooms and past 30 days and future bookings
 
 = Time Clock Features =
 
@@ -31,7 +31,7 @@ Users can:
 *	filter on month basis
 * 	show their bookings in a calendar view
 
-Admins can: 
+Admins (wordpress admin role) can: 
 *	 view user bookings and filter on username and/or on month basis
 *	 easily make new user accounts
 *	 view the number of hours worked for each day
@@ -42,6 +42,18 @@ Admins can:
 
 *	if worktime is >10hrs time field will be marked red
 * 	if using html in widgets enabled in your wordpress theme you can use time clock in a widget
+
+= Roombooking Features =
+
+Users can: 
+*  book seats in rooms (or book a desktop in a room in office)
+*  review rooms status in a month calendar (red when fully booked, green if free seats available)
+*  select a room and day and see the reserved status aof seats in room
+*  delete their own bookings
+
+Admins can:
+*  create and delete rooms (with capacity)
+*  create and delete seats for existing users and guests
 
 == Installation ==
 
