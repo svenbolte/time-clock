@@ -89,7 +89,9 @@ function etimeclockwp_roombooking($atts) {
 		}
 
 		// Belegungskalender
-		$html .='<h6>Raumbelegung (freie Plätze seit 30 Tagen)</h6>';
+		$html .='<h6>Raumbelegung (seit 30 Tagen) &nbsp; ';
+		$html .= '<a href="'.home_url( add_query_arg( array('logout'=>'1') ) ).'" title="'.__('logout','etimeclockwp').'"><i class="fa fa-lock" style="color:tomato"></i></a> &nbsp; ';
+		$html .= '<i title="# '.$validuser.'" class="fa fa-user"></i> '.$user_name.'</h6>';
 
 		// Form Raum auswählen
 		$html .= '<div class="noprint">';
@@ -151,7 +153,9 @@ function etimeclockwp_roombooking($atts) {
 			$html .=  '</select> ';
 			$html .= '	<input type="hidden" name="verandatum" value="'.$verandatum.'">';
 			$html .= '	<input type="hidden" name="raum" value="'.$raum.'">';
-			$html .= '	<input type="text" id="belegung" name="belegung" value="'.$user_name.'" placeholder="Belegung">';
+			$html .= '	<input type="text" id="belegung" name="belegung" value="'.$user_name.'" placeholder="Belegung"';
+			if (!current_user_can('administrator')) $html .=' readonly';
+			$html .= '>';
 			$html .= '<input type="submit" name="sitzbuchung" value="Sitz buchen"></form></div>';
 
 			// Belegtplan anzeigen
@@ -553,7 +557,7 @@ function etimeclockwp_button_shortcode($atts) {
 	} else if ($showmode == 5 && ( current_user_can('administrator') || !empty($validuser = etimevaliduser()) ) ) {
 
 		// ---------------------------- Activity-Anzeige im Kalender wenn calendar func --------------------------------
-		$result .= '<div style="text-align:right"><ul class="footer-menu"><li><i class="fa fa-user"></i> <b>'.strtoupper($validuser).'</b></li>';
+		$result .= '<div style="text-align:right"><ul class="footer-menu">';
 		$result .= etime_menu(5,$validuser);
 		$current='';
 		if (current_user_can('administrator') ) {

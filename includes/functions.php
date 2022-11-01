@@ -64,6 +64,16 @@ if( !function_exists('timeclock_event_calendar')) {
 }
 
 function etimevaliduser() {
+
+	// Abmelden und User Cookie löschen
+	if (isset($_GET['logout'])) {
+		unset($_COOKIE['etime_usercookie']); 
+		setcookie('etime_usercookie', '', time()-3600);
+		unset($_COOKIE['etime_session']); 
+		setcookie('etime_session', '', time()-3600);
+		wp_redirect( home_url( remove_query_arg( array('logout') ) ) ); exit;
+	}
+
 	$usercookie = isset( $_COOKIE['etime_usercookie'] ) ? $_COOKIE['etime_usercookie'] : '';
 	$usersession = isset( $_COOKIE['etime_session'] ) ? $_COOKIE['etime_session'] : '';
 	$esession = md5( $usercookie . intval(date('Y-m-d H:i:s')) / 24 * 3600);
@@ -135,7 +145,9 @@ function etimevaliduser() {
 
 function etime_menu($selectedmenu,$validuser) {
 	global $wp;
-		$mtext = '<li><a title="admin dashboard" href="'.site_url().'/wp-admin/edit.php?post_type=etimeclockwp_clock"><i class="fa fa-user"></i> '.strtoupper($validuser).'</a></li>'; 
+		if ($validuser=='admin')  { $mtext = '<li><a title="admin dashboard" href="'.site_url().'/wp-admin/edit.php?post_type=etimeclockwp_clock"><i class="fa fa-user"></i> '.strtoupper($validuser).'</a></li>';
+				} else { $mtext = '<li><i class="fa fa-user"></i> '.strtoupper($validuser).'</li>'; }
+		$mtext .= '<li><a href="'.home_url( add_query_arg( array('logout'=>'1') ) ).'" title="'.__('logout','etimeclockwp').'"><i class="fa fa-lock" style="color:tomato"></i></a></li>';
 		$mtext .= '<li><a href="'.home_url($wp->request).'?show=0" class="submit"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a></li>';
 		if ( $selectedmenu !== 1 ) $mtext .= '<li><a title="'.__('admin show bookings','etimeclockwp').'" href="'.home_url($wp->request).'?show=1" class="submit"><i class="fa fa-list"></i></a></li>';
 		if ( $selectedmenu !== 4 && current_user_can('administrator') ) $mtext .= '<li><a title="'.__('Panel','etimeclockwp').'" href="'.home_url($wp->request).'?show=4" class="submit"><i class="fa fa-heartbeat"></i></a></li>';
