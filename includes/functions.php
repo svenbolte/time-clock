@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 // Calendar display month - draws a calendar with the bookings
 if( !function_exists('timeclock_event_calendar')) {
 	function timeclock_event_calendar($month,$year,$eventarray){
+		global $totalsitze;
 		setlocale (LC_ALL, 'de_DE.utf8', 'de_DE@euro', 'de_DE', 'de', 'ge'); 
 		$calheader = date('Y-m-d',mktime(2,0,0,$month,1,$year));
 		$running_day = date('w',mktime(2,0,0,$month,1,$year));
@@ -37,9 +38,13 @@ if( !function_exists('timeclock_event_calendar')) {
 			foreach ($eventarray as $calevent => $fields) {
 				if ( substr($fields['verandatum'],0,10) == date('Y-m-d',mktime(0,0,0,$month,$list_day,$year)) ) {
 					$todaycolor = '#ffd80088;font-weight:700';
-					 $dailyevents .= '<span style="word-break:break-all;font-size:0.8em" title="'.wp_strip_all_tags($fields['veranstaltung']).'">' . $fields['veranstaltung'] . '</span><br>';
+					$dailyevents .= '<span style="word-break:break-all;font-size:0.8em" title="'.wp_strip_all_tags($fields['veranstaltung']).'">' . $fields['veranstaltung'] . '</span><br>';
 					$onlyfirst += 1;
 				}
+			}
+			if ( $onlyfirst > 0 ) {
+				$totaltagbelegt = totalraumbelegung(date('Y-m-d',mktime(0,0,0,$month,$list_day,$year)));
+				$dailyevents .= '<span class="newlabel white">Total | '. $totalsitze.'-'.$totaltagbelegt.' | '.$totalsitze-$totaltagbelegt.'</span>';
 			}	
 			$calendar.= '<div title="'.ago(mktime(2,0,0,$month,$list_day,$year)).'" style="width:100%;background-color:'.$todaycolor.'">'.$list_day.'<br><div style="font-weight:normal;line-height:1.1em">'.$dailyevents.'</div></div>';
 			// Database Query ende

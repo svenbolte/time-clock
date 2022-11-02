@@ -2,9 +2,15 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+function totalraumbelegung($vdatum) {
+	global $wpdb;
+	$xbelegt= $wpdb->get_results("SELECT count(*) as totalbelegt FROM `wp_roombookings` WHERE verandatum='".$vdatum."'" );
+	return $xbelegt[0]->totalbelegt;
+}
+
 // Raum- oder Schreibtisch buchen Shortcode, verwendet usercookie, wenn gesetzt, zum Buchen
 function etimeclockwp_roombooking($atts) {
-	global $wp, $wpdb;
+	global $wp, $wpdb, $totalsitze;
 	// get shortcode attributes
 	$atts = shortcode_atts(array( 'raum' => '1', 'verandatum' => date('Y-m-d'), ), $atts);
 	$raum = $atts['raum'];
@@ -108,11 +114,12 @@ function etimeclockwp_roombooking($atts) {
 		$html .= '<input type="date" name="verandatum" value="'. $verandatum . '">';
 		$xrooms = $wpdb->get_results("SELECT id, raumname,sitze FROM " . $wpdb->prefix . "rooms ORDER by raumname" );
 		$html .= ' <select name="raum">';
-		$sitzzahl = 0; $aktraumname='';
+		$sitzzahl = 0; $aktraumname=''; $totalsitze = 0;
 		foreach ($xrooms as $room) {
 			$html .=  '<option value="'.$room->id.'"';
 			if ($room->id == $raum) { $html .=  ' selected '; $sitzzahl = $room->sitze; $aktraumname = $room->raumname; }
 			$html .=  '>' .$room->raumname.' ('.$room->sitze.')' . '</option>';
+			$totalsitze += $room->sitze;
 		}
 		$html .=  '</select> ';
 		$html .= '<input type="submit" name="raumauswahl" value="wählen"></form>';
@@ -126,13 +133,18 @@ function etimeclockwp_roombooking($atts) {
 		}	
 		$html .= '</div>';
 
-		// Kalender anzeigen
+		// Kalender anzeigen, 3 Monate auf Basis des ausgewählten Datums
+		$caldatum = new DateTime($verandatum);
+		$caldatum->modify('first day of last month');
+		$vormonatStart = $caldatum->format('Y-m-01');
+		$caldatum->modify('first day of +2 months');
+		$nachmonatEnde = $caldatum->format('Y-m-t');
 		$customers = array();
-		$xbelegung = $wpdb->get_results("SELECT ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."rooms.raumname, ".$wpdb->prefix."roombookings.raum, ".$wpdb->prefix."rooms.sitze, count(*) as belegt FROM ".$wpdb->prefix."roombookings join ".$wpdb->prefix."rooms on ".$wpdb->prefix."rooms.id=".$wpdb->prefix."roombookings.raum WHERE ".$wpdb->prefix."roombookings.verandatum >= CURDATE() - INTERVAL 30 DAY group by ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."roombookings.raum" );
+		$xbelegung = $wpdb->get_results("SELECT ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."rooms.raumname, ".$wpdb->prefix."roombookings.raum, ".$wpdb->prefix."rooms.sitze, count(*) as belegt FROM ".$wpdb->prefix."roombookings join ".$wpdb->prefix."rooms on ".$wpdb->prefix."rooms.id=".$wpdb->prefix."roombookings.raum WHERE ".$wpdb->prefix."roombookings.verandatum >= '".$vormonatStart."' AND ".$wpdb->prefix."roombookings.verandatum <= '".$nachmonatEnde."' group by ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."roombookings.raum" );
 		foreach ($xbelegung as $beleg) {
 			$freiesitze = ($beleg->sitze - $beleg->belegt);
-			if ($freiesitze == 0) $zerofree = '#ff888888'; else if ($freiesitze <= 5) $zerofree ='#ffffff88'; else $zerofree ='#88ff8888';
-			$customers[] = array ('verandatum' => $beleg->verandatum, 'veranstaltung' => '<a href="'.home_url( add_query_arg( array('verandatum'=>substr($beleg->verandatum,0,10),'raum'=>$beleg->raum) ) ).'" class="newlabel" style="line-height:10px;font-size:1em;background-color:'.$zerofree.'">' . $beleg->raumname.' | '.$beleg->sitze.'-'.$beleg->belegt.' | '.$freiesitze.'</a>' );
+			if ($freiesitze == 0) $zerofree = '#ff888888'; else if ($freiesitze <= 3) $zerofree ='#ffffff88'; else $zerofree ='#88ff8888';
+			$customers[] = array ('verandatum' => $beleg->verandatum, 'veranstaltung' => '<a href="'.home_url( add_query_arg( array('verandatum'=>substr($beleg->verandatum,0,10),'raum'=>$beleg->raum) ) ).'" class="newlabel" style="line-height:10px;font-size:1em;background-color:'.$zerofree.'">' . $beleg->raumname.' | '.$beleg->sitze.'-'.$beleg->belegt.' | '.$freiesitze.'</a>');
 		}
 		if ( !empty($customers)) {
 			// Monatskalender mit Events zeigen

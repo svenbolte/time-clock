@@ -6,10 +6,10 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung, sitzreservierung, seat booking, events, rooms
 Requires at least: 5.0
-Tested up to: 6.0.3
+Tested up to: 6.1
 Requires PHP: 5.7
-Stable tag: 9.1.2.1.62
-Version: 9.1.2.1.62
+Stable tag: 9.1.2.1.63
+Version: 9.1.2.1.63
 
 a time clock and seat reservation (desksharing) plugin for WordPress
 
@@ -69,6 +69,10 @@ If you want to use the seat reservation/room planner:
 
 
 == Changelog ==
+
+= 9.1.2.1.63 = 02.11.2022
+Belegt und Freianzeige alle Räume pro Tag (daily totals in calendar)
+Kalendervorschau 1 Monat vor und 1 Monat nach ausgewähltem Datum (3 months view bases on selected date)
 
 = 9.1.2.1.60 = 31.10.2022
 added cookie hash based login system. hashs are valid on current day. cookies are stored 6 hrs
