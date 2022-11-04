@@ -103,8 +103,8 @@ function etimeclockwp_roombooking($atts) {
 			wp_redirect(  home_url( add_query_arg( NULL, NULL ) ) ); exit;
 		}
 
-		// Belegungskalender
-		$html .='<h6>Raumbelegung (seit 30 Tagen) &nbsp; ';
+		// Abschnitt Raumbelegung
+		$html .='<h6>Raumbelegung &nbsp; ';
 		$html .= '<a href="'.home_url( add_query_arg( array('logout'=>'1') ) ).'" title="'.__('logout','etimeclockwp').'"><i class="fa fa-lock" style="color:tomato"></i></a> &nbsp; ';
 		$html .= '<i title="# '.$validuser.'" class="fa fa-user"></i> '.$user_name.'</h6>';
 
@@ -132,20 +132,42 @@ function etimeclockwp_roombooking($atts) {
 			$html .= '<input type="submit" name="raumanlegen" value="+"></form>';
 		}	
 		$html .= '</div>';
-
-		// Kalender anzeigen, 3 Monate auf Basis des ausgewählten Datums
+		
+		// Kalender anzeigen, max. 3 Monate ab des ausgewählten Datums
 		$caldatum = new DateTime($verandatum);
-		$caldatum->modify('first day of last month');
+		// $caldatum->modify('first day of last month');
 		$vormonatStart = $caldatum->format('Y-m-01');
 		$caldatum->modify('first day of +2 months');
 		$nachmonatEnde = $caldatum->format('Y-m-t');
+		
+		// Toggle div for calendar on and off
+		$tcolor = get_theme_mod('link-color', '#006060');
+		$tbcolor = hexdec(substr($tcolor, 1, 2)) . ',' . hexdec(substr($tcolor, 3, 2)) . ',' . hexdec(substr($tcolor, 5, 2)) . ',.1';
+		$html .= '<style>.faq__content, summary {padding:6px;outline:none;border:1px solid '.$tcolor.';border-radius:3px;position:relative}';
+		$html .= 'summary {font-size:1.1rem;cursor:pointer;color:'.$tcolor.';background:rgba('.$tbcolor.');margin-top:2px}.faq__content {border-top:none}';
+		$html .= 'details[open] summary ~ * {animation: sweep .4s ease-in-out}';
+		$html .= 'details > summary::after {position: absolute;font-family:"fontawesome";content:"\f196";right: 20px}';
+		$html .= 'details[open] > summary::after {position:absolute;font-family:"fontawesome";content:"\f147";right: 20px}';
+		$html .= 'details > summary::-webkit-details-marker {display:none}</style>';
+		$html .= '<script> function toggleopen() { ';
+		$html .= ' var cusid_ele = document.getElementsByClassName("details");';
+		$html .= ' if (cusid_ele[0].open == 1) {var onoff = 0;} else {var onoff = 1;}';
+		$html .= 'for (var i = 0; i < cusid_ele.length; ++i) { var item = cusid_ele[i];'; 
+		$html .= ' if (onoff == 1) {item.open = true;} else {item.open=false;} } } </script>';
+		$html .= '<details class="details"><summary>Buchungskalender ab '.date_i18n('F Y',$vormonatStart).'</summary>';
+		$html .= '<div class="faq__content">';
 		$customers = array();
-		$xbelegung = $wpdb->get_results("SELECT ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."rooms.raumname, ".$wpdb->prefix."roombookings.raum, ".$wpdb->prefix."rooms.sitze, count(*) as belegt FROM ".$wpdb->prefix."roombookings join ".$wpdb->prefix."rooms on ".$wpdb->prefix."rooms.id=".$wpdb->prefix."roombookings.raum WHERE ".$wpdb->prefix."roombookings.verandatum >= '".$vormonatStart."' AND ".$wpdb->prefix."roombookings.verandatum <= '".$nachmonatEnde."' group by ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."roombookings.raum" );
+		$xbelegung = $wpdb->get_results("SELECT ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."rooms.raumname, ".$wpdb->prefix."roombookings.raum, ".$wpdb->prefix."rooms.sitze, count(*) as belegt FROM ".$wpdb->prefix."roombookings join ".$wpdb->prefix."rooms on ".$wpdb->prefix."rooms.id=".$wpdb->prefix."roombookings.raum WHERE ".$wpdb->prefix."roombookings.verandatum >= '".$vormonatStart."' AND ".$wpdb->prefix."roombookings.verandatum <= '".$nachmonatEnde."' group by ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."roombookings.raum order by verandatum" );
+		$pielabel = ''; $piesum = '';
 		foreach ($xbelegung as $beleg) {
 			$freiesitze = ($beleg->sitze - $beleg->belegt);
 			if ($freiesitze == 0) $zerofree = '#ff888888'; else if ($freiesitze <= 3) $zerofree ='#ffffff88'; else $zerofree ='#88ff8888';
 			$customers[] = array ('verandatum' => $beleg->verandatum, 'veranstaltung' => '<a href="'.home_url( add_query_arg( array('verandatum'=>substr($beleg->verandatum,0,10),'raum'=>$beleg->raum) ) ).'" class="newlabel" style="line-height:10px;font-size:1em;background-color:'.$zerofree.'">' . $beleg->raumname.' | '.$beleg->sitze.'-'.$beleg->belegt.' | '.$freiesitze.'</a>');
+			$pielabel .=  substr($beleg->verandatum,5,5) .'|'. $beleg->raumname.',';
+			$piesum .= round(($beleg->belegt / $beleg->sitze)*100) . ',';
 		}
+		$piesum = rtrim($piesum, ",");
+		$pielabel = rtrim($pielabel, ",");
 		if ( !empty($customers)) {
 			// Monatskalender mit Events zeigen
 			$month=substr($customers[0]['verandatum'],5,2);
@@ -159,6 +181,17 @@ function etimeclockwp_roombooking($atts) {
 				}	
 			}
 		} else { $html .= __('no records','etimeclockwp'); }	
+		
+	$html .='</div></details>'	;
+
+		// Linechart for admin
+		if (class_exists('PB_ChartsCodes')) {
+			$html .= '<details class="details"><summary>Auslastungschart</summary>';
+			$html .= '<div class="faq__content">';
+			$html .= do_shortcode('[chartscodes_line accentcolor=1 xaxis="Tag/Raum" yaxis="Auslastung %" height="450" values="'.$piesum.'" labels="'.$pielabel.'"]');
+			$html .='</div></details>'	;
+		}	
+		//
 
 		// Sitz im Raum buchen
 		if ($sitzzahl > 0) {
