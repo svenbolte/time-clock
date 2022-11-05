@@ -70,14 +70,14 @@ if( !function_exists('timeclock_event_calendar')) {
 
 function etimevaliduser() {
 
+	$logu='';
 	$usercookie = isset( $_COOKIE['etime_usercookie'] ) ? $_COOKIE['etime_usercookie'] : '';
 	$usersession = isset( $_COOKIE['etime_session'] ) ? $_COOKIE['etime_session'] : '';
 	$esession = md5( $usercookie . intval(date('Y-m-d H:i:s')) / 24 * 3600);
 
 	if ($_POST && $usersession !== $esession) {
-		$eid =		sanitize_text_field($_POST['eid']);
-		$epw =		sanitize_text_field($_POST['epw']);
-
+		if (isset($_POST['eid'])) $eid = sanitize_text_field($_POST['eid']); else $eid='';
+		if (isset($_POST['epw'])) $epw = sanitize_text_field($_POST['epw']); else $epw='';
 		// check to see if login data is valid
 		$args = array(
 			'post_type'					=> 'etimeclockwp_users',
@@ -103,17 +103,20 @@ function etimevaliduser() {
 		}	
 
 		// success - user id and password are correct // Passwort und 1-day-hash in Cookies speichern
-		$esession = md5( $eid . intval(date('Y-m-d H:i:s')) / 24 * 3600);
-		setcookie("etime_usercookie", $eid, time()+24000);
-		setcookie("etime_session", $esession, time()+24000);
+		if (!empty($user_id)) {
+			$esession = md5( $eid . intval(date('Y-m-d H:i:s')) / 24 * 3600);
+			setcookie("etime_usercookie", $eid, time()+24000);
+			setcookie("etime_session", $esession, time()+24000);
+		}	
 
 	} else {
 		if ($usersession !== $esession) {
 			$usercookie = isset( $_COOKIE['etime_usercookie'] ) ? $_COOKIE['etime_usercookie'] : '';
-			echo '<div style="width:100%;text-align:center;display:block"><form method="post">';
-			echo '<div class="etimeclock-text">'.etimeclockwp_get_option("employee-id").':<br /><input type="text" id="eid" name="eid" value="'.$usercookie.'"></div>';
-			echo ' <div class="etimeclock-text">'.etimeclockwp_get_option('employee-password').':<br /><input type="password" id="epw" name="epw"></div>';
-			echo ' <input type="submit" value="Anmelden"></form></div>';
+			$logu = '<div style="width:100%;text-align:center;display:block"><form method="post">';
+			$logu .=  '<div class="etimeclock-text">'.etimeclockwp_get_option("employee-id").':<br /><input type="text" id="eid" name="eid" value="'.$usercookie.'"></div>';
+			$logu .= ' <div class="etimeclock-text">'.etimeclockwp_get_option('employee-password').':<br /><input type="password" id="epw" name="epw"></div>';
+			$logu .= ' <input type="submit" value="Anmelden"></form></div>';
+			echo $logu;
 		} else {
 			$eid =		sanitize_text_field($usercookie);
 			// valid session cookie is present - so get user from eid
@@ -141,15 +144,15 @@ function etimevaliduser() {
 
 function etime_menu($selectedmenu,$validuser) {
 	global $wp;
-		if ($validuser=='admin')  { $mtext = '<li><a title="admin dashboard" href="'.site_url().'/wp-admin/edit.php?post_type=etimeclockwp_clock"><i class="fa fa-user"></i> '.strtoupper($validuser).'</a></li>';
-				} else { $mtext = '<li><i class="fa fa-user"></i> '.strtoupper($validuser).'</li>'; }
-		$mtext .= '<li><a href="'.home_url( add_query_arg( array('logout'=>'1') ) ).'" title="'.__('logout','etimeclockwp').'"><i class="fa fa-lock" style="color:tomato"></i></a></li>';
-		$mtext .= '<li><a href="'.home_url($wp->request).'?show=0" class="submit"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a></li>';
-		if ( $selectedmenu !== 1 ) $mtext .= '<li><a title="'.__('admin show bookings','etimeclockwp').'" href="'.home_url($wp->request).'?show=1" class="submit"><i class="fa fa-list"></i></a></li>';
-		if ( $selectedmenu !== 4 && current_user_can('administrator') ) $mtext .= '<li><a title="'.__('Panel','etimeclockwp').'" href="'.home_url($wp->request).'?show=4" class="submit"><i class="fa fa-heartbeat"></i></a></li>';
-		if ( $selectedmenu !== 5 ) $mtext .= '<li><a title="'.__('view as calendar','etimeclockwp').'" href="'.home_url($wp->request).'?show=5" class="submit btnbutton"><i class="fa fa-calendar-o"></i></a></li>';
-		$mtext .= '<li><a title="'.__('export','etimeclockwp').' '.__('activities','etimeclockwp').'" href="'.home_url($wp->request).'?show=2" class="submit btnbutton"><i class="fa fa-download"></i>|<i class="fa fa-list"></i></a></li>';
-		if ( current_user_can('administrator') ) $mtext .= '<li><a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=3" class="submit btnbutton"><i class="fa fa-download"></i>|<i class="fa fa-users"></i></a></span>';
+	if ($validuser=='admin')  { $mtext = '<li><a title="admin dashboard" href="'.site_url().'/wp-admin/edit.php?post_type=etimeclockwp_clock"><i class="fa fa-user"></i> '.strtoupper($validuser).'</a></li>';
+		} else { $mtext = '<li><i class="fa fa-user"></i> '.strtoupper($validuser).'</li>'; }
+	$mtext .= '<li><a href="'.home_url( add_query_arg( array('logout'=>'1') ) ).'" title="'.__('logout','etimeclockwp').'"><i class="fa fa-lock" style="color:tomato"></i></a></li>';
+	$mtext .= '<li><a href="'.home_url($wp->request).'?show=0" class="submit"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a></li>';
+	if ( $selectedmenu !== 1 ) $mtext .= '<li><a title="'.__('admin show bookings','etimeclockwp').'" href="'.home_url($wp->request).'?show=1" class="submit"><i class="fa fa-list"></i></a></li>';
+	if ( $selectedmenu !== 4 && current_user_can('administrator') ) $mtext .= '<li><a title="'.__('Panel','etimeclockwp').'" href="'.home_url($wp->request).'?show=4" class="submit"><i class="fa fa-heartbeat"></i></a></li>';
+	if ( $selectedmenu !== 5 ) $mtext .= '<li><a title="'.__('view as calendar','etimeclockwp').'" href="'.home_url($wp->request).'?show=5" class="submit btnbutton"><i class="fa fa-calendar-o"></i></a></li>';
+	$mtext .= '<li><a title="'.__('export','etimeclockwp').' '.__('activities','etimeclockwp').'" href="'.home_url($wp->request).'?show=2" class="submit btnbutton"><i class="fa fa-download"></i>|<i class="fa fa-list"></i></a></li>';
+	if ( current_user_can('administrator') ) $mtext .= '<li><a title="'.__('export','etimeclockwp').' '.__('users','etimeclockwp').'" href="'.home_url($wp->request).'?show=3" class="submit btnbutton"><i class="fa fa-download"></i>|<i class="fa fa-users"></i></a></span>';
 	return $mtext;
 }
 
