@@ -42,7 +42,7 @@ if( !function_exists('timeclock_event_calendar')) {
 					$onlyfirst += 1;
 				}
 			}
-			if ( $onlyfirst > 0 ) {
+			if ( $onlyfirst > 0 && $totalsitze > 0 ) {
 				$totaltagbelegt = totalraumbelegung(date('Y-m-d',mktime(0,0,0,$month,$list_day,$year)));
 				$dailyevents .= '<span class="newlabel white">Total | '. $totalsitze.'-'.$totaltagbelegt.' | '.$totalsitze-$totaltagbelegt.'</span>';
 			}	
