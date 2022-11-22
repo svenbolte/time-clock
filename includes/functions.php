@@ -212,7 +212,7 @@ if( !function_exists('german_time_diff')) {
 			'n' =>''
 		);
 		$aetitle = __('time since previous post','penguin').'&#10;'.strtr($diff,$longreplace).'&#10;'.$days_old.' Tage';
-		return '<abbr title="'.$aetitle.'" class="newlabel '.$newclass.'"><i title="'.$aetitle.'" class="fa fa-arrows-v"></i>&nbsp;' . strtr($diff,$replace) . '</abbr>';
+		return '<abbr title="'.$aetitle.'" class="newlabel '.$newclass.'" style="white-space: nowrap"><i title="'.$aetitle.'" class="fa fa-arrows-v"></i>&nbsp;' . strtr($diff,$replace) . '</abbr>';
 	}
 }
 
