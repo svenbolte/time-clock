@@ -47,7 +47,7 @@ function etimeclockwp_register_post_type() {
 		
 		$users_args = array(
 			'labels' 				=> $users_labels,
-			'public' 				=> true,
+			'public' 				=> false,
 			'publicly_queryable' 	=> true,
 			'show_ui' 				=> true,
 			'show_in_menu' 			=> 'etimeclockwp_menu',
