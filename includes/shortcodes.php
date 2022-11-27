@@ -11,6 +11,7 @@ function totalraumbelegung($vdatum) {
 // Raum- oder Schreibtisch buchen Shortcode, verwendet usercookie, wenn gesetzt, zum Buchen
 function etimeclockwp_roombooking($atts) {
 	global $wp, $wpdb, $totalsitze;
+	wp_enqueue_style('etimeclockwp-public-css');
 	// get shortcode attributes
 	$atts = shortcode_atts(array( 'raum' => '1', 'verandatum' => date('Y-m-d'), ), $atts);
 	$raum = $atts['raum'];
@@ -257,6 +258,7 @@ add_shortcode('roombooking', 'etimeclockwp_roombooking');
 // Auswertungen, Listen und Exports der Zeiten
 function etimeclockwp_button_shortcode($atts) {
 	global $current_user,$wp,$datefilter;
+	wp_enqueue_style('etimeclockwp-public-css');
 	if (isset ($_GET['show']) ) $showmode = sanitize_text_field($_GET['show']); else $showmode = 0;
 	// get shortcode attributes
 	$atts = shortcode_atts(array( 'align' 	=> '',	), $atts);

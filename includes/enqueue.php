@@ -33,18 +33,7 @@ function etimeclockwp_admin_enqueue() {
 	// color picker
 	wp_enqueue_style('wp-color-picker');
 	wp_enqueue_script('wp-color-picker');
-	
-}
-add_action('admin_enqueue_scripts','etimeclockwp_admin_enqueue');
 
-
-// public enqueue
-function etimeclockwp_public_enqueue() {
-	
-	// public css
-	wp_register_style('etimeclockwp-public-css',plugins_url('/assets/css/etimeclockwp-public.css',dirname(__FILE__)),false,ETIMECLOCKWP_VERSION);
-	wp_enqueue_style('etimeclockwp-public-css');
-	
 	// date time
 	wp_enqueue_script('etimeclockwp-date-time',plugins_url('/assets/js/etimeclockwp-date_time.js',dirname(__FILE__)),array('jquery'),ETIMECLOCKWP_VERSION);
 	wp_localize_script('etimeclockwp-date-time', 'ajax_object_date_time', array(
@@ -63,6 +52,16 @@ function etimeclockwp_public_enqueue() {
 	// moment library
 	wp_enqueue_script('etimeclockwp-moment',plugins_url('/assets/js/etimeclockwp-moment.min.js',dirname(__FILE__)),array('jquery'),ETIMECLOCKWP_VERSION);
 	wp_enqueue_script('etimeclockwp-moment-php',plugins_url('/assets/js/etimeclockwp-moment.phpDateFormat.js',dirname(__FILE__)),array('jquery'),ETIMECLOCKWP_VERSION);
+
+}
+add_action('admin_enqueue_scripts','etimeclockwp_admin_enqueue');
+
+
+// public enqueue
+function etimeclockwp_public_enqueue() {
+	
+	// public css
+	wp_register_style('etimeclockwp-public-css',plugins_url('/assets/css/etimeclockwp-public.css',dirname(__FILE__)),false,ETIMECLOCKWP_VERSION);
 	
 }
 add_action('wp_enqueue_scripts','etimeclockwp_public_enqueue',10);
