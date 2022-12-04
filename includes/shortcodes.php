@@ -105,7 +105,7 @@ function etimeclockwp_roombooking($atts) {
 		// Abschnitt Raumbelegung
 		if (!empty($validuser)) {
 			$html .= '<div style="text-align:right"><ul class="footer-menu">';
-			$html .= '<li><a href="'.home_url( add_query_arg( array('logout'=>'1') ) ).'" title="'.__('logout','etimeclockwp').'"><i class="fa fa-lock" style="color:tomato"></i></a></li>';
+			$html .= '<li><a href="'.home_url( add_query_arg( array('logout'=>'1') ) ).'" title="'.__('logout','etimeclockwp').'"><i class="fa fa-lg fa-sign-out" style="color:tomato"></i></a></li>';
 			$html .= '<li><i class="fa fa-user"></i> '.$user_name.' '.$validuser.'</li></ul></div>';
 		}	
 
