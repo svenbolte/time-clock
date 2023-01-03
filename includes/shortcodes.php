@@ -11,7 +11,6 @@ function totalraumbelegung($vdatum) {
 // Raum- oder Schreibtisch buchen Shortcode, verwendet usercookie, wenn gesetzt, zum Buchen
 function etimeclockwp_roombooking($atts) {
 	global $wp, $wpdb, $totalsitze;
-	wp_enqueue_style('etimeclockwp-public-css');
 	// get shortcode attributes
 	$atts = shortcode_atts(array( 'raum' => '1', 'verandatum' => date('Y-m-d'), ), $atts);
 	$raum = $atts['raum'];
@@ -39,6 +38,9 @@ function etimeclockwp_roombooking($atts) {
 		$usercookie = isset( $_COOKIE['etime_usercookie'] ) ? $_COOKIE['etime_usercookie'] : $userid;
 	}
 
+	// Css laden
+	wp_enqueue_style('etimeclockwp-public-css');
+
 	// Nur für Admins oder wenn angemeldet
 	if (current_user_can('administrator') || !empty($validuser) ) {
 
@@ -48,14 +50,16 @@ function etimeclockwp_roombooking($atts) {
 			setcookie('etime_usercookie', '', time()-3600);
 			unset($_COOKIE['etime_session']); 
 			setcookie('etime_session', '', time()-3600);
-			wp_redirect( home_url( remove_query_arg( array('logout') ) ) ); exit;
+			$html = '<script >window.location = "'.home_url( remove_query_arg( array('logout') ) ).'";</script>';
+			return $html;
 		}
 
 		//// Buchung löschen (nur admin oder user für sich) - Sitznummer übergeben
 		if (isset($_GET['delseat']) &&  ( current_user_can('administrator') || ( isset($_GET['code']) && esc_html($_GET['code']) == md5(date('Y-m-d H')) ) ) ) {
 			$postingid = (int) sanitize_text_field($_GET['delseat']);
 			if ($postingid > 0) $wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum = ".$raum." AND sitz = " . $postingid);
-			wp_redirect( home_url( remove_query_arg( array('delseat','code') ) ) ); exit;
+			$html = '<script >window.location = "'.home_url( remove_query_arg( array('delseat','code') ) ) .'";</script>';
+			return $html;
 		}
 
 		//// Raum mit buchungen löschen (nur admin) - Raumnummer übergeben
@@ -66,7 +70,8 @@ function etimeclockwp_roombooking($atts) {
 				$wpdb->query("DELETE FROM ". $wpdb->prefix . "rooms WHERE id = ".$postingid);
 				$wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE raum = ".$postingid);
 			}	
-			wp_redirect( home_url( remove_query_arg( array ('delroom','raum') ) ) ); exit;
+			$html = '<script >window.location = "'.home_url( remove_query_arg( array ('delroom','raum') ) ) .'";</script>';
+			return $html;
 		}
 
 		// Neuen Raum schreiben
@@ -82,9 +87,10 @@ function etimeclockwp_roombooking($atts) {
 				$html .= ' Raum '.$_POST['raumname'].' gespeichert' ; 
 				$_POST['raumname']='';
 			}
-			wp_redirect( home_url( add_query_arg( NULL, NULL ) ) ); exit;
-
+			$html = '<script >window.location = "'.home_url( add_query_arg( NULL, NULL ) ) .'";</script>';
+			return $html;
 		}
+
 		// Neuen Datensatz schreiben
 	   if (!empty($_POST['belegung']) && (current_user_can('administrator') || $user_name == $_POST['belegung']) ) {
 			$table = $wpdb->prefix . "roombookings";
@@ -99,7 +105,8 @@ function etimeclockwp_roombooking($atts) {
 				$html .= ' Belegung für Sitz '.$_POST['sitz'].' gespeichert' ; 
 				$_POST['belegung']='';
 			}
-			wp_redirect(  home_url( add_query_arg( NULL, NULL ) ) ); exit;
+			$html = '<script >window.location = "'.home_url( add_query_arg( NULL, NULL ) ) .'";</script>';
+			return $html;
 		}
 
 		// Abschnitt Raumbelegung
@@ -195,7 +202,7 @@ function etimeclockwp_roombooking($atts) {
 		// Sitz im Raum buchen
 		if ($sitzzahl > 0) {
 			$html .= '<div class="noprint">';
-			$html .= '<form class="noprint" method="post" name="sitzbuchung">';
+			$html .= '<form class="noprint" method="post" id="sitzbuchung" name="sitzbuchung">';
 			$xseats = $wpdb->get_results("SELECT id, verandatum, sitz,belegung FROM " . $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum=".$raum." AND belegung <> '' ORDER by id" );
 			$html .= ' <select name="sitz">';
 			for($i=1; $i <= $sitzzahl; $i++) {
@@ -217,7 +224,7 @@ function etimeclockwp_roombooking($atts) {
 				}
 				$html .=  '</select> ';
 			}	
-			$html .= ' <input type="submit" name="sitzbuchung" value="Sitz buchen"></form></div>';
+			$html .= ' <input type="submit" form="sitzbuchung" name="sitzbuchung" value="Sitz buchen"></form></div>';
 
 			// Belegtplan anzeigen
 			$xseats = $wpdb->get_results("SELECT  id, verandatum, sitz,belegung FROM " . $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum=".$raum." ORDER by id" );
@@ -269,7 +276,8 @@ function etimeclockwp_button_shortcode($atts) {
 		setcookie('etime_usercookie', '', time()-3600);
 		unset($_COOKIE['etime_session']); 
 		setcookie('etime_session', '', time()-3600);
-		wp_redirect( home_url( remove_query_arg( array('logout') ) ) ); exit;
+			$html = '<script >window.location = "'.home_url( remove_query_arg( array('logout') ) ) .'";</script>';
+			return $html;
 	}
 
 	$result = '';
