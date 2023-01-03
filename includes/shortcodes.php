@@ -50,16 +50,16 @@ function etimeclockwp_roombooking($atts) {
 			setcookie('etime_usercookie', '', time()-3600);
 			unset($_COOKIE['etime_session']); 
 			setcookie('etime_session', '', time()-3600);
-			$html = '<script >window.location = "'.home_url( remove_query_arg( array('logout') ) ).'";</script>';
-			return $html;
+			//$html = '<script >window.location = "'.home_url( remove_query_arg( array('logout') ) ).'";</script>';
+			//return $html;
 		}
 
 		//// Buchung löschen (nur admin oder user für sich) - Sitznummer übergeben
 		if (isset($_GET['delseat']) &&  ( current_user_can('administrator') || ( isset($_GET['code']) && esc_html($_GET['code']) == md5(date('Y-m-d H')) ) ) ) {
 			$postingid = (int) sanitize_text_field($_GET['delseat']);
 			if ($postingid > 0) $wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum = ".$raum." AND sitz = " . $postingid);
-			$html = '<script >window.location = "'.home_url( remove_query_arg( array('delseat','code') ) ) .'";</script>';
-			return $html;
+			//$html = '<script >window.location = "'.home_url( remove_query_arg( array('delseat','code') ) ) .'";</script>';
+			//return $html;
 		}
 
 		//// Raum mit buchungen löschen (nur admin) - Raumnummer übergeben
@@ -70,8 +70,8 @@ function etimeclockwp_roombooking($atts) {
 				$wpdb->query("DELETE FROM ". $wpdb->prefix . "rooms WHERE id = ".$postingid);
 				$wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE raum = ".$postingid);
 			}	
-			$html = '<script >window.location = "'.home_url( remove_query_arg( array ('delroom','raum') ) ) .'";</script>';
-			return $html;
+			//$html = '<script >window.location = "'.home_url( remove_query_arg( array ('delroom','raum') ) ) .'";</script>';
+			//return $html;
 		}
 
 		// Neuen Raum schreiben
@@ -87,8 +87,8 @@ function etimeclockwp_roombooking($atts) {
 				$html .= ' Raum '.$_POST['raumname'].' gespeichert' ; 
 				$_POST['raumname']='';
 			}
-			$html = '<script >window.location = "'.home_url( add_query_arg( NULL, NULL ) ) .'";</script>';
-			return $html;
+			//$html = '<script >window.location = "'.home_url( add_query_arg( NULL, NULL ) ) .'";</script>';
+			//return $html;
 		}
 
 		// Neuen Datensatz schreiben
@@ -105,8 +105,8 @@ function etimeclockwp_roombooking($atts) {
 				$html .= ' Belegung für Sitz '.$_POST['sitz'].' gespeichert' ; 
 				$_POST['belegung']='';
 			}
-			$html = '<script >window.location = "'.home_url( add_query_arg( NULL, NULL ) ) .'";</script>';
-			return $html;
+			//$html = '<script >window.location = "'.home_url( add_query_arg( NULL, NULL ) ) .'";</script>';
+			//return $html;
 		}
 
 		// Abschnitt Raumbelegung
@@ -224,7 +224,7 @@ function etimeclockwp_roombooking($atts) {
 				}
 				$html .=  '</select> ';
 			}	
-			$html .= ' <input type="submit" form="sitzbuchung" name="sitzbuchung" value="Sitz buchen"></form></div>';
+			$html .= ' <input type="submit" name="sitzbuchung" value="Sitz buchen"></form></div>';
 
 			// Belegtplan anzeigen
 			$xseats = $wpdb->get_results("SELECT  id, verandatum, sitz,belegung FROM " . $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum=".$raum." ORDER by id" );
@@ -299,7 +299,7 @@ function etimeclockwp_button_shortcode($atts) {
 		$result .= '<span class="etimeclock-date"></span> &nbsp; ';
 		$result .= "<span class='etimeclock-time'></span><br />";
 		$result .= '<input id="manualdate" name="manualdate" type="date" value="'.date('Y-m-d').'"> &nbsp; ';
-		$result .= '<input id="manualtime" name="manualtime" type="time" style="padding:6px">';
+		$result .= '<input id="manualtime" name="manualtime" type="time" value="'.date('H:i:s').'" style="padding:6px">';
 		$result .= "<br /><br>";
 		// login section
 		$usercookie = isset( $_COOKIE['etime_usercookie'] ) ? $_COOKIE['etime_usercookie'] : '';
@@ -447,7 +447,7 @@ function etimeclockwp_button_shortcode($atts) {
 							$totaz +=$diffsecs;
 							$totbrutto +=$diffsecs;
 						}	
-						$diffhhmm = sprintf('%02d:%02d:%02d', ($diffsecs / 3600),($diffsecs / 60 % 60), $diffsecs % 60);
+						$diffhhmm = sprintf('%02d:%02d:%02d', (floor($diffsecs / 3600)),floor($diffsecs / 60) % 60, round(floor($diffsecs) % 60));
 					} else {
 						$difftime='';
 						$diffhhmm='';
@@ -469,15 +469,15 @@ function etimeclockwp_button_shortcode($atts) {
 			}
 			$result .= "</tr>";
 			if ($azsum > 60*60*10) $tenhourwarn = 'background-color:tomato;color:white'; else $tenhourwarn ='';
-			$result .= '<tfoot><tr><td colspan=3 style="text-align:left"><b>Tagessummen</b></td><td style="'.$tenhourwarn.'"><b>'.sprintf('%02d:%02d:%02d', ($azsum / 3600),($azsum / 60 % 60), $azsum % 60).'</b></td><td><b>';
-			$result .= sprintf('%02d:%02d:%02d', ($pausum / 3600),($pausum / 60 % 60), $pausum % 60).'</b></td><td><b>';
+			$result .= '<tfoot><tr><td colspan=3 style="text-align:left"><b>Tagessummen</b></td><td style="'.$tenhourwarn.'"><b>'.sprintf('%02d:%02d:%02d', floor($azsum / 3600),(floor($azsum / 60) % 60), $azsum % 60).'</b></td><td><b>';
+			$result .= sprintf('%02d:%02d:%02d', (floor($pausum / 3600)),(floor($pausum / 60) % 60), $pausum % 60).'</b></td><td><b>';
 			$result .= etimeclockwp_get_time_worked($post,$format = true).'</b></td></tr></tfoot>';
 			$result .= '</table>';
 		}
 		$result .= '<table><thead><th colspan=3 style="width:65%"><i class="fa fa-hourglass-3"></i> Gesamtsummen</th>';
-		$result .= '<th>'.sprintf('%02d:%02d:%02d', ($totaz / 3600),($totaz / 60 % 60), $totaz % 60).'</th>';
-		$result .= '<th>'.sprintf('%02d:%02d:%02d', ($totpau / 3600),($totpau / 60 % 60), $totpau % 60).'</th>';
-		$result .= '<th>'.sprintf('%02d:%02d:%02d', ($totbrutto / 3600),($totbrutto / 60 % 60), $totbrutto % 60).'</th>';
+		$result .= '<th>'.sprintf('%02d:%02d:%02d', floor($totaz / 3600),(floor($totaz / 60) % 60), $totaz % 60).'</th>';
+		$result .= '<th>'.sprintf('%02d:%02d:%02d', floor($totpau / 3600),(floor($totpau / 60) % 60), $totpau % 60).'</th>';
+		$result .= '<th>'.sprintf('%02d:%02d:%02d', floor($totbrutto / 3600),(floor($totbrutto / 60) % 60), $totbrutto % 60).'</th>';
 		$result .= '</thead></table>';
 	} else if ($showmode == 2 && ( current_user_can('administrator') || !empty($validuser = etimevaliduser()) ) ) {
 

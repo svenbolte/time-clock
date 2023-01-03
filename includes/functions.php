@@ -285,7 +285,7 @@ function etimeclockwp_get_options() {
 // convert seconds time to hours / mins / secs
 function etimeclockwp_convert_time($seconds) {
 	$t = round((int) $seconds);
-	return sprintf('%02d:%02d:%02d', ($t/3600),($t/60%60), $t%60);
+	return sprintf('%02d:%02d:%02d', (floor($t)/3600),(floor($t/60)%60), floor($t)%60);
 }
 
 
