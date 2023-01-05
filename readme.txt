@@ -8,8 +8,8 @@ Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung, si
 Requires at least: 5.0
 Tested up to: 6.1.1
 Requires PHP: 5.7
-Stable tag: 9.1.2.1.67
-Version: 9.1.2.1.67
+Stable tag: 9.1.2.1.70
+Version: 9.1.2.1.70
 
 a time clock and seat reservation (desksharing) plugin for WordPress
 
@@ -69,6 +69,10 @@ If you want to use the seat reservation/room planner:
 
 
 == Changelog ==
+
+= 9.1.2.1.63 = 04.01.2023
+Cookie setting for user session repaired
+redirect after action switched to javascript
 
 = 9.1.2.1.63 = 02.11.2022
 Belegt und Freianzeige alle Räume pro Tag (daily totals in calendar)

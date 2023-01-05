@@ -68,13 +68,31 @@ if( !function_exists('timeclock_event_calendar')) {
 	}
 }
 
-function etimevaliduser() {
+//// Abmelden und User Cookie löschen
+if (isset($_GET['logout'])) add_action( 'init', 'my_setcookie_kill' );
+function my_setcookie_kill() {
+	unset($_COOKIE['etime_usercookie']); 
+	setcookie('etime_usercookie', '', time()-3600);
+	unset($_COOKIE['etime_session']); 
+	setcookie('etime_session', '', time()-3600);
+	echo 'Abgemeldet!<script>window.location.replace("'.home_url( remove_query_arg( array ('logout','raum') ) ).'");</script>';
+}
 
+// User und Session Cookie setzen
+if 	(!isset( $_COOKIE['etime_usercookie'] ) && isset($_POST['eid']) ) add_action( 'init', 'my_setcookie_sess' );
+function my_setcookie_sess() {
+	if (isset($_POST['eid'])) $eid = sanitize_text_field($_POST['eid']); else $eid='';
+	$esession = md5( $eid . intval(date('Y-m-d H:i:s')) / 24 * 3600);
+	setcookie("etime_usercookie", $eid, time()+24000);
+	setcookie("etime_session", $esession, time()+24000);
+}
+
+function etimevaliduser() {
+	global $eid;
 	$logu='';
 	$usercookie = isset( $_COOKIE['etime_usercookie'] ) ? $_COOKIE['etime_usercookie'] : '';
 	$usersession = isset( $_COOKIE['etime_session'] ) ? $_COOKIE['etime_session'] : '';
 	$esession = md5( $usercookie . intval(date('Y-m-d H:i:s')) / 24 * 3600);
-
 	if ($_POST && $usersession !== $esession) {
 		if (isset($_POST['eid'])) $eid = sanitize_text_field($_POST['eid']); else $eid='';
 		if (isset($_POST['epw'])) $epw = sanitize_text_field($_POST['epw']); else $epw='';
@@ -104,9 +122,6 @@ function etimevaliduser() {
 
 		// success - user id and password are correct // Passwort und 1-day-hash in Cookies speichern
 		if (!empty($user_id)) {
-			$esession = md5( $eid . intval(date('Y-m-d H:i:s')) / 24 * 3600);
-			setcookie("etime_usercookie", $eid, time()+24000);
-			setcookie("etime_session", $esession, time()+24000);
 		}	
 
 	} else {

@@ -41,31 +41,24 @@ function etimeclockwp_roombooking($atts) {
 	// Nur für Admins oder wenn angemeldet
 	if (current_user_can('administrator') || !empty($validuser) ) {
 
-		//// Abmelden und User Cookie löschen
-		if (isset($_GET['logout'])) {
-			unset($_COOKIE['etime_usercookie']); 
-			setcookie('etime_usercookie', '', time()-3600);
-			unset($_COOKIE['etime_session']); 
-			setcookie('etime_session', '', time()-3600);
-			wp_redirect( home_url( remove_query_arg( array('logout') ) ) ); exit;
-		}
-
 		//// Buchung löschen (nur admin oder user für sich) - Sitznummer übergeben
 		if (isset($_GET['delseat']) &&  ( current_user_can('administrator') || ( isset($_GET['code']) && esc_html($_GET['code']) == md5(date('Y-m-d H')) ) ) ) {
 			$postingid = (int) sanitize_text_field($_GET['delseat']);
+			$html .= ' Sitz '.$postingid.' aus Raum: '.$raum.' entfernt.' ; 
 			if ($postingid > 0) $wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum = ".$raum." AND sitz = " . $postingid);
-			wp_redirect( home_url( remove_query_arg( array('delseat','code') ) ) ); exit;
+			return $html.'<script>window.location.replace("'.home_url( remove_query_arg( array('delseat','code') ) ).'");</script>';
 		}
 
 		//// Raum mit buchungen löschen (nur admin) - Raumnummer übergeben
 		if (current_user_can('administrator' ) && isset($_GET['delroom'])) {
 			$table = $wpdb->prefix . "rooms";
 			$postingid = (int) sanitize_text_field($_GET['delroom']);
+			$html .= ' Raum '.$postingid.' mit allen Buchungen entfernt.' ; 
 			if ($postingid > 0) {
 				$wpdb->query("DELETE FROM ". $wpdb->prefix . "rooms WHERE id = ".$postingid);
 				$wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE raum = ".$postingid);
 			}	
-			wp_redirect( home_url( remove_query_arg( array ('delroom','raum') ) ) ); exit;
+			return $html.'<script>window.location.replace("'.home_url( remove_query_arg( array ('delroom','raum') ) ).'");</script>';
 		}
 
 		// Neuen Raum schreiben
@@ -81,7 +74,7 @@ function etimeclockwp_roombooking($atts) {
 				$html .= ' Raum '.$_POST['raumname'].' gespeichert' ; 
 				$_POST['raumname']='';
 			}
-			wp_redirect( home_url( add_query_arg( NULL, NULL ) ) ); exit;
+			return $html.'<script>window.location.replace("'.home_url( add_query_arg( NULL, NULL ) ).'");</script>';
 		}
 
 		// Neuen Datensatz schreiben
@@ -98,7 +91,7 @@ function etimeclockwp_roombooking($atts) {
 				$html .= ' Belegung für Sitz '.$_POST['sitz'].' gespeichert' ; 
 				$_POST['belegung']='';
 			}
-			wp_redirect(  home_url( add_query_arg( NULL, NULL ) ) ); exit;
+			return $html.'<script>window.location.replace("'.home_url( add_query_arg( NULL, NULL ) ).'");</script>';
 		}
 
 		// Abschnitt Raumbelegung
