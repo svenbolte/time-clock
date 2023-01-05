@@ -75,7 +75,7 @@ function my_setcookie_kill() {
 	setcookie('etime_usercookie', '', time()-3600);
 	unset($_COOKIE['etime_session']); 
 	setcookie('etime_session', '', time()-3600);
-	echo 'Abgemeldet!<script>window.location.replace("'.home_url( remove_query_arg( array ('logout','raum') ) ).'");</script>';
+	echo '<script>window.location.replace("'.home_url( remove_query_arg( array ('logout','raum') ) ).'");</script>';
 }
 
 // User und Session Cookie setzen
