@@ -1,5 +1,4 @@
 <?php
-
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 function totalraumbelegung($vdatum) {
@@ -42,23 +41,22 @@ function etimeclockwp_roombooking($atts) {
 	if (current_user_can('administrator') || !empty($validuser) ) {
 
 		//// Buchung löschen (nur admin oder user für sich) - Sitznummer übergeben
-		if (isset($_GET['delseat']) &&  ( current_user_can('administrator') || ( isset($_GET['code']) && esc_html($_GET['code']) == md5(date('Y-m-d H')) ) ) ) {
-			$postingid = (int) sanitize_text_field($_GET['delseat']);
-			$html .= ' Sitz '.$postingid.' aus Raum: '.$raum.' entfernt.' ; 
-			if ($postingid > 0) $wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum = ".$raum." AND sitz = " . $postingid);
-			return $html.'<script>window.location.replace("'.home_url( remove_query_arg( array('delseat','code') ) ).'");</script>';
+		if (isset($_POST['delseat']) &&  ( current_user_can('administrator') || ( isset($_POST['code']) && esc_html($_POST['code']) == md5(date('Y-m-d H')) ) ) ) {
+			$postingid = (int) sanitize_text_field($_POST['delseat']);
+			if ($postingid > 0) {
+				$wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum = ".$raum." AND sitz = " . $postingid);
+				$html = ' Sitz '.$postingid.' aus Raum: '.$raum.' entfernt.' ;
+			}	
 		}
 
 		//// Raum mit buchungen löschen (nur admin) - Raumnummer übergeben
-		if (current_user_can('administrator' ) && isset($_GET['delroom'])) {
-			$table = $wpdb->prefix . "rooms";
-			$postingid = (int) sanitize_text_field($_GET['delroom']);
-			$html .= ' Raum '.$postingid.' mit allen Buchungen entfernt.' ; 
+		if (current_user_can('administrator' ) && isset($_POST['delroom']) && ( isset($_POST['code']) && esc_html($_POST['code']) == md5(date('Y-m-d H')) ) ) {
+			$postingid = (int) sanitize_text_field($_POST['delroom']);
 			if ($postingid > 0) {
 				$wpdb->query("DELETE FROM ". $wpdb->prefix . "rooms WHERE id = ".$postingid);
 				$wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE raum = ".$postingid);
+				$html = ' Raum '.$postingid.' mit allen Buchungen entfernt.' ; 
 			}	
-			return $html.'<script>window.location.replace("'.home_url( remove_query_arg( array ('delroom','raum') ) ).'");</script>';
 		}
 
 		// Neuen Raum schreiben
@@ -71,10 +69,9 @@ function etimeclockwp_roombooking($atts) {
 			);
 			$success=$wpdb->insert( $table, $data );
 			if($success){
-				$html .= ' Raum '.$_POST['raumname'].' gespeichert' ; 
+				$html = ' Raum '.$_POST['raumname'].' gespeichert' ; 
 				$_POST['raumname']='';
 			}
-			return $html.'<script>window.location.replace("'.home_url( add_query_arg( NULL, NULL ) ).'");</script>';
 		}
 
 		// Neuen Datensatz schreiben
@@ -88,10 +85,9 @@ function etimeclockwp_roombooking($atts) {
 			);
 			$success=$wpdb->insert( $table, $data );
 			if($success){
-				$html .= ' Belegung für Sitz '.$_POST['sitz'].' gespeichert' ; 
+				$html = ' Belegung für Sitz '.$_POST['sitz'].' gespeichert' ; 
 				$_POST['belegung']='';
 			}
-			return $html.'<script>window.location.replace("'.home_url( add_query_arg( NULL, NULL ) ).'");</script>';
 		}
 
 		// Abschnitt Raumbelegung
@@ -198,6 +194,9 @@ function etimeclockwp_roombooking($atts) {
 			$html .=  '</select> ';
 			$html .= '	<input type="hidden" name="verandatum" value="'.$verandatum.'">';
 			$html .= '	<input type="hidden" name="raum" value="'.$raum.'">';
+			$html .= '	<input type="hidden" name="delseat" value="">';
+			$html .= '	<input type="hidden" name="delroom" value="">';
+			$html .= '	<input type="hidden" name="code" value="">';
 			$html .= '	<input type="text" id="belegung" name="belegung" value="'.$user_name.'" placeholder="Belegung"';
 			if (!current_user_can('administrator')) $html .=' readonly';
 			$html .= '>';
@@ -214,10 +213,13 @@ function etimeclockwp_roombooking($atts) {
 			// Belegtplan anzeigen
 			$xseats = $wpdb->get_results("SELECT  id, verandatum, sitz,belegung FROM " . $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum=".$raum." ORDER by id" );
 			$html .= '<blockquote><h6 class="widget-title" style="margin: -8px -15px 8px">';
-			if (current_user_can('administrator')) $html .= '<a onclick="return confirm(\'Sind Sie sicher, den Raum zu entfernen?\');" href="'.home_url( add_query_arg( array ('delroom' => $raum) ) ).'"><i class="fa fa-trash"></i></a>';
+			if (current_user_can('administrator')) {
+				$code =  md5( (date('Y-m-d H')));
+				$html .= ' &nbsp; <a style="cursor:pointer" onclick="document.sitzbuchung.delroom.value = \''.$raum.'\';document.sitzbuchung.code.value = \''.$code.'\';document.sitzbuchung.submit();"><i class="fa fa-trash"></i></a>';
+			}	
 			$belegung = count( $xseats );
 			$prozent = round($belegung / $sitzzahl *100,1);
-			$html .= ' Raum '.$raum.' '.$aktraumname.' | '.count( $xseats ).'/'.$sitzzahl.' belegt';
+			$html .= ' Raum '.$raum.' '.$aktraumname.' | '.count( $xseats ).' von '.$sitzzahl.' belegt';
 			$html .= ' <progress max=100 style="width:100px" value="'.$prozent.'"></progress>';
 			$html .= ' | ' . date_i18n('D, d. M Y, \K\w W',strtotime($verandatum) + 7200).'</h6>';
 			$html .='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr">';
@@ -230,7 +232,7 @@ function etimeclockwp_roombooking($atts) {
 					$html .= '<div style="background-color:#f42c2c;color:#fff;margin:4px;padding:5px;width:auto;display:inline-block;border:1px solid #888" title="Buchungs-ID: '.$found.'">'; 
 					if (current_user_can('administrator') || $user_name == $xseats[$found]->belegung) {
 						$code =  md5( (date('Y-m-d H')));
-						$html .= '<a onclick="return confirm(\'Sind Sie sicher, den Sitz zu entfernen?\');" style="color:white" href="'.home_url( add_query_arg( array ('delseat' => $i, 'code'=>$code) ) ).'"><i class="fa fa-trash"></i></a> &nbsp; ';
+						$html .= '<a onclick="javascript:document.sitzbuchung.delseat.value = \''.$i.'\';document.sitzbuchung.code.value = \''.$code.'\';document.sitzbuchung.submit();" style="cursor:pointer;color:white"><i class="fa fa-trash"></i></a> &nbsp; ';
 					}
 					$html .='<b>'.$i.'</b> - '.$xseats[$found]->belegung.'</div>'; 
 				} else {
