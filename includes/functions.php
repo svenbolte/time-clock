@@ -207,9 +207,8 @@ if( !function_exists('ago')) {
 }	
 
 
-// Differenz zwischen 2 Beiträgen (kurz)
-if( !function_exists('german_time_diff')) {
-	function german_time_diff( $from, $to ) {
+if( !function_exists('tc_german_time_diff')) {
+	function tc_german_time_diff( $from, $to ) {
 		$days_old = abs(round(( $to - $from ) / 86400 , 0 ));
 		if ( $days_old < 30 ) $newclass = 'yellow'; else $newclass = 'white';
 		$diff = human_time_diff($from,$to);
@@ -217,20 +216,15 @@ if( !function_exists('german_time_diff')) {
 			'Tagen' => 'Tage',	'Monaten' => 'Monate',	'Jahren' => 'Jahre'
 		);
 		$replace = array(  // Auf Kurzform umstellen
-			'Sekunde'  => 's', 'Sekunden'  => 's',
-			'Minute'  => 'm', 'Minuten'  => 'm',
-			'Stunde'  => 'h', 'Stunden' => 'h',
-			'Tag'   => 'T', 'Tage'  => 'T',
-			'Woche'  => 'W', 'Wochen'  => 'W',
-			'Monat'  => 'M', 'Monate'  => 'M',
-			'Jahr'  => 'J', 'Jahre'  => 'J',
-			'n' =>''
+			'Sekunde'  => 's', 'Sekunden'  => 's',	'Minute'  => 'm', 'Minuten'  => 'm',
+			'Stunde'  => 'h', 'Stunden' => 'h',		'Tag'   => 'T', 'Tage'  => 'T',
+			'Woche'  => 'W', 'Wochen'  => 'W',		'Monat'  => 'M', 'Monate'  => 'M',
+			'Jahr'  => 'J', 'Jahre'  => 'J',		'n' =>''
 		);
-		$aetitle = __('time since previous post','penguin').'&#10;'.strtr($diff,$longreplace).'&#10;'.$days_old.' Tage';
+		$aetitle = __('time since previous post or visit','penguin').'&#10;'.strtr($diff,$longreplace).'&#10;'.$days_old.' Tage';
 		return '<abbr title="'.$aetitle.'" class="newlabel '.$newclass.'" style="white-space: nowrap"><i title="'.$aetitle.'" class="fa fa-arrows-v"></i>&nbsp;' . strtr($diff,$replace) . '</abbr>';
 	}
 }
-
 
 // get options with defaults - used in settings_api.php to load defaults for settings page
 function etimeclockwp_get_option($key) {
