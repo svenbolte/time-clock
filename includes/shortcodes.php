@@ -251,6 +251,7 @@ add_shortcode('roombooking', 'etimeclockwp_roombooking');
 
 // Auswertungen, Listen und Exports der Zeiten
 function etimeclockwp_button_shortcode($atts) {
+	wp_enqueue_script('etimeclockwp-date-time');
 	global $current_user,$wp,$datefilter;
 	if (isset ($_GET['show']) ) $showmode = sanitize_text_field($_GET['show']); else $showmode = 0;
 	// get shortcode attributes
@@ -285,7 +286,7 @@ function etimeclockwp_button_shortcode($atts) {
 		$result .= '<span class="etimeclock-date"></span> &nbsp; ';
 		$result .= "<span class='etimeclock-time'></span><br />";
 		$result .= '<input id="manualdate" name="manualdate" type="date" value="'.date('Y-m-d').'"> &nbsp; ';
-		$result .= '<input id="manualtime" name="manualtime" type="time" value="'.date('H:i:s').'" style="padding:6px">';
+		$result .= '<input id="manualtime" name="manualtime" type="time" value="" style="padding:6px">';
 		$result .= "<br /><br>";
 		// login section
 		$usercookie = isset( $_COOKIE['etime_usercookie'] ) ? $_COOKIE['etime_usercookie'] : '';

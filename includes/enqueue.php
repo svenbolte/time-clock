@@ -46,7 +46,7 @@ function etimeclockwp_public_enqueue() {
 	wp_enqueue_style('etimeclockwp-public-css');
 	
 	// date time
-	wp_enqueue_script('etimeclockwp-date-time',plugins_url('/assets/js/etimeclockwp-date_time.js',dirname(__FILE__)),array('jquery'),ETIMECLOCKWP_VERSION);
+	wp_register_script('etimeclockwp-date-time',plugins_url('/assets/js/etimeclockwp-date_time.js',dirname(__FILE__)),array('jquery'),ETIMECLOCKWP_VERSION);
 	wp_localize_script('etimeclockwp-date-time', 'ajax_object_date_time', array(
 		'date_format' 		=> etimeclockwp_get_option('date-format'),
 		'time_format' 		=> etimeclockwp_get_option('time-format')

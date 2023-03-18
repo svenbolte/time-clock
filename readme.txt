@@ -8,8 +8,8 @@ Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung, si
 Requires at least: 5.0
 Tested up to: 6.1.1
 Requires PHP: 5.7
-Stable tag: 9.1.2.1.80
-Version: 9.1.2.1.80
+Stable tag: 9.1.2.1.81
+Version: 9.1.2.1.81
 
 a time clock and seat reservation (desksharing) plugin for WordPress
 
@@ -69,6 +69,9 @@ If you want to use the seat reservation/room planner:
 
 
 == Changelog ==
+
+= 9.1.2.1.81 = 18.03.2023
+load etime scripts only if needed, clear time default in stempelmaske
 
 = 9.1.2.1.80 = 08.01.2023
 Form postings switched to _POST method, delroom (admins only) and delseat (user and admin) set to form POST method
