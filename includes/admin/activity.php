@@ -38,7 +38,7 @@ function etimeclockwp_callback_activity($post) {
 		echo "<select name='user_id'>";
 		
 		if (isset($_GET['user'])) {
-			$current = $_GET['user'];
+			$current = esc_html($_GET['user']);
 		} else {
 			$current = '';
 		}
@@ -468,7 +468,7 @@ function etimeclockwp_admin_posts_filter_activity(){
 		
 		<?php
 			if (isset($_GET['user'])) {
-				$current = $_GET['user'];
+				$current = esc_html($_GET['user']);
 			} else {
 				$current = '';
 			}
