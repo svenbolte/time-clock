@@ -293,8 +293,11 @@ function etimeclockwp_get_options() {
 
 // convert seconds time to hours / mins / secs
 function etimeclockwp_convert_time($seconds) {
-	$t = round((int) $seconds);
-	return sprintf('%02d:%02d:%02d', (floor($t)/3600),(floor($t/60)%60), floor($t)%60);
+   if($seconds > 0) {
+		$t = round($seconds);
+		return sprintf('%02d:%02d:%02d', (floor($t)/3600),(floor($t/60)%60), floor($t)%60);
+ 	}
+ 	return '00:00:00';
 }
 
 

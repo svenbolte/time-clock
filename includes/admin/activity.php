@@ -462,10 +462,8 @@ function etimeclockwp_admin_posts_filter_activity(){
 			$values[$post->post_title] = $post->ID;
 		}
 		?>
-		
 		<select name="user">
 		<option value=""><?php echo __('All users', 'etimeclockwp'); ?></option>
-		
 		<?php
 			if (isset($_GET['user'])) {
 				$current = esc_html($_GET['user']);
@@ -473,12 +471,13 @@ function etimeclockwp_admin_posts_filter_activity(){
 				$current = '';
 			}
 			
-			foreach ($values as $label => $value) {
-				echo "<option value='$value'"; if ($current == $value) { echo "SELECTED"; } echo ">$label</option>";
-				}
+	        if (isset($values)) {
+                foreach ($values as $label => $value) {
+                    echo "<option value='$value'"; if ($current == $value) { echo "SELECTED"; } echo ">$label</option>";
+                }
+            }
 		?>
 		</select>
-		
 		<?php
 	}
 }

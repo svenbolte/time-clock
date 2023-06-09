@@ -10,10 +10,10 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: etimeclockwp
 Domain Path: /languages/
 Requires at least: 5.0
-Tested up to: 6.2
+Tested up to: 6.2.2
 Requires PHP: 5.7
-Stable tag: 9.1.2.1.81
-Version: 9.1.2.1.81
+Stable tag: 9.1.2.2.82
+Version: 9.1.2.2.82
 */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
