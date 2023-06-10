@@ -1,7 +1,5 @@
 <?php
-
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-
 
 // load function
 function etimeclockwp_load_function_callback() {
@@ -87,8 +85,6 @@ function etimeclockwp_date_edit_callback() {
 
 }
 add_action( 'wp_ajax_etimeclockwp_date_edit', 'etimeclockwp_date_edit_callback' );
-
-
 
 
 // activty page - process new

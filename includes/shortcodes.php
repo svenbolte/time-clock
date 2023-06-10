@@ -377,10 +377,10 @@ function etimeclockwp_button_shortcode($atts) {
 			foreach($users as $user) { $usersname = $user->post_title; }
 			$tagessumme = etimeclockwp_get_time_worked($post,$format = true);
 			$result .= '<table>';
-			$result .= '<thead><th colspan=3 style="text-align:left;width:65%">';
+			$result .= '<thead><th colspan=4 style="text-align:left;width:65%">';
 			$result .= get_the_date('D',$post->ID).' '.get_the_date(etimeclockwp_get_option('date-format'),$post->ID);
-			$result .= ' &nbsp; '.$usersname.' &nbsp; ID ('.$post->post_title.') &nbsp;  activity ('.$post->ID.')</th>';
-			$result .= '<th>ArbZeit</th><th>'.__('break','etimeclockwp').'</th><th>'.__('totaltime','etimeclockwp');
+			$result .= ' &nbsp; '.$usersname.' &nbsp; <small>ID ('.$post->post_title.') &nbsp;'.__('activities','etimeclockwp').' ('.$post->ID.')</small></th>';
+			$result .= '<th>'.__('worktime','etimeclockwp').'</th><th>'.__('break','etimeclockwp').'</th><th>'.__('totaltime','etimeclockwp');
 			$result .= '</th></thead>';
 			$metavalue = get_post_meta($post->ID);
 			$wp_date_format = etimeclockwp_get_option('date-format');
@@ -441,7 +441,8 @@ function etimeclockwp_button_shortcode($atts) {
 					}	
 					if (isset($timestamp_array[1])) {
 						$order = $timestamp_array[1];
-						$result .= "<tr><td class='etimeclockwp_cell_title_width' style='color:white;text-transform:uppercase;background-color: ".$keycolor."'>";
+						$result .= '<tr><td><i title="'.__('delete entry','etimeclockwp').'" class="fa fa-trash" style="color:tomato"></i></td>';
+						$result .= "<td class='etimeclockwp_cell_title_width' style='color:white;text-transform:uppercase;background-color: ".$keycolor."'>";
 						$result .= $working_status.' '.$key;
 						$result .= "</td><td>".date_i18n('D',$timestampdb).' '.$datetime.'</td><td>'.ago( $timestampdb - date('Z') ).'</td><td style="text-align:center">';
 						if ( $working_status == 3 ) $result .= '</td><td style="text-align:center">'.$diffhhmm.'</td><td>'; else $result .= $diffhhmm.'</td><td></td><td>';
@@ -456,12 +457,12 @@ function etimeclockwp_button_shortcode($atts) {
 			}
 			$result .= "</tr>";
 			if ($azsum > 60*60*10) $tenhourwarn = 'background-color:tomato;color:white'; else $tenhourwarn ='';
-			$result .= '<tfoot><tr><td colspan=3 style="text-align:left"><b>Tagessummen</b></td><td style="'.$tenhourwarn.'"><b>'.sprintf('%02d:%02d:%02d', floor($azsum / 3600),(floor($azsum / 60) % 60), $azsum % 60).'</b></td><td><b>';
+			$result .= '<tfoot><tr><td colspan=4 style="text-align:left"><b>'.__('day totals','etimeclockwp').'</b></td><td style="'.$tenhourwarn.'"><b>'.sprintf('%02d:%02d:%02d', floor($azsum / 3600),(floor($azsum / 60) % 60), $azsum % 60).'</b></td><td><b>';
 			$result .= sprintf('%02d:%02d:%02d', (floor($pausum / 3600)),(floor($pausum / 60) % 60), $pausum % 60).'</b></td><td><b>';
 			$result .= etimeclockwp_get_time_worked($post,$format = true).'</b></td></tr></tfoot>';
 			$result .= '</table>';
 		}
-		$result .= '<table><thead><th colspan=3 style="width:65%"><i class="fa fa-hourglass-3"></i> Gesamtsummen</th>';
+		$result .= '<table><thead><th colspan=3 style="width:65%"><i class="fa fa-hourglass-3"></i> '.__('totals','etimeclockwp').'</th>';
 		$result .= '<th>'.sprintf('%02d:%02d:%02d', floor($totaz / 3600),(floor($totaz / 60) % 60), $totaz % 60).'</th>';
 		$result .= '<th>'.sprintf('%02d:%02d:%02d', floor($totpau / 3600),(floor($totpau / 60) % 60), $totpau % 60).'</th>';
 		$result .= '<th>'.sprintf('%02d:%02d:%02d', floor($totbrutto / 3600),(floor($totbrutto / 60) % 60), $totbrutto % 60).'</th>';

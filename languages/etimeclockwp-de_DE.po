@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Time Clock\n"
 "POT-Creation-Date: 2022-09-25 12:29+0000\n"
-"PO-Revision-Date: 2022-11-01 10:18+0000\n"
+"PO-Revision-Date: 2023-06-10 12:53+0000\n"
 "Last-Translator: Keller Admin\n"
 "Language-Team: Deutsch\n"
 "Language: de_DE\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: .\n"
 "Report-Msgid-Bugs-To: \n"
-"X-Loco-Version: 2.6.3; wp-6.0.3"
+"X-Loco-Version: 2.6.4; wp-6.2.2"
 
 #: includes/admin/settings/settings_dashboard_items.php:11
 msgid ""
@@ -72,7 +72,7 @@ msgstr ""
 msgid "Activate License"
 msgstr "Lizenz aktivieren"
 
-#: includes/functions.php:143
+#: includes/functions.php:169 includes/shortcodes.php:382
 msgid "activities"
 msgstr "Aktivitäten"
 
@@ -89,11 +89,11 @@ msgstr "Neue Aktivität zufügen"
 msgid "Add New User"
 msgstr "Mitarbeitende zufügen"
 
-#: includes/functions.php:379
+#: includes/functions.php:402
 msgid "Admin Review"
 msgstr "Admin Ansicht"
 
-#: includes/functions.php:140 includes/shortcodes.php:208
+#: includes/functions.php:166 includes/shortcodes.php:279
 msgid "admin show bookings"
 msgstr "Buchungen anzeigen"
 
@@ -101,12 +101,12 @@ msgstr "Buchungen anzeigen"
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: includes/shortcodes.php:261 includes/shortcodes.php:571
-#: includes/admin/activity.php:467
+#: includes/shortcodes.php:332 includes/shortcodes.php:643
+#: includes/admin/activity.php:466
 msgid "All users"
 msgstr "Alle Benutzer"
 
-#: includes/shortcodes.php:312
+#: includes/shortcodes.php:383
 msgid "break"
 msgstr "Pause"
 
@@ -174,6 +174,10 @@ msgstr "Datum:"
 msgid "Day Details"
 msgstr "Tages-Details"
 
+#: includes/shortcodes.php:460
+msgid "day totals"
+msgstr "Tagessummen"
+
 #: includes/settings/settings_api.php:594
 msgid "Deactivate License"
 msgstr "Lizenz deaktivieren"
@@ -193,6 +197,10 @@ msgstr "Löschen"
 #: includes/admin/activity.php:176
 msgid "Delete Entry"
 msgstr "Eintrag löschen"
+
+#: includes/shortcodes.php:444
+msgid "delete entry"
+msgstr "Buchung löschen"
 
 #: includes/admin/activity.php:11
 msgid "Details"
@@ -218,7 +226,7 @@ msgstr "Personalkürzel"
 msgid "Employee Password"
 msgstr "Personal PIN"
 
-#: includes/shortcodes.php:209 includes/shortcodes.php:546
+#: includes/shortcodes.php:280 includes/shortcodes.php:618
 msgid "employee status"
 msgstr "Personal-Status"
 
@@ -226,7 +234,7 @@ msgstr "Personal-Status"
 msgid "Error - Nonce validation failed."
 msgstr "Fehler - Nonce Validierung fehlgeschlagen"
 
-#: includes/functions.php:143 includes/functions.php:144
+#: includes/functions.php:169 includes/functions.php:170
 msgid "export"
 msgstr "Export"
 
@@ -262,7 +270,7 @@ msgstr "Falsches Kennwort"
 msgid "Key"
 msgstr "Aktion"
 
-#: includes/shortcodes.php:288 includes/shortcodes.php:549
+#: includes/shortcodes.php:359 includes/shortcodes.php:621
 #: includes/admin/users.php:176
 msgid "last booking"
 msgstr "Neuste Buchung"
@@ -275,10 +283,14 @@ msgstr "Pause beginnen"
 msgid "Leave On Break - Button Color"
 msgstr "Pause beginnen Farbe"
 
-#: includes/shortcodes.php:187 includes/shortcodes.php:635
+#: includes/shortcodes.php:246 includes/shortcodes.php:707
 msgid "login required. Enter your timeclock username and password"
 msgstr ""
 "Anmeldung erforderlich. Geben Sie bitte Ihre Timeclock Zugangsdaten ein"
+
+#: includes/functions.php:164 includes/shortcodes.php:96
+msgid "logout"
+msgstr "Abmelden"
 
 #: includes/settings/settings_api.php:21
 msgid "Main"
@@ -312,7 +324,7 @@ msgstr "Nein (Standard)"
 msgid "No Activity found"
 msgstr "keine Aktivitäten gefunden"
 
-#: includes/shortcodes.php:138 includes/shortcodes.php:631
+#: includes/shortcodes.php:172 includes/shortcodes.php:703
 msgid "no records"
 msgstr "keine Datensätze"
 
@@ -320,7 +332,7 @@ msgstr "keine Datensätze"
 msgid "No Users Found"
 msgstr "keine Mitarbeitenden gefunden"
 
-#: includes/functions.php:141
+#: includes/functions.php:167
 msgid "Panel"
 msgstr "Panel"
 
@@ -397,7 +409,7 @@ msgstr "Erfolg!"
 msgid "Time Clock"
 msgstr "Time Clock"
 
-#: includes/functions.php:139
+#: includes/functions.php:165
 msgid "time clock"
 msgstr "Stempeluhr"
 
@@ -417,9 +429,13 @@ msgstr "Gesamt Arbeitszeit mit Pausen"
 msgid "Total Time Worked"
 msgstr "Gesamt Arbeitszeit"
 
-#: includes/shortcodes.php:312
+#: includes/shortcodes.php:465
+msgid "totals"
+msgstr "Gesamt"
+
+#: includes/shortcodes.php:383
 msgid "totaltime"
-msgstr "BrtZeit"
+msgstr "Bruttozeit"
 
 #: includes/admin/activity.php:279 includes/admin/post_types.php:39
 msgid "User"
@@ -445,11 +461,11 @@ msgstr "Mitarbeitende"
 msgid "Users"
 msgstr "Mitarbeitende"
 
-#: includes/functions.php:144
+#: includes/functions.php:170
 msgid "users"
 msgstr "Benutzer"
 
-#: includes/functions.php:142
+#: includes/functions.php:168
 msgid "view as calendar"
 msgstr "als Kalender anzeigen"
 
@@ -466,6 +482,10 @@ msgstr ""
 #: includes/admin/activity.php:373
 msgid "Work Date"
 msgstr "Arbeitsdatum"
+
+#: includes/shortcodes.php:383
+msgid "worktime"
+msgstr "Arbeitszeit"
 
 #: includes/settings/settings_api.php:137
 msgid "Yes"

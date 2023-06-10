@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-11-01 10:17+0000\n"
+"POT-Creation-Date: 2023-06-10 12:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -53,7 +53,7 @@ msgstr ""
 msgid "Activate License"
 msgstr ""
 
-#: includes/functions.php:143
+#: includes/functions.php:169 includes/shortcodes.php:382
 msgid "activities"
 msgstr ""
 
@@ -70,11 +70,11 @@ msgstr ""
 msgid "Add New User"
 msgstr ""
 
-#: includes/functions.php:379
+#: includes/functions.php:402
 msgid "Admin Review"
 msgstr ""
 
-#: includes/functions.php:140 includes/shortcodes.php:208
+#: includes/functions.php:166 includes/shortcodes.php:279
 msgid "admin show bookings"
 msgstr ""
 
@@ -82,12 +82,12 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: includes/shortcodes.php:261 includes/shortcodes.php:571
-#: includes/admin/activity.php:467
+#: includes/shortcodes.php:332 includes/shortcodes.php:643
+#: includes/admin/activity.php:466
 msgid "All users"
 msgstr ""
 
-#: includes/shortcodes.php:312
+#: includes/shortcodes.php:383
 msgid "break"
 msgstr ""
 
@@ -155,6 +155,10 @@ msgstr ""
 msgid "Day Details"
 msgstr ""
 
+#: includes/shortcodes.php:460
+msgid "day totals"
+msgstr ""
+
 #: includes/settings/settings_api.php:594
 msgid "Deactivate License"
 msgstr ""
@@ -173,6 +177,10 @@ msgstr ""
 
 #: includes/admin/activity.php:176
 msgid "Delete Entry"
+msgstr ""
+
+#: includes/shortcodes.php:444
+msgid "delete entry"
 msgstr ""
 
 #: includes/admin/activity.php:11
@@ -199,7 +207,7 @@ msgstr ""
 msgid "Employee Password"
 msgstr ""
 
-#: includes/shortcodes.php:209 includes/shortcodes.php:546
+#: includes/shortcodes.php:280 includes/shortcodes.php:618
 msgid "employee status"
 msgstr ""
 
@@ -207,7 +215,7 @@ msgstr ""
 msgid "Error - Nonce validation failed."
 msgstr ""
 
-#: includes/functions.php:143 includes/functions.php:144
+#: includes/functions.php:169 includes/functions.php:170
 msgid "export"
 msgstr ""
 
@@ -243,7 +251,7 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: includes/shortcodes.php:288 includes/shortcodes.php:549
+#: includes/shortcodes.php:359 includes/shortcodes.php:621
 #: includes/admin/users.php:176
 msgid "last booking"
 msgstr ""
@@ -256,8 +264,12 @@ msgstr ""
 msgid "Leave On Break - Button Color"
 msgstr ""
 
-#: includes/shortcodes.php:187 includes/shortcodes.php:635
+#: includes/shortcodes.php:246 includes/shortcodes.php:707
 msgid "login required. Enter your timeclock username and password"
+msgstr ""
+
+#: includes/functions.php:164 includes/shortcodes.php:96
+msgid "logout"
 msgstr ""
 
 #: includes/settings/settings_api.php:21
@@ -292,7 +304,7 @@ msgstr ""
 msgid "No Activity found"
 msgstr ""
 
-#: includes/shortcodes.php:138 includes/shortcodes.php:631
+#: includes/shortcodes.php:172 includes/shortcodes.php:703
 msgid "no records"
 msgstr ""
 
@@ -300,7 +312,7 @@ msgstr ""
 msgid "No Users Found"
 msgstr ""
 
-#: includes/functions.php:141
+#: includes/functions.php:167
 msgid "Panel"
 msgstr ""
 
@@ -375,7 +387,7 @@ msgstr ""
 msgid "Time Clock"
 msgstr ""
 
-#: includes/functions.php:139
+#: includes/functions.php:165
 msgid "time clock"
 msgstr ""
 
@@ -395,7 +407,11 @@ msgstr ""
 msgid "Total Time Worked"
 msgstr ""
 
-#: includes/shortcodes.php:312
+#: includes/shortcodes.php:465
+msgid "totals"
+msgstr ""
+
+#: includes/shortcodes.php:383
 msgid "totaltime"
 msgstr ""
 
@@ -423,11 +439,11 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: includes/functions.php:144
+#: includes/functions.php:170
 msgid "users"
 msgstr ""
 
-#: includes/functions.php:142
+#: includes/functions.php:168
 msgid "view as calendar"
 msgstr ""
 
@@ -440,6 +456,10 @@ msgstr ""
 
 #: includes/admin/activity.php:373
 msgid "Work Date"
+msgstr ""
+
+#: includes/shortcodes.php:383
+msgid "worktime"
 msgstr ""
 
 #: includes/settings/settings_api.php:137
