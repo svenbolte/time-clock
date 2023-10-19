@@ -38,31 +38,32 @@ function etimeclockwp_admin_enqueue() {
 add_action('admin_enqueue_scripts','etimeclockwp_admin_enqueue');
 
 
-// public enqueue
+// public enqueue 	// clock in / out actions ajax not performed when on home page, only on posts where shortcode
 function etimeclockwp_public_enqueue() {
+	if ( !is_home() && ! is_front_page() ) {
 	
-	// public css
-	wp_register_style('etimeclockwp-public-css',plugins_url('/assets/css/etimeclockwp-public.css',dirname(__FILE__)),false,ETIMECLOCKWP_VERSION);
-	wp_enqueue_style('etimeclockwp-public-css');
-	
-	// date time
-	wp_register_script('etimeclockwp-date-time',plugins_url('/assets/js/etimeclockwp-date_time.js',dirname(__FILE__)),array('jquery'),ETIMECLOCKWP_VERSION);
-	wp_localize_script('etimeclockwp-date-time', 'ajax_object_date_time', array(
-		'date_format' 		=> etimeclockwp_get_option('date-format'),
-		'time_format' 		=> etimeclockwp_get_option('time-format')
-		)
-	);
-	
-	// clock in / out actions ajax
-	wp_enqueue_script('etimeclockwp-clock-action',plugins_url('/assets/js/etimeclockwp-clock_action.js',dirname(__FILE__)),array('jquery'),ETIMECLOCKWP_VERSION);
-	wp_localize_script('etimeclockwp-clock-action', 'ajax_object_clock_action', array(
-		'ajax_url' 			=> admin_url('admin-ajax.php')
-		)
-	);
-	
-	// moment library
-	wp_enqueue_script('etimeclockwp-moment',plugins_url('/assets/js/etimeclockwp-moment.min.js',dirname(__FILE__)),array('jquery'),ETIMECLOCKWP_VERSION);
-	wp_enqueue_script('etimeclockwp-moment-php',plugins_url('/assets/js/etimeclockwp-moment.phpDateFormat.js',dirname(__FILE__)),array('jquery'),ETIMECLOCKWP_VERSION);
-	
+		// public css
+		wp_register_style('etimeclockwp-public-css',plugins_url('/assets/css/etimeclockwp-public.css',dirname(__FILE__)),false,ETIMECLOCKWP_VERSION);
+		wp_enqueue_style('etimeclockwp-public-css');
+		
+		// date time
+		wp_register_script('etimeclockwp-date-time',plugins_url('/assets/js/etimeclockwp-date_time.js',dirname(__FILE__)),array('jquery'),ETIMECLOCKWP_VERSION);
+		wp_localize_script('etimeclockwp-date-time', 'ajax_object_date_time', array(
+			'date_format' 		=> etimeclockwp_get_option('date-format'),
+			'time_format' 		=> etimeclockwp_get_option('time-format')
+			)
+		);
+		
+		// clock in / out actions ajax 
+		wp_enqueue_script('etimeclockwp-clock-action',plugins_url('/assets/js/etimeclockwp-clock_action.js',dirname(__FILE__)),array('jquery'),ETIMECLOCKWP_VERSION);
+		wp_localize_script('etimeclockwp-clock-action', 'ajax_object_clock_action', array(
+			'ajax_url' 			=> admin_url('admin-ajax.php')
+			)
+		);
+		
+		// moment library
+		wp_enqueue_script('etimeclockwp-moment',plugins_url('/assets/js/etimeclockwp-moment.min.js',dirname(__FILE__)),array('jquery'),ETIMECLOCKWP_VERSION);
+		wp_enqueue_script('etimeclockwp-moment-php',plugins_url('/assets/js/etimeclockwp-moment.phpDateFormat.js',dirname(__FILE__)),array('jquery'),ETIMECLOCKWP_VERSION);
+	}
 }
 add_action('wp_enqueue_scripts','etimeclockwp_public_enqueue',10);
