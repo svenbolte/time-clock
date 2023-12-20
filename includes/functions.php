@@ -442,9 +442,9 @@ function etimeclockwp_calculate_workpausetotal($post_id) {
 		$azsum,
 		$pausum,
 		($azsum + $pausum),
-		sprintf('%02d:%02d:%02d', ($azsum / 3600),($azsum / 60 % 60), $azsum % 60),
-		sprintf('%02d:%02d:%02d', ($pausum / 3600),($pausum / 60 % 60), $pausum % 60),
-		sprintf('%02d:%02d:%02d', (($azsum + $pausum) / 3600),(($azsum + $pausum) / 60 % 60), ($azsum + $pausum) % 60),
+		sprintf('%02d:%02d:%02d', floor($azsum / 3600),(floor($azsum / 60) % 60), floor($azsum) % 60),
+		sprintf('%02d:%02d:%02d', floor($pausum / 3600),(floor($pausum / 60) % 60), floor($pausum) % 60),
+		sprintf('%02d:%02d:%02d', floor(($azsum + $pausum) / 3600),(floor(($azsum + $pausum) / 60) % 60), floor($azsum + $pausum) % 60),
 	);
 	return $modified_values;
 }

@@ -8,8 +8,8 @@ Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung, si
 Requires at least: 5.0
 Tested up to: 6.4.2
 Requires PHP: 5.7
-Stable tag: 9.1.2.2.82
-Version: 9.1.2.2.82
+Stable tag: 9.1.2.2.83
+Version: 9.1.2.2.83
 
 a time clock and seat reservation (desksharing) plugin for WordPress
 
