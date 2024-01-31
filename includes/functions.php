@@ -31,13 +31,13 @@ if( !function_exists('timeclock_event_calendar')) {
 			$calendar.= '<td style="padding:2px;text-align:center;vertical-align:top"">';
 			$running_week = date('W',mktime(2,0,0,$month,$list_day,$year));
 			$istoday = (int) $daytoday == (int) $list_day && (int) $monthtoday == (int) $month && (int) $yeartoday == (int) $year;
-			if ( $istoday ) $todaycolor='#ffd80088;border:1px dotted black'; else $todaycolor='transparent';
+			if ( $istoday ) $todaycolor='#fd08;border:1px dotted black'; else $todaycolor='transparent';
 			// QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY
 			$dailyevents = '';
 			$onlyfirst = 0;
 			foreach ($eventarray as $calevent => $fields) {
 				if ( substr($fields['verandatum'],0,10) == date('Y-m-d',mktime(0,0,0,$month,$list_day,$year)) ) {
-					$todaycolor = '#ffd80088;font-weight:700';
+					$todaycolor = '#fd08;font-weight:700';
 					$dailyevents .= '<span style="word-break:break-all;font-size:0.8em" title="'.wp_strip_all_tags($fields['veranstaltung']).'">' . $fields['veranstaltung'] . '</span><br>';
 					$onlyfirst += 1;
 				}
