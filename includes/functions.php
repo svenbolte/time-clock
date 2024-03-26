@@ -163,6 +163,7 @@ function etime_menu($selectedmenu,$validuser) {
 		} else { $mtext = '<li><i class="fa fa-user"></i> '.strtoupper($validuser).'</li>'; }
 	$mtext .= '<li><a href="'.home_url( add_query_arg( array('logout'=>'1') ) ).'" title="'.__('logout','etimeclockwp').'"><i class="fa fa-lg fa-sign-out" style="color:tomato"></i></a></li>';
 	$mtext .= '<li><a href="'.home_url($wp->request).'?show=0" class="submit"><i class="fa fa-clock-o"></i> '.__('time clock','etimeclockwp').'</a></li>';
+	$mtext .= '<li><a title="'.__('roombooking','etimeclockwp').'" href="'.home_url($wp->request).'?show=6" class="submit"><i class="fa fa-university"></i></a></li>';
 	if ( $selectedmenu !== 1 ) $mtext .= '<li><a title="'.__('admin show bookings','etimeclockwp').'" href="'.home_url($wp->request).'?show=1" class="submit"><i class="fa fa-list"></i></a></li>';
 	if ( $selectedmenu !== 4 && current_user_can('administrator') ) $mtext .= '<li><a title="'.__('Panel','etimeclockwp').'" href="'.home_url($wp->request).'?show=4" class="submit"><i class="fa fa-heartbeat"></i></a></li>';
 	if ( $selectedmenu !== 5 ) $mtext .= '<li><a title="'.__('view as calendar','etimeclockwp').'" href="'.home_url($wp->request).'?show=5" class="submit btnbutton"><i class="fa fa-calendar-o"></i></a></li>';

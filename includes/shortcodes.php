@@ -111,6 +111,7 @@ function etimeclockwp_roombooking($atts) {
 			$totalsitze += $room->sitze;
 		}
 		$html .=  '</select> ';
+		$html .= '<input type="hidden" name="show" value="6"></form>';
 		$html .= '<input type="submit" name="raumauswahl" value="wählen"></form>';
 
 		// Form Raum neu anlegen (nur Admin)
@@ -130,14 +131,14 @@ function etimeclockwp_roombooking($atts) {
 		$nachmonatEnde = $caldatum->format('Y-m-t');
 		
 		// Toggle div for calendar on and off
-		$tcolor = get_theme_mod('link-color', '#006060');
-		$tbcolor = hexdec(substr($tcolor, 1, 2)) . ',' . hexdec(substr($tcolor, 3, 2)) . ',' . hexdec(substr($tcolor, 5, 2)) . ',.1';
-		$html .= '<style>.faq__content, summary {padding:6px;outline:none;border:1px solid '.$tcolor.';border-radius:3px;position:relative}';
-		$html .= 'summary {font-size:1.1rem;cursor:pointer;color:'.$tcolor.';background:rgba('.$tbcolor.');margin-top:2px}.faq__content {border-top:none}';
-		$html .= 'details[open] summary ~ * {animation: sweep .4s ease-in-out}';
-		$html .= 'details > summary::after {position: absolute;font-family:"fontawesome";content:"\f196";right: 20px}';
-		$html .= 'details[open] > summary::after {position:absolute;font-family:"fontawesome";content:"\f147";right: 20px}';
-		$html .= 'details > summary::-webkit-details-marker {display:none}</style>';
+		$html .= '<style>.faq__content,summary{list-style-type:none;border:1px solid var(--pengcolor);outline:none;padding:6px;
+		position:relative}summary{background:var(--penglitecolor);color:var(--pengcolor);
+		cursor:pointer;font-size:1.1rem;margin-top:2px}.faq__content{border-top:none}
+		details[open] summary ~ *{animation:sweep .4s ease-in-out}
+		@keyframes sweep{0%{margin-top:-10px;opacity:0}100%{margin-top:0;opacity:1}}
+		details > summary::after{content:"\f107";font-family:"fontawesome";position:absolute;right:20px;font-size:1.2em}
+		details[open] > summary::after{content:"\f106";font-family:"fontawesome";position:absolute;right:20px}
+		</style>';
 		$html .= '<script> function toggleopen() { ';
 		$html .= ' var cusid_ele = document.getElementsByClassName("details");';
 		$html .= ' if (cusid_ele[0].open == 1) {var onoff = 0;} else {var onoff = 1;}';
@@ -701,6 +702,9 @@ function etimeclockwp_button_shortcode($atts) {
 				}	
 			}
 		} else { $result .= __('no records','etimeclockwp'); }	
+	} else if ( $showmode == 6 ) {
+		// Raumbuchungssystem aufrufen
+		echo do_shortcode('[roombooking]');
 	} else {
 
 		// kein Zugriff, Meldung anzeigen -------------------------------
