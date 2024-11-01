@@ -704,7 +704,10 @@ function etimeclockwp_button_shortcode($atts) {
 		} else { $result .= __('no records','etimeclockwp'); }	
 	} else if ( $showmode == 6 ) {
 		// Raumbuchungssystem aufrufen
+		echo '<div style="text-align:right"><ul class="footer-menu">';
+		echo etime_menu(1,$validuser);
 		echo do_shortcode('[roombooking]');
+		echo '</ul></div>';
 	} else {
 
 		// kein Zugriff, Meldung anzeigen -------------------------------
