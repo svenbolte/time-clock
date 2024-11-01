@@ -172,7 +172,7 @@ function etime_menu($selectedmenu,$validuser) {
 	return $mtext;
 }
 
-// Zeitdifferenz ermitteln und gestern/vorgestern/morgen schreiben: chartscodes, dedo, foldergallery, timeclock, w4-post-list
+// Zeitdifferenz ermitteln und gestern/vorgestern/morgen schreiben: *chartscodes, dedo, foldergallery, timeclock
 if( !function_exists('ago')) {
 	function ago($timestamp) {
 		if (empty($timestamp)) return;
@@ -183,7 +183,7 @@ if( !function_exists('ago')) {
 			$prepo = __('in', 'penguin');
 			$postpo = '';
 		} else {
-			if ($xlang == 'de-DE') {
+			if ($xlang == 'de') {
 				$prepo = __('vor', 'penguin');
 				$postpo = '';
 			} else {
@@ -207,11 +207,11 @@ if( !function_exists('ago')) {
 	}
 }	
 
-
-if( !function_exists('tc_german_time_diff')) {
-	function tc_german_time_diff( $from, $to ) {
+// Differenz zwischen 2 Beiträgen (kurz), ebenso *chartscodes, dedo, foldergallery, timeclock
+if( !function_exists('german_time_diff')) {
+	function german_time_diff( $from, $to ) {
 		$days_old = abs(round(( $to - $from ) / 86400 , 0 ));
-		if ( $days_old < 30 ) $newclass = 'yellow'; else $newclass = 'white';
+		if ( $days_old < 30 ) $newcolor = '#fd06'; else $newcolor = '#fffc';
 		$diff = human_time_diff($from,$to);
 		$longreplace = array(   // Grammatik bei Anzeige langer Differenz (Monate statt Monaten)
 			'Tagen' => 'Tage',	'Monaten' => 'Monate',	'Jahren' => 'Jahre'
@@ -222,8 +222,8 @@ if( !function_exists('tc_german_time_diff')) {
 			'Woche'  => 'W', 'Wochen'  => 'W',		'Monat'  => 'M', 'Monate'  => 'M',
 			'Jahr'  => 'J', 'Jahre'  => 'J',		'n' =>''
 		);
-		$aetitle = __('time since previous post or visit','penguin').'&#10;'.strtr($diff,$longreplace).'&#10;'.$days_old.' Tage';
-		return '<abbr title="'.$aetitle.'" class="newlabel '.$newclass.'" style="white-space: nowrap"><i title="'.$aetitle.'" class="fa fa-arrows-v"></i>&nbsp;' . strtr($diff,$replace) . '</abbr>';
+		$aetitle = __('time since previous post or visit','etimeclockwp').'&#10;'.strtr($diff,$longreplace).'&#10;'.$days_old.' Tage';
+		return '<span title="'.$aetitle.'" class="newlabel" style="font-size:.8em;white-space:nowrap;background-color:'.$newcolor.'"><i title="'.$aetitle.'" class="fa fa-arrows-v" style="font-size:1em;margin-right:4px"></i>' . strtr($diff,$replace) . '</span>';
 	}
 }
 

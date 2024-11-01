@@ -424,7 +424,7 @@ function etimeclockwp_button_shortcode($atts) {
 					$time = 	date_i18n($wp_time_format,$timestampdb);
 					$timestamp = 		date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp,$timestampdb);
 					if (!empty($oldtimestampdb)) {
-						$difftime = tc_german_time_diff($oldtimestampdb,$timestampdb);
+						$difftime = german_time_diff($oldtimestampdb,$timestampdb);
 						$diffsecs = round($timestampdb - $oldtimestampdb);
 						if ( $working_status == 3 ) {
 							$pausum +=$diffsecs;
@@ -540,7 +540,7 @@ function etimeclockwp_button_shortcode($atts) {
 					$time = 	date_i18n($wp_time_format,$timestampdb);
 					$timestamp = 		date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp,$timestampdb);
 					if (!empty($oldtimestampdb)) {
-						$difftime = tc_german_time_diff($oldtimestampdb,$timestampdb);
+						$difftime = german_time_diff($oldtimestampdb,$timestampdb);
 						$diffsecs = round($timestampdb - $oldtimestampdb);
 						if ( $working_status == 3 ) $pausum +=$diffsecs; else $azsum +=$diffsecs;
 						$diffhhmm = sprintf('%02d:%02d:%02d', ($diffsecs / 3600),($diffsecs / 60 % 60), $diffsecs % 60);

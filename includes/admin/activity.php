@@ -141,7 +141,7 @@ function etimeclockwp_callback_activity($post) {
 						$time = 	date_i18n($wp_time_format,$timestampdb);
 						$timestamp = 		date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp,$timestampdb);
 
-						if (!empty($oldtimestampdb)) $difftime = tc_german_time_diff($oldtimestampdb,$timestampdb); else $difftime='';
+						if (!empty($oldtimestampdb)) $difftime = german_time_diff($oldtimestampdb,$timestampdb); else $difftime='';
 						
 						if (isset($timestamp_array[1])) {
 							$order = $timestamp_array[1];
