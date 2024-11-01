@@ -111,13 +111,13 @@ function etimeclockwp_roombooking($atts) {
 			$totalsitze += $room->sitze;
 		}
 		$html .=  '</select> ';
-		$html .= '<input type="hidden" name="show" value="6"></form>';
+		$html .= '<input type="hidden" name="show" value="6">';
 		$html .= '<input type="submit" name="raumauswahl" value="wählen"></form>';
 
 		// Form Raum neu anlegen (nur Admin)
 		if (current_user_can('administrator')) {
 			$html .= ' &nbsp; <form class="noprint" style="display:inline" method="post" name="raumanlegen">';
-			$html .= ' <input type="text" name="raumname" placeholder="neuer Raum Name">';
+			$html .= 'oder anlegen <input type="text" name="raumname" placeholder="neuer Raum Name">';
 			$html .= ' <input type="number" name="sitze" min="1" max="999" placeholder="MaxSitze" style="width:70px"> ';
 			$html .= '<input type="submit" name="raumanlegen" value="+"></form>';
 		}	
@@ -144,14 +144,14 @@ function etimeclockwp_roombooking($atts) {
 		$html .= ' if (cusid_ele[0].open == 1) {var onoff = 0;} else {var onoff = 1;}';
 		$html .= 'for (var i = 0; i < cusid_ele.length; ++i) { var item = cusid_ele[i];'; 
 		$html .= ' if (onoff == 1) {item.open = true;} else {item.open=false;} } } </script>';
-		$html .= '<details class="details"><summary>Buchungskalender ab '.date_i18n('F Y',$vormonatStart).'</summary>';
+		$html .= '<details class="details"><summary>Buchungskalender ab '.date_i18n('F Y',strtotime($vormonatStart)).'</summary>';
 		$html .= '<div class="faq__content">';
 		$customers = array();
 		$xbelegung = $wpdb->get_results("SELECT ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."rooms.raumname, ".$wpdb->prefix."roombookings.raum, ".$wpdb->prefix."rooms.sitze, count(*) as belegt FROM ".$wpdb->prefix."roombookings join ".$wpdb->prefix."rooms on ".$wpdb->prefix."rooms.id=".$wpdb->prefix."roombookings.raum WHERE ".$wpdb->prefix."roombookings.verandatum >= '".$vormonatStart."' AND ".$wpdb->prefix."roombookings.verandatum <= '".$nachmonatEnde."' group by ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."roombookings.raum order by verandatum" );
 		$pielabel = ''; $piesum = '';
 		foreach ($xbelegung as $beleg) {
 			$freiesitze = ($beleg->sitze - $beleg->belegt);
-			if ($freiesitze == 0) $zerofree = '#ff888888'; else if ($freiesitze <= 3) $zerofree ='#ffffff88'; else $zerofree ='#88ff8888';
+			if ($freiesitze == 0) $zerofree = '#f888'; else if ($freiesitze <= 3) $zerofree ='#fff8'; else $zerofree ='#8f88';
 			$customers[] = array ('verandatum' => $beleg->verandatum, 'veranstaltung' => '<a href="'.home_url( add_query_arg( array('verandatum'=>substr($beleg->verandatum,0,10),'raum'=>$beleg->raum) ) ).'" class="newlabel" style="line-height:10px;font-size:1em;background-color:'.$zerofree.'">' . $beleg->raumname.' | '.$beleg->sitze.'-'.$beleg->belegt.' | '.$freiesitze.'</a>');
 			$pielabel .=  substr($beleg->verandatum,5,5) .'|'. $beleg->raumname.',';
 			$piesum .= round(($beleg->belegt / $beleg->sitze)*100) . ',';
@@ -174,7 +174,7 @@ function etimeclockwp_roombooking($atts) {
 		$html .='</div></details>'	;
 
 		// Linechart for admin
-		if (class_exists('PB_ChartsCodes')) {
+		if (class_exists('PB_ChartsCodes') && !empty($piesum)) {
 			$html .= '<details class="details"><summary>Auslastungschart</summary>';
 			$html .= '<div class="faq__content">';
 			$html .= do_shortcode('[chartscodes_line accentcolor=1 xaxis="Tag/Raum" yaxis="Auslastung %" height="450" values="'.$piesum.'" labels="'.$pielabel.'"]');

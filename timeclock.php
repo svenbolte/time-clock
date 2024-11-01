@@ -9,10 +9,10 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: etimeclockwp
 Domain Path: /languages/
-Version: 9.1.2.2.84
-Stable tag: 9.1.2.2.84
-Requires at least: 5.0
-Tested up to: 6.6
+Version: 9.1.2.3.85
+Stable tag: 9.1.2.3.85
+Requires at least: 6.0
+Tested up to: 6.6.2
 Requires PHP: 8.2
 */
 

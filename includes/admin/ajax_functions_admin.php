@@ -1,21 +1,6 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-// load function
-function etimeclockwp_load_function_callback() {
-	
-	$function = sanitize_text_field($_POST['function']);
-	
-	// only run function is it exists
-	if (function_exists($function)) {
-		echo call_user_func($function);
-	}
-	
-	wp_die();
-}
-add_action( 'wp_ajax_etimeclockwp_load_function', 'etimeclockwp_load_function_callback' );
-add_action( 'wp_ajax_nopriv_etimeclockwp_load_function', 'etimeclockwp_load_function_callback' );
-
 // activty page - process delete
 function etimeclockwp_date_delete_callback() {
 
