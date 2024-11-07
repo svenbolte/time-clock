@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2023-06-10 12:51+0000\n"
+"POT-Creation-Date: 2024-11-07 16:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -45,6 +45,14 @@ msgstr ""
 msgid " Version "
 msgstr ""
 
+#: includes/functions.php:202
+msgid "1 day after tomorrow"
+msgstr ""
+
+#: includes/functions.php:198
+msgid "1 day before yesterday"
+msgstr ""
+
 #. Description of the plugin
 msgid "a time clock and seat reservation (desksharing) plugin for WordPress"
 msgstr ""
@@ -53,7 +61,7 @@ msgstr ""
 msgid "Activate License"
 msgstr ""
 
-#: includes/functions.php:169 includes/shortcodes.php:382
+#: includes/functions.php:170 includes/shortcodes.php:383
 msgid "activities"
 msgstr ""
 
@@ -70,11 +78,11 @@ msgstr ""
 msgid "Add New User"
 msgstr ""
 
-#: includes/functions.php:402
+#: includes/functions.php:403
 msgid "Admin Review"
 msgstr ""
 
-#: includes/functions.php:166 includes/shortcodes.php:279
+#: includes/functions.php:167 includes/shortcodes.php:280
 msgid "admin show bookings"
 msgstr ""
 
@@ -82,12 +90,16 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: includes/shortcodes.php:332 includes/shortcodes.php:643
+#: includes/functions.php:191
+msgid "ago"
+msgstr ""
+
+#: includes/shortcodes.php:333 includes/shortcodes.php:644
 #: includes/admin/activity.php:466
 msgid "All users"
 msgstr ""
 
-#: includes/shortcodes.php:383
+#: includes/shortcodes.php:384
 msgid "break"
 msgstr ""
 
@@ -155,7 +167,7 @@ msgstr ""
 msgid "Day Details"
 msgstr ""
 
-#: includes/shortcodes.php:460
+#: includes/shortcodes.php:461
 msgid "day totals"
 msgstr ""
 
@@ -179,7 +191,7 @@ msgstr ""
 msgid "Delete Entry"
 msgstr ""
 
-#: includes/shortcodes.php:444
+#: includes/shortcodes.php:445
 msgid "delete entry"
 msgstr ""
 
@@ -207,7 +219,7 @@ msgstr ""
 msgid "Employee Password"
 msgstr ""
 
-#: includes/shortcodes.php:280 includes/shortcodes.php:618
+#: includes/shortcodes.php:281 includes/shortcodes.php:619
 msgid "employee status"
 msgstr ""
 
@@ -215,7 +227,7 @@ msgstr ""
 msgid "Error - Nonce validation failed."
 msgstr ""
 
-#: includes/functions.php:169 includes/functions.php:170
+#: includes/functions.php:170 includes/functions.php:171
 msgid "export"
 msgstr ""
 
@@ -251,7 +263,7 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: includes/shortcodes.php:359 includes/shortcodes.php:621
+#: includes/shortcodes.php:360 includes/shortcodes.php:622
 #: includes/admin/users.php:176
 msgid "last booking"
 msgstr ""
@@ -264,7 +276,7 @@ msgstr ""
 msgid "Leave On Break - Button Color"
 msgstr ""
 
-#: includes/shortcodes.php:246 includes/shortcodes.php:707
+#: includes/shortcodes.php:247 includes/shortcodes.php:714
 msgid "login required. Enter your timeclock username and password"
 msgstr ""
 
@@ -304,7 +316,7 @@ msgstr ""
 msgid "No Activity found"
 msgstr ""
 
-#: includes/shortcodes.php:172 includes/shortcodes.php:703
+#: includes/shortcodes.php:173 includes/shortcodes.php:704
 msgid "no records"
 msgstr ""
 
@@ -312,7 +324,7 @@ msgstr ""
 msgid "No Users Found"
 msgstr ""
 
-#: includes/functions.php:167
+#: includes/functions.php:168
 msgid "Panel"
 msgstr ""
 
@@ -348,6 +360,10 @@ msgstr ""
 
 #: includes/settings/settings_api.php:56
 msgid "Return From Break - Button Color"
+msgstr ""
+
+#: includes/functions.php:166
+msgid "roombooking"
 msgstr ""
 
 #: includes/admin/activity.php:61 includes/admin/users.php:9
@@ -395,6 +411,14 @@ msgstr ""
 msgid "Time Format"
 msgstr ""
 
+#: includes/functions.php:225
+msgid "time since previous post or visit"
+msgstr ""
+
+#: includes/functions.php:200
+msgid "tomorrow"
+msgstr ""
+
 #: includes/admin/activity.php:304 includes/admin/activity.php:375
 msgid "total time breaks"
 msgstr ""
@@ -407,11 +431,11 @@ msgstr ""
 msgid "Total Time Worked"
 msgstr ""
 
-#: includes/shortcodes.php:465
+#: includes/shortcodes.php:466
 msgid "totals"
 msgstr ""
 
-#: includes/shortcodes.php:383
+#: includes/shortcodes.php:384
 msgid "totaltime"
 msgstr ""
 
@@ -439,11 +463,11 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: includes/functions.php:170
+#: includes/functions.php:171
 msgid "users"
 msgstr ""
 
-#: includes/functions.php:168
+#: includes/functions.php:169
 msgid "view as calendar"
 msgstr ""
 
@@ -458,7 +482,7 @@ msgstr ""
 msgid "Work Date"
 msgstr ""
 
-#: includes/shortcodes.php:383
+#: includes/shortcodes.php:384
 msgid "worktime"
 msgstr ""
 
@@ -468,6 +492,10 @@ msgstr ""
 
 #: includes/settings/settings_api.php:26
 msgid "Yes (Default)"
+msgstr ""
+
+#: includes/functions.php:196
+msgid "yesterday"
 msgstr ""
 
 #: includes/admin/settings/settings_page.php:11
