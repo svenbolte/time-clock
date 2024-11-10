@@ -22,8 +22,8 @@ function etimeclockwp_admin_enqueue() {
 	
 	// jquery datepicker
 	wp_enqueue_script( 'jquery-ui-datepicker');
-	wp_register_style('jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css'); // wordpress does not include datepicker css in core
-	wp_enqueue_style( 'jquery-ui' );
+	//wp_register_style('jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css'); // wordpress does not include datepicker css in core
+	//wp_enqueue_style( 'jquery-ui' );
 	
 	// jquery timepicker addon
 	wp_enqueue_script('etimeclockwp-timepicker-js',plugins_url('/assets/js/etimeclockwp-jquery-ui-timepicker-addon.js',dirname(__FILE__)),array('jquery-ui-core' ,'jquery-ui-datepicker'));
