@@ -172,7 +172,7 @@ function etime_menu($selectedmenu,$validuser) {
 	return $mtext;
 }
 
-// Zeitdifferenz ermitteln und gestern/vorgestern/morgen schreiben: chartscodes, dedo, foldergallery, timeclock
+// Zeitdifferenz ermitteln und gestern/vorgestern/morgen schreiben: penguin-mod, chartscodes, dedo, foldergallery, timeclock
 if( !function_exists('ago')) {
 	function ago($timestamp) {
 		if (empty($timestamp)) return;
@@ -180,7 +180,7 @@ if( !function_exists('ago')) {
 		date_default_timezone_set('Europe/Berlin');
 		$now = time();
 		if ($timestamp > $now) {
-			$prepo = 'in';
+			$prepo = __('in', 'penguin');
 			$postpo = '';
 		} else {
 			if ($xlang == 'de') {
@@ -188,26 +188,26 @@ if( !function_exists('ago')) {
 				$postpo = '';
 			} else {
 				$prepo = '';
-				$postpo = __('ago', 'etimeclockwp');
+				$postpo = ' ' . __('ago', 'penguin');
 			}
 		}
 		$her = date( 'd.m.Y', intval($timestamp) );
 		if ($her == date('d.m.Y',$now - (24 * 3600))) {
-			$hdate = __('yesterday', 'etimeclockwp');
+			$hdate = __('yesterday', 'penguin');
 		} else if ($her == date('d.m.Y',$now - (48 * 3600))) {
-			$hdate = __('1 day before yesterday', 'etimeclockwp');
+			$hdate = __('1 day before yesterday', 'penguin');
 		} else if ($her == date('d.m.Y',$now + (24 * 3600))) {
-			$hdate = __('tomorrow', 'etimeclockwp');
+			$hdate = __('tomorrow', 'penguin');
 		} else if ($her == date('d.m.Y',$now + (48 * 3600))) {
-			$hdate = __('1 day after tomorrow', 'etimeclockwp');
+			$hdate = __('1 day after tomorrow', 'penguin');
 		} else {
-			$hdate = ' ' . $prepo . ' ' . human_time_diff(intval($timestamp), $now) . ' ' . $postpo;
+			$hdate = $prepo . ' ' . human_time_diff(intval($timestamp), $now) . $postpo;
 		}
-		return $hdate;
+		return ' ' . $hdate . ' ';
 	}
 }	
 
-// Differenz zwischen 2 Beiträgen (kurz), ebenso *chartscodes, dedo, foldergallery, timeclock
+// Differenz zwischen 2 Beiträgen (kurz), penguin-mod, ebenso *chartscodes, dedo, foldergallery, timeclock
 if( !function_exists('german_time_diff')) {
 	function german_time_diff( $from, $to ) {
 		$days_old = abs(round(( $to - $from ) / 86400 , 0 ));
@@ -222,7 +222,7 @@ if( !function_exists('german_time_diff')) {
 			'Woche'  => 'W', 'Wochen'  => 'W',		'Monat'  => 'M', 'Monate'  => 'M',
 			'Jahr'  => 'J', 'Jahre'  => 'J',		'n' =>''
 		);
-		$aetitle = __('time since previous post or visit','etimeclockwp').'&#10;'.strtr($diff,$longreplace).'&#10;'.$days_old.' Tage';
+		$aetitle = __('time since previous post or visit','penguin').'&#10;'.strtr($diff,$longreplace).'&#10;'.$days_old.' Tage';
 		return '<span title="'.$aetitle.'" class="newlabel" style="font-size:.8em;white-space:nowrap;background-color:'.$newcolor.'"><i title="'.$aetitle.'" class="fa fa-arrows-v" style="font-size:1em;margin-right:4px"></i>' . strtr($diff,$replace) . '</span>';
 	}
 }
