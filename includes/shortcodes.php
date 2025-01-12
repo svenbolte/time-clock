@@ -144,7 +144,7 @@ function etimeclockwp_roombooking($atts) {
 		$html .= ' if (cusid_ele[0].open == 1) {var onoff = 0;} else {var onoff = 1;}';
 		$html .= 'for (var i = 0; i < cusid_ele.length; ++i) { var item = cusid_ele[i];'; 
 		$html .= ' if (onoff == 1) {item.open = true;} else {item.open=false;} } } </script>';
-		$html .= '<details class="details"><summary>Buchungskalender ab '.date_i18n('F Y',strtotime($vormonatStart)).'</summary>';
+		$html .= '<details class="details"><summary>Buchungskalender ab '.wp_date('F Y',strtotime($vormonatStart)).'</summary>';
 		$html .= '<div class="faq__content">';
 		$customers = array();
 		$xbelegung = $wpdb->get_results("SELECT ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."rooms.raumname, ".$wpdb->prefix."roombookings.raum, ".$wpdb->prefix."rooms.sitze, count(*) as belegt FROM ".$wpdb->prefix."roombookings join ".$wpdb->prefix."rooms on ".$wpdb->prefix."rooms.id=".$wpdb->prefix."roombookings.raum WHERE ".$wpdb->prefix."roombookings.verandatum >= '".$vormonatStart."' AND ".$wpdb->prefix."roombookings.verandatum <= '".$nachmonatEnde."' group by ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."roombookings.raum order by verandatum" );
@@ -222,7 +222,7 @@ function etimeclockwp_roombooking($atts) {
 			$prozent = round($belegung / $sitzzahl *100,1);
 			$html .= ' Raum '.$raum.' '.$aktraumname.' | '.count( $xseats ).' von '.$sitzzahl.' belegt';
 			$html .= ' <progress max=100 style="width:100px" value="'.$prozent.'"></progress>';
-			$html .= ' | ' . date_i18n('D, d. M Y, \K\w W',strtotime($verandatum) + 7200).'</h6>';
+			$html .= ' | ' . wp_date('D d. M Y, \K\w W',strtotime($verandatum) + 7200).'</h6>';
 			$html .='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr">';
 			$belegt = 0;
 			for($i=1; $i <= $sitzzahl; $i++) {
@@ -283,7 +283,7 @@ function etimeclockwp_button_shortcode($atts) {
 		// status line section
 		$result .= '<div id="etimeclock-status">Bereit</div>';
 		// time section
-		$result .= '<span style="font-size:1.7em">KW '.date_i18n('W').' &nbsp; '.date_i18n('D').'</span> &nbsp; ';
+		$result .= '<span style="font-size:1.7em">KW '.wp_date('W').' &nbsp; '.wp_date('D').'</span> &nbsp; ';
 		$result .= '<span class="etimeclock-date"></span> &nbsp; ';
 		$result .= "<span class='etimeclock-time'></span><br />";
 		$result .= '<input id="manualdate" name="manualdate" type="date" value="'.date('Y-m-d').'"> &nbsp; ';
@@ -388,9 +388,9 @@ function etimeclockwp_button_shortcode($atts) {
 			$wp_time_format = etimeclockwp_get_option('time-format');
 			$wp_date_format_timestamp = 'Y-m-d';
 			$wp_time_format_timestamp = 'H:i:s';
-			$timestamp_now = 	date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp);
-			$date_now = 		date_i18n($wp_date_format);
-			$time_now = 		date_i18n($wp_time_format);
+			$timestamp_now = 	wp_date($wp_date_format_timestamp.' '.$wp_time_format_timestamp);
+			$date_now = 		wp_date($wp_date_format);
+			$time_now = 		wp_date($wp_time_format);
 			$pausum=0;
 			$azsum =0;
 			foreach($metavalue as $key => $val) {
@@ -419,10 +419,10 @@ function etimeclockwp_button_shortcode($atts) {
 						$keycolor = etimeclockwp_get_option('return-from-break-button-color');
 						$working_status = '3';
 					}
-					$datetime = date_i18n($wp_date_format.' '.$wp_time_format,$timestampdb);
-					$date = 	date_i18n($wp_date_format,$timestampdb);
-					$time = 	date_i18n($wp_time_format,$timestampdb);
-					$timestamp = 		date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp,$timestampdb);
+					$datetime = wp_date($wp_date_format.' '.$wp_time_format,$timestampdb);
+					$date = 	wp_date($wp_date_format,$timestampdb);
+					$time = 	wp_date($wp_time_format,$timestampdb);
+					$timestamp = 		wp_date($wp_date_format_timestamp.' '.$wp_time_format_timestamp,$timestampdb);
 					if (!empty($oldtimestampdb)) {
 						$difftime = german_time_diff($oldtimestampdb,$timestampdb);
 						$diffsecs = round($timestampdb - $oldtimestampdb);
@@ -445,7 +445,7 @@ function etimeclockwp_button_shortcode($atts) {
 						$result .= '<tr><td><i title="'.__('delete entry','etimeclockwp').'" class="fa fa-trash" style="color:tomato"></i></td>';
 						$result .= "<td class='etimeclockwp_cell_title_width' style='color:white;text-transform:uppercase;background-color: ".$keycolor."'>";
 						$result .= $working_status.' '.$key;
-						$result .= "</td><td>".date_i18n('D',$timestampdb).' '.$datetime.'</td><td>'.ago( $timestampdb - date('Z') ).'</td><td style="text-align:center">';
+						$result .= "</td><td>".wp_date('D',$timestampdb).' '.$datetime.'</td><td>'.ago( $timestampdb - date('Z') ).'</td><td style="text-align:center">';
 						if ( $working_status == 3 ) $result .= '</td><td style="text-align:center">'.$diffhhmm.'</td><td>'; else $result .= $diffhhmm.'</td><td></td><td>';
 						$result .= $difftime."</td></tr>";
 					} else {
@@ -504,9 +504,9 @@ function etimeclockwp_button_shortcode($atts) {
 			$wp_time_format = etimeclockwp_get_option('time-format');
 			$wp_date_format_timestamp = 'Y-m-d';
 			$wp_time_format_timestamp = 'H:i:s';
-			$timestamp_now = 	date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp);
-			$date_now = 		date_i18n($wp_date_format);
-			$time_now = 		date_i18n($wp_time_format);
+			$timestamp_now = 	wp_date($wp_date_format_timestamp.' '.$wp_time_format_timestamp);
+			$date_now = 		wp_date($wp_date_format);
+			$time_now = 		wp_date($wp_time_format);
 			$pausum=0;
 			$azsum =0;
 			foreach($metavalue as $key => $val) {
@@ -535,10 +535,10 @@ function etimeclockwp_button_shortcode($atts) {
 						$keycolor = etimeclockwp_get_option('return-from-break-button-color');
 						$working_status = '3';
 					}
-					$datetime = date_i18n($wp_date_format.' '.$wp_time_format,$timestampdb);
-					$date = 	date_i18n($wp_date_format,$timestampdb);
-					$time = 	date_i18n($wp_time_format,$timestampdb);
-					$timestamp = 		date_i18n($wp_date_format_timestamp.' '.$wp_time_format_timestamp,$timestampdb);
+					$datetime = wp_date($wp_date_format.' '.$wp_time_format,$timestampdb);
+					$date = 	wp_date($wp_date_format,$timestampdb);
+					$time = 	wp_date($wp_time_format,$timestampdb);
+					$timestamp = 		wp_date($wp_date_format_timestamp.' '.$wp_time_format_timestamp,$timestampdb);
 					if (!empty($oldtimestampdb)) {
 						$difftime = german_time_diff($oldtimestampdb,$timestampdb);
 						$diffsecs = round($timestampdb - $oldtimestampdb);
