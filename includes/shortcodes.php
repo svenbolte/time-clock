@@ -244,7 +244,7 @@ function etimeclockwp_roombooking($atts) {
 			$html .= '</div></blockquote>';
 		}	
 
-	} else { $html = '<div class="newlabel yellow" style="font-size:1em;width:100%;text-align:center">'.__('login required. Enter your timeclock username and password','etimeclockwp').'</div>';}   // Admin oder User Abfrage Ende
+	} else { $html = '<div class="newlabel" style="background-color:#fe8;font-size:1em;width:100%;text-align:center">'.__('login required. Enter your timeclock username and password','etimeclockwp').'</div>';}   // Admin oder User Abfrage Ende
 
 	return $html;
 }
@@ -711,7 +711,7 @@ function etimeclockwp_button_shortcode($atts) {
 	} else {
 
 		// kein Zugriff, Meldung anzeigen -------------------------------
-		$result = '<div class="newlabel yellow" style="font-size:1em;width:100%;text-align:center">'.__('login required. Enter your timeclock username and password','etimeclockwp').'</div>';
+		$result = '<div class="newlabel" style="background-color:#fe8;font-size:1em;width:100%;text-align:center">'.__('login required. Enter your timeclock username and password','etimeclockwp').'</div>';
 
 	} //////	Ende Showausgabe
 	return $result;
