@@ -482,7 +482,7 @@ function etimeclockwp_button_shortcode($atts) {
 		header('Content-Type: text/csv; charset=utf-8');
 		header("Content-Disposition: attachment; filename=\"" . $filename . " " . $date . ".csv\";" );
 		header("Content-Transfer-Encoding: binary");	
-		fputcsv( $output, array('Username', 'UserID', 'StempeltagID', 'Stempelart', 'StempelUhrzeit', 'Arbeitszeit', 'Pausenzeit', 'AZproTagTotal'), ';');
+		fputcsv( $output, array('Username', 'UserID', 'StempeltagID', 'Stempelart', 'StempelUhrzeit', 'Arbeitszeit', 'Pausenzeit', 'AZproTagTotal'), ';', escape: "");
 		if ($validuser !=='admin') $userfilter=$validuser; else $userfilter='';
 			$result ='';
 			$activity = get_posts(
@@ -561,7 +561,7 @@ function etimeclockwp_button_shortcode($atts) {
 							$pau,
 							'',
 						);
-					   fputcsv( $output, $modified_values, ';' );
+					   fputcsv( $output, $modified_values, ';', escape: "" );
 					} else {
 					}
 					$oldtimestampdb = $timestampdb;
@@ -578,7 +578,7 @@ function etimeclockwp_button_shortcode($atts) {
 				sprintf('%02d:%02d:%02d', ($pausum / 3600),($pausum / 60 % 60), $pausum % 60),
 				etimeclockwp_get_time_worked($post,$format = true),
 			);
-		   fputcsv( $output, $modified_values, ';' );
+		   fputcsv( $output, $modified_values, ';', escape: "" );
 		}
 		exit;
 
@@ -597,7 +597,7 @@ function etimeclockwp_button_shortcode($atts) {
 		header('Content-Type: text/csv; charset=utf-8');
 		header("Content-Disposition: attachment; filename=\"" . $filename . " " . $date . ".csv\";" );
 		header("Content-Transfer-Encoding: binary");	
-		fputcsv( $output, array('Username', 'UserID', 'Kennwort', 'RecordNo', 'created', 'lastBooking'), ';');
+		fputcsv( $output, array('Username', 'UserID', 'Kennwort', 'RecordNo', 'created', 'lastBooking'), ';', escape: "");
 		foreach($users as $user) {
 			$modified_values = array(
 				$user->post_title,
@@ -607,7 +607,7 @@ function etimeclockwp_button_shortcode($atts) {
 				$user->post_date,
 				user_last_booking($user->ID, true),
 			);
-		   fputcsv( $output, $modified_values, ';' );
+		   fputcsv( $output, $modified_values, ';', escape: "" );
 		}
 		exit;
 
