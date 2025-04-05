@@ -211,7 +211,7 @@ if( !function_exists('ago')) {
 if( !function_exists('german_time_diff')) {
 	function german_time_diff( $from, $to, $nostyle = NULL ) {
 		$days_old = abs(round(( $to - $from ) / 86400 , 0 ));
-		if ( $days_old < 30 ) $newcolor = '#fd06'; else $newcolor = '#fffc';
+		if ( $days_old < 30 ) $newcolor = '#fe8'; else $newcolor = '#fffc';
 		$diff = human_time_diff($from,$to);
 		$longreplace = array(   // Grammatik bei Anzeige langer Differenz (Monate statt Monaten)
 			'Tagen' => 'Tage',	'Monaten' => 'Monate',	'Jahren' => 'Jahre'
@@ -223,7 +223,7 @@ if( !function_exists('german_time_diff')) {
 			'Jahr'  => 'J', 'Jahre'  => 'J',		'n' =>''
 		);
 		$aetitle = __('time since previous post or visit','penguin').'&#10;'.strtr($diff,$longreplace).'&#10;'.$days_old.' Tage';
-		if (!isset($style)) return '<span title="'.$aetitle.'" class="newlabel" style="font-size:.8em;white-space:nowrap;background-color:'.$newcolor.'"><i title="'.$aetitle.'" class="fa fa-arrows-v" style="font-size:1em;margin-right:4px"></i>' . strtr($diff,$replace) . '</span>';
+		if (!isset($nostyle)) return '<span title="'.$aetitle.'" class="newlabel" style="font-size:.8em;white-space:nowrap;background-color:'.$newcolor.'"><i title="'.$aetitle.'" class="fa fa-arrows-v" style="font-size:1em;margin-right:4px"></i>' . strtr($diff,$replace) . '</span>';
 		else return strtr($diff,$replace);
 	}
 }
