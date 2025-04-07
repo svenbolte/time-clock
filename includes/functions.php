@@ -172,7 +172,10 @@ function etime_menu($selectedmenu,$validuser) {
 	return $mtext;
 }
 
-// Zeitdifferenz ermitteln und gestern/vorgestern/morgen schreiben: penguin-mod, chartscodes, dedo, foldergallery, timeclock
+// ----------------------------------- Funktionen, die in andere Plugins und themes gespiegelt sind ------------------------------------
+
+// Zeitdifferenz ermitteln und gestern/vorgestern/morgen schreiben
+//   gespiegelt in: chartcodes.php, delightful-downloads/includes/functions.php, foldergallery.php, penguin/functions.php, timeclock/includes/functions.php
 if( !function_exists('ago')) {
 	function ago($timestamp) {
 		if (empty($timestamp)) return;
@@ -206,6 +209,55 @@ if( !function_exists('ago')) {
 		return $hdate;
 	}
 }	
+
+// Datumbox farbig mit Wochenende SA gelb und SO rot ausgeben aus createdatum und moddatum. wird nur createdatum gesetzt, wird nur das ausgewertet.
+//   gespiegelt in: chartcodes.php, delightful-downloads/includes/functions.php, foldergallery.php, penguin/functions.php
+//   Parameter 1: Erstell-Unix-Timestamp | 2: Mod-Timestamp oder NULL=Erstell-Timestamp | 3: NULL=ICON anzeigen, 1=kein Icon | 4: NULL=nur Datum, 1=Datum und AGO, 2=nur AGO
+//     test:     echo colordatebox( (time()-86400), NULL, NULL, 1);
+if( !function_exists('colordatebox')) {
+	function colordatebox($created, $modified = NULL, $noicon = NULL, $showago = NULL) {
+		$modified = $modified ?? $created;
+		$erstelldat = str_replace( ' 00:00', '', wp_date('D d. M Y H:i', $created) );
+		$moddat = str_replace( ' 00:00', '', wp_date('D d. M Y H:i', $modified) );
+		$postago = ago($created);
+		$modago = ago($modified);
+		$diff = time() - $modified;
+		$diffmod = $modified - $created;
+		$diffround = floor($diff / 86400);
+		if ($diffround < -30 || $diffround > 30) $newcolor = "#eee";
+		else if ($diffround != 0) $newcolor = "#fe8";
+		else $newcolor = '#fff';
+		$istoday = date('Y-m-d', $modified) === date('Y-m-d');
+		if ($istoday) $newcolor = "#bfd";
+		$getweekday = wp_date('w', $created);
+		$erstelltitle = __("created", "penguin") . ': ' . $erstelldat . ' ' . $postago.' '.$diffround.' Tg';
+		if ($diffmod != 0) {
+			$erstelltitle .= "\n" . __("modified", "penguin") . ': ' . $moddat . ' ' . $modago;
+			$erstelltitle .= "\n" . __("modified after", "penguin") . ': ' . human_time_diff($created, $modified);
+			$getweekday = wp_date('w', $modified);
+		}
+		$isweekend = ($getweekday == 0) ? '#f00' : (($getweekday == 6) ? '#e60' : '#444'); // angezeigtes create oder mod Datum am Wochenende SA orange SO rote schrift
+		if ($diffmod > 0) {
+			$newormod = 'calendar-plus-o';
+			if (2 !== $showago) $anzeigedat = $moddat;
+			if (2 === $showago) $anzeigedat = $modago;
+			if (1 === $showago) $anzeigedat .= ' ' . $modago;
+		} else {
+			$newormod = 'calendar-o';
+			if (2 !== $showago) $anzeigedat = $erstelldat;
+			if (2 === $showago) $anzeigedat = $postago;
+			if (1 === $showago) $anzeigedat .= ' ' . $postago;
+		}
+		$colordate = '<span class="newlabel" style="background-color:' . $newcolor . '">';
+		if (!isset($noicon)) {
+			$colordate .= '<i class="fa fa-' . $newormod . '" style="margin-right:4px"></i>';
+		}
+		$colordate .= '<span style="color:' . $isweekend . '" title="' . htmlspecialchars($erstelltitle, ENT_QUOTES) . '">' . $anzeigedat . '</span></span>';
+		return $colordate;
+	}
+}
+
+// ---------------------------------- Spiegelung Ende ------------------------------------------------------------------------
 
 // Differenz zwischen 2 Beiträgen (kurz), penguin-mod, timeclock
 if( !function_exists('german_time_diff')) {
