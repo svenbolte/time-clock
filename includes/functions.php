@@ -174,6 +174,35 @@ function etime_menu($selectedmenu,$validuser) {
 
 // ----------------------------------- Funktionen, die in andere Plugins und themes gespiegelt sind ------------------------------------
 
+// kurze Zeitangabe wie 1T 1M 1J Angabe von und bis Datum als timestamps
+//    gespiegelt in penguin/functions.php, time-clock\includes\functions.php 
+if (!function_exists('german_time_diff')) {
+	function german_time_diff($from, $to, $nostyle = null) {
+		$days_old = abs(round(($to - $from) / 86400));
+		$newcolor = ($days_old < 30) ? '#fe8' : '#fffc';
+
+		$diff = human_time_diff($from, $to);
+		$diff = strtr($diff, ['Tagen'=>'Tage','Monaten'=>'Monate','Jahren'=>'Jahre']);
+
+		$replace = [
+			'Sekunden'=>'s','Sekunde'=>'s','Minuten'=>'m','Minute'=>'m',
+			'Stunden'=>'h','Stunde'=>'h','Tage'=>'T','Tag'=>'T','Wochen'=>'W','Woche'=>'W',
+			'Monate'=>'M','Monat'=>'M','Jahre'=>'J','Jahr'=>'J','n'=>''
+		];
+
+		$aetitle = __('time since previous post or visit','penguin')
+			."&#10;$diff&#10;{$days_old} Tage";
+
+		$short = strtr($diff, $replace);
+
+		return $nostyle
+			? $short
+			: '<span title="'.$aetitle.'" class="newlabel" style="font-size:.8em;white-space:nowrap;background:'.$newcolor.'">'
+				.'<i class="fa fa-arrows-v" style="font-size:1em;margin-right:4px" title="'.$aetitle.'"></i>'
+				.$short.'</span>';
+	}
+}
+
 // Zeitdifferenz ermitteln und gestern/vorgestern/morgen schreiben
 //   gespiegelt in: chartcodes.php, delightful-downloads/includes/functions.php, foldergallery.php, penguin/functions.php, timeclock/includes/functions.php
 if( !function_exists('ago')) {
@@ -257,28 +286,11 @@ if( !function_exists('colordatebox')) {
 	}
 }
 
+
+
+
 // ---------------------------------- Spiegelung Ende ------------------------------------------------------------------------
 
-// Differenz zwischen 2 Beiträgen (kurz), penguin-mod, timeclock
-if( !function_exists('german_time_diff')) {
-	function german_time_diff( $from, $to, $nostyle = NULL ) {
-		$days_old = abs(round(( $to - $from ) / 86400 , 0 ));
-		if ( $days_old < 30 ) $newcolor = '#fe8'; else $newcolor = '#fffc';
-		$diff = human_time_diff($from,$to);
-		$longreplace = array(   // Grammatik bei Anzeige langer Differenz (Monate statt Monaten)
-			'Tagen' => 'Tage',	'Monaten' => 'Monate',	'Jahren' => 'Jahre'
-		);
-		$replace = array(  // Auf Kurzform umstellen
-			'Sekunde'  => 's', 'Sekunden'  => 's',	'Minute'  => 'm', 'Minuten'  => 'm',
-			'Stunde'  => 'h', 'Stunden' => 'h',		'Tag'   => 'T', 'Tage'  => 'T',
-			'Woche'  => 'W', 'Wochen'  => 'W',		'Monat'  => 'M', 'Monate'  => 'M',
-			'Jahr'  => 'J', 'Jahre'  => 'J',		'n' =>''
-		);
-		$aetitle = __('time since previous post or visit','penguin').'&#10;'.strtr($diff,$longreplace).'&#10;'.$days_old.' Tage';
-		if (!isset($nostyle)) return '<span title="'.$aetitle.'" class="newlabel" style="font-size:.8em;white-space:nowrap;background-color:'.$newcolor.'"><i title="'.$aetitle.'" class="fa fa-arrows-v" style="font-size:1em;margin-right:4px"></i>' . strtr($diff,$replace) . '</span>';
-		else return strtr($diff,$replace);
-	}
-}
 
 // get options with defaults - used in settings_api.php to load defaults for settings page
 function etimeclockwp_get_option($key) {
