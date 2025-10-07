@@ -175,30 +175,25 @@ function etime_menu($selectedmenu,$validuser) {
 // ----------------------------------- Funktionen, die in andere Plugins und themes gespiegelt sind ------------------------------------
 
 // kurze Zeitangabe wie 1T 1M 1J Angabe von und bis Datum als timestamps
-//    gespiegelt in penguin/functions.php, time-clock\includes\functions.php 
+//    gespiegelt in ||| time-clock\includes\functions.php |||  penguin/functions.php
 if (!function_exists('german_time_diff')) {
 	function german_time_diff($from, $to, $nostyle = null) {
 		$days_old = abs(round(($to - $from) / 86400));
 		$newcolor = ($days_old < 30) ? '#fe8' : '#fffc';
-
 		$diff = human_time_diff($from, $to);
 		$diff = strtr($diff, ['Tagen'=>'Tage','Monaten'=>'Monate','Jahren'=>'Jahre']);
-
 		$replace = [
 			'Sekunden'=>'s','Sekunde'=>'s','Minuten'=>'m','Minute'=>'m',
 			'Stunden'=>'h','Stunde'=>'h','Tage'=>'T','Tag'=>'T','Wochen'=>'W','Woche'=>'W',
 			'Monate'=>'M','Monat'=>'M','Jahre'=>'J','Jahr'=>'J','n'=>''
 		];
-
 		$aetitle = __('time since previous post or visit','penguin')
 			."&#10;$diff&#10;{$days_old} Tage";
-
 		$short = strtr($diff, $replace);
-
 		return $nostyle
 			? $short
-			: '<span title="'.$aetitle.'" class="newlabel" style="font-size:.8em;white-space:nowrap;background:'.$newcolor.'">'
-				.'<i class="fa fa-arrows-v" style="font-size:1em;margin-right:4px" title="'.$aetitle.'"></i>'
+			: '<span title="'.$aetitle.'" class="newlabel" style="white-space:nowrap;background:'.$newcolor.'">'
+				.'<i class="fa fa-arrows-v" style="font-size:.9em;margin-right:2px" title="'.$aetitle.'"></i>'
 				.$short.'</span>';
 	}
 }
