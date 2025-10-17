@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Time Clock
-Description: a time clock and seat reservation (desksharing) plugin for WordPress
+Description: a time clock and seat reservation (desksharing) plugin for WordPress with many statistics and exports
 Author: Scott Paterson and PBMod
 Author URI: https://github.com/svenbolte/
 Plugin URI: https://github.com/svenbolte/time-clock/
@@ -9,10 +9,10 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: etimeclockwp
 Domain Path: /languages/
-Version: 9.1.3.0.86
-Stable tag: 9.1.3.0.86
+Version: 9.1.3.1.100
+Stable tag: 9.1.3.1.100
 Requires at least: 6.0
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 Requires PHP: 8.2
 */
 
@@ -33,7 +33,7 @@ if (!defined('ETIMECLOCKWP_NAME')) {
 	define('ETIMECLOCKWP_NAME', 				'Time Clock');
 }
 if (!defined('ETIMECLOCKWP_VERSION')) {
-	define('ETIMECLOCKWP_VERSION', 				'9.1.2.1.62');
+	define('ETIMECLOCKWP_VERSION', 				'9.1.3.1.100');
 }
 if (!defined('ETIMECLOCKWP_SETTINGS_PAGE')) {
 	define('ETIMECLOCKWP_SETTINGS_PAGE', 		'etimeclockwp_settings_page');

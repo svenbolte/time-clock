@@ -1,309 +1,424 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+
 function totalraumbelegung($vdatum) {
-	global $wpdb;
-	$xbelegt= $wpdb->get_results("SELECT count(*) as totalbelegt FROM `wp_roombookings` WHERE verandatum='".$vdatum."'" );
-	return $xbelegt[0]->totalbelegt;
+    global $wpdb;
+    $xbelegt = $wpdb->get_results("SELECT count(*) as totalbelegt FROM `wp_roombookings` WHERE DATE(verandatum)='".$vdatum."'" );
+    return $xbelegt[0]->totalbelegt;
 }
 
 // Raum- oder Schreibtisch buchen Shortcode, verwendet usercookie, wenn gesetzt, zum Buchen
 function etimeclockwp_roombooking($atts) {
-	global $wp, $wpdb, $totalsitze;
-	// get shortcode attributes
-	$atts = shortcode_atts(array( 'raum' => '1', 'verandatum' => date('Y-m-d'), ), $atts);
-	$raum = $atts['raum'];
-	if (isset($_GET['raum'])) $raum = substr(esc_html($_GET['raum']),0,30);
-	$verandatum = $atts['verandatum'];
-	if (isset($_GET['verandatum'])) $verandatum = substr(esc_html($_GET['verandatum']),0,10);
-	$html = '';
-	$user_name='';
-	$validuser ='';
-	if (!current_user_can('administrator')) $validuser = etimevaliduser();
-	if (!empty($validuser)) {
-		$users = get_posts(array( 'posts_per_page' => -1, 'post_type' => 'etimeclockwp_users', 'ID' => $validuser ) );
-		foreach($users as $user) { $usersname = get_post_meta($user->post_ID,'etimeclockwp_id'); }
-		$uargs = array(
-			'post_type'					=> 'etimeclockwp_users',
-			'post_status'				=> 'publish',
-			'update_post_term_cache'	=> false, // don't retrieve post terms
-			'post__in' => array($validuser),
-		);
-		$users_array = new WP_Query($uargs);
-		foreach ($users_array->posts as $users) {
-			$userid = get_post_meta($users->ID,'etimeclockwp_id',true);
-			$user_name = $users->post_title;
-		}	
-		$usercookie = isset( $_COOKIE['etime_usercookie'] ) ? $_COOKIE['etime_usercookie'] : $userid;
+    $historie = (isset($_GET['historie']) && $_GET['historie'] == '1') ? 1 : 0;
+
+    global $wp, $wpdb, $totalsitze;
+    // get shortcode attributes
+    $atts = shortcode_atts(array( 'raum' => '1', 'verandatum' => date('Y-m-d'), ), $atts);
+    $raum = $atts['raum'];
+    if (isset($_GET['raum'])) $raum = substr(esc_html($_GET['raum']),0,30);
+    $verandatum = $atts['verandatum'];
+
+	// POST override for verandatum (fix submit)
+	if (isset($_POST['verandatum']) && $_POST['verandatum'] !== '') {
+		$verandatum = substr(sanitize_text_field($_POST['verandatum']), 0, 10);
 	}
 
-	// Nur für Admins oder wenn angemeldet
-	if (current_user_can('administrator') || !empty($validuser) ) {
+    if (isset($_GET['verandatum'])) $verandatum = substr(esc_html($_GET['verandatum']),0,10);
+    $html = '';
+    $user_name='';
+    $validuser ='';
+    if (!current_user_can('administrator')) $validuser = etimevaliduser();
+    if (!empty($validuser)) {
+        $users = get_posts(array( 'posts_per_page' => -1, 'post_type' => 'etimeclockwp_users', 'ID' => $validuser ) );
+        foreach($users as $user) { $usersname = get_post_meta($user->post_ID,'etimeclockwp_id'); }
+        $uargs = array(
+            'post_type'					=> 'etimeclockwp_users',
+            'post_status'				=> 'publish',
+            'update_post_term_cache'	=> false, // don't retrieve post terms
+            'post__in' => array($validuser),
+        );
+        $users_array = new WP_Query($uargs);
+        foreach ($users_array->posts as $users) {
+            $userid = get_post_meta($users->ID,'etimeclockwp_id',true);
+            $user_name = $users->post_title;
+        }
+        $usercookie = isset( $_COOKIE['etime_usercookie'] ) ? $_COOKIE['etime_usercookie'] : $userid;
+    }
 
-		//// Buchung löschen (nur admin oder user für sich) - Sitznummer übergeben
-		if (isset($_POST['delseat']) &&  ( current_user_can('administrator') || ( isset($_POST['code']) && esc_html($_POST['code']) == md5(date('Y-m-d H')) ) ) ) {
-			$postingid = (int) sanitize_text_field($_POST['delseat']);
-			if ($postingid > 0) {
-				$wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum = ".$raum." AND sitz = " . $postingid);
-				$html = ' Sitz '.$postingid.' aus Raum: '.$raum.' entfernt.' ;
-			}	
-		}
+    // Nur für Admins oder wenn angemeldet
+    if (current_user_can('administrator') || !empty($validuser) ) {
 
-		//// Raum mit buchungen löschen (nur admin) - Raumnummer übergeben
-		if (current_user_can('administrator' ) && isset($_POST['delroom']) && ( isset($_POST['code']) && esc_html($_POST['code']) == md5(date('Y-m-d H')) ) ) {
-			$postingid = (int) sanitize_text_field($_POST['delroom']);
-			if ($postingid > 0) {
-				$wpdb->query("DELETE FROM ". $wpdb->prefix . "rooms WHERE id = ".$postingid);
-				$wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE raum = ".$postingid);
-				$html = ' Raum '.$postingid.' mit allen Buchungen entfernt.' ; 
-			}	
-		}
+        //// Buchung löschen (nur admin oder user für sich) - Sitznummer übergeben
+        if (isset($_POST['delseat']) &&  ( current_user_can('administrator') || ( isset($_POST['code']) && esc_html($_POST['code']) == md5(date('Y-m-d H')) ) ) ) {
+            $postingid = (int) sanitize_text_field($_POST['delseat']);
+            if ($postingid > 0) {
+                $wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum = ".$raum." AND sitz = " . $postingid);
+                $html = ' Sitz '.$postingid.' aus Raum: '.$raum.' entfernt.' ;
+            }
+        }
 
-		// Neuen Raum schreiben
-	   if (!empty($_POST['raumname']) && current_user_can('administrator') ) {
-			$table = $wpdb->prefix . "rooms";
-			$data = array(
-				'datum' => date('Y-m-d'), 
-				'raumname' => esc_html($_POST['raumname']), 
-				'sitze' => (int) $_POST['sitze'], 
-			);
-			$success=$wpdb->insert( $table, $data );
-			if($success){
-				$html = ' Raum '.$_POST['raumname'].' gespeichert' ; 
-				$_POST['raumname']='';
-			}
-		}
+        //// Raum mit buchungen löschen (nur admin) - Raumnummer übergeben
+        if (current_user_can('administrator' ) && isset($_POST['delroom']) && ( isset($_POST['code']) && esc_html($_POST['code']) == md5(date('Y-m-d H')) ) ) {
+            $postingid = (int) sanitize_text_field($_POST['delroom']);
+            if ($postingid > 0) {
+                $wpdb->query("DELETE FROM ". $wpdb->prefix . "rooms WHERE id = ".$postingid);
+                $wpdb->query("DELETE FROM ". $wpdb->prefix . "roombookings WHERE raum = ".$postingid);
+                $html = ' Raum '.$postingid.' mit allen Buchungen entfernt.' ;
+            }
+        }
 
-		// Neuen Datensatz schreiben
-	   if (!empty($_POST['belegung']) && (current_user_can('administrator') || $user_name == $_POST['belegung']) ) {
-			$table = $wpdb->prefix . "roombookings";
-		   $data = array(
-				'verandatum' => sanitize_text_field($_POST['verandatum']), 
-				'raum' => (int) $_POST['raum'], 
-				'sitz' => (int) $_POST['sitz'], 
-				'belegung' => esc_html($_POST['belegung']), 
-			);
-			$success=$wpdb->insert( $table, $data );
-			if($success){
-				$html = ' Belegung für Sitz '.$_POST['sitz'].' gespeichert' ; 
-				$_POST['belegung']='';
-			}
-		}
+        // Neuen Raum schreiben
+       if (!empty($_POST['raumname']) && current_user_can('administrator') ) {
+            $table = $wpdb->prefix . "rooms";
+            $data = array(
+                'datum' => date('Y-m-d'),
+                'raumname' => esc_html($_POST['raumname']),
+                'sitze' => (int) $_POST['sitze'],
+            );
+            $success=$wpdb->insert( $table, $data );
+            if($success){
+                $html = ' Raum '.$_POST['raumname'].' gespeichert' ;
+                $_POST['raumname']='';
+            }
+        }
 
-		// Abschnitt Raumbelegung
-		if (!empty($validuser)) {
-			$html .= '<div style="text-align:right"><ul class="footer-menu">';
-			$html .= '<li><a href="'.home_url( add_query_arg( array('logout'=>'1') ) ).'" title="'.__('logout','etimeclockwp').'"><i class="fa fa-lg fa-sign-out" style="color:tomato"></i></a></li>';
-			$html .= '<li><i class="fa fa-user"></i> '.$user_name.' '.$validuser.'</li></ul></div>';
-		}	
+        // Neuen Datensatz schreiben
+       if (!empty($_POST['belegung']) && (current_user_can('administrator') || $user_name == $_POST['belegung']) ) {
+            $table = $wpdb->prefix . "roombookings";
+           $data = array(
+                'verandatum' => $verandatum.' 00:00:00',
+                'raum' => (int) $_POST['raum'],
+                'sitz' => (int) $_POST['sitz'],
+                'belegung' => esc_html($_POST['belegung']),
+            );
+            $success=$wpdb->insert( $table, $data );
+            if($success){
+                $html = ' Belegung für Sitz '.$_POST['sitz'].' gespeichert' ;
+                $_POST['belegung']='';
+            }
+        }
 
-		// Form Raum auswählen
-		$html .= '<div class="noprint">';
-		$html .= '<form class="noprint" style="display:inline" method="get" name="raumauswahl">';
-		$html .= '<input type="date" name="verandatum" value="'. $verandatum . '">';
-		$html .= ' <a href="'.get_permalink().'" title="'.__('home','etimeclockwp').'"><i class="fa fa-lg fa-home"></i></a>';
-		$html .= ' Hist <input type="checkbox" name="historie" value="1">';
+        // Abschnitt Raumbelegung
+        if (!empty($validuser)) {
+            $html .= '<div style="text-align:right"><ul class="footer-menu">';
+            $html .= '<li><a href="'.home_url( add_query_arg( array('logout'=>'1') ) ).'" title="'.__('logout','etimeclockwp').'"><i class="fa fa-lg fa-sign-out" style="color:tomato"></i></a></li>';
+            $html .= '<li><i class="fa fa-user"></i> '.$user_name.' '.$validuser.'</li></ul></div>';
+        }
 
+        // Form Raum auswählen
+        $html .= '<div class="noprint">';
+        $html .= '<form class="noprint" style="display:inline" method="get" name="raumauswahl">';
+        $html .= '<input type="date" name="verandatum" value="'. $verandatum . '">';
+        $html .= ' <a href="'.get_permalink().'" title="'.__('home','etimeclockwp').'"><i class="fa fa-lg fa-home"></i></a>';
+        $html .= ' Hist <input type="checkbox" name="historie" value="1" ' . ($historie ? 'checked' : '') . '>';
 
-		$xrooms = $wpdb->get_results("SELECT id, raumname,sitze FROM " . $wpdb->prefix . "rooms ORDER by raumname" );
-		$html .= ' <select name="raum">';
-		$sitzzahl = 0; $aktraumname=''; $totalsitze = 0;
-		foreach ($xrooms as $room) {
-			$html .=  '<option value="'.$room->id.'"';
-			if ($room->id == $raum) { $html .=  ' selected '; $sitzzahl = $room->sitze; $aktraumname = $room->raumname; }
-			$html .=  '>' .$room->raumname.' ('.$room->sitze.')' . '</option>';
-			$totalsitze += $room->sitze;
-		}
-		$html .=  '</select> ';
-		$html .= '<input type="hidden" name="show" value="6">';
-		$html .= '<input type="submit" name="raumauswahl" value="wählen"></form>';
+        $xrooms = $wpdb->get_results("SELECT id, raumname,sitze FROM " . $wpdb->prefix . "rooms ORDER by raumname" );
+        $html .= ' <select name="raum">';
+        $sitzzahl = 0; $aktraumname=''; $totalsitze = 0;
+        foreach ($xrooms as $room) {
+            $html .=  '<option value="'.$room->id.'"';
+            if ($room->id == $raum) { $html .=  ' selected '; $sitzzahl = $room->sitze; $aktraumname = $room->raumname; }
+            $html .=  '>' .$room->raumname.' ('.$room->sitze.')' . '</option>';
+            $totalsitze += $room->sitze;
+        }
+        $html .=  '</select> ';
+        $html .= '<input type="hidden" name="show" value="6">';
+        $html .= '<input type="submit" name="raumauswahl" value="wählen"></form>';
 
-		// Form Raum neu anlegen (nur Admin)
-		if (current_user_can('administrator')) {
-			$html .= ' &nbsp; <form class="noprint" style="display:inline" method="post" name="raumanlegen">';
-			$html .= 'oder anlegen <input type="text" name="raumname" placeholder="neuer Raum Name">';
-			$html .= ' <input type="number" name="sitze" min="1" max="999" placeholder="MaxSitze" style="width:70px"> ';
-			$html .= '<input type="submit" name="raumanlegen" value="+"></form>';
-		}	
-		$html .= '</div>';
-		
-		// Kalender anzeigen, max. 3 Monate ab des ausgewählten Datums
-		$caldatum = new DateTime($verandatum);
-		// $caldatum->modify('first day of last month');
-		$vormonatStart = $caldatum->format('Y-m-01');
-		$caldatum->modify('first day of +2 months');
-		$nachmonatEnde = $caldatum->format('Y-m-t');
-		
-		// Toggle div for calendar on and off
-		$html .= '<style>.faq__content,summary{list-style-type:none;border:1px solid var(--pengcolor);outline:none;padding:6px;
-		position:relative}summary{background:var(--penglitecolor);color:var(--pengcolor);
-		cursor:pointer;font-size:1.1rem;margin-top:2px}.faq__content{border-top:none}
-		details[open] summary ~ *{animation:sweep .4s ease-in-out}
-		@keyframes sweep{0%{margin-top:-10px;opacity:0}100%{margin-top:0;opacity:1}}
-		details > summary::after{content:"\f107";font-family:"fontawesome";position:absolute;right:20px;font-size:1.2em}
-		details[open] > summary::after{content:"\f106";font-family:"fontawesome";position:absolute;right:20px}
-		</style>';
-		$html .= '<script> function toggleopen() { ';
-		$html .= ' var cusid_ele = document.getElementsByClassName("details");';
-		$html .= ' if (cusid_ele[0].open == 1) {var onoff = 0;} else {var onoff = 1;}';
-		$html .= 'for (var i = 0; i < cusid_ele.length; ++i) { var item = cusid_ele[i];'; 
-		$html .= ' if (onoff == 1) {item.open = true;} else {item.open=false;} } } </script>';
-		$html .= '<details class="details"><summary>Buchungskalender ab '.wp_date('F Y',strtotime($vormonatStart)).'</summary>';
-		$html .= '<div class="faq__content">';
-		$customers = array();
-		// Raumbelegung errechnen für den Monat
-		// $xbelegung = $wpdb->get_results("SELECT ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."rooms.raumname, ".$wpdb->prefix."roombookings.raum, ".$wpdb->prefix."rooms.sitze, count(*) as belegt FROM ".$wpdb->prefix."roombookings join ".$wpdb->prefix."rooms on ".$wpdb->prefix."rooms.id=".$wpdb->prefix."roombookings.raum WHERE ".$wpdb->prefix."roombookings.verandatum >= '".$vormonatStart."' AND ".$wpdb->prefix."roombookings.verandatum <= '".$nachmonatEnde."' group by ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."roombookings.raum order by verandatum" );
+        // Form Raum neu anlegen (nur Admin)
+        if (current_user_can('administrator')) {
+            $html .= ' &nbsp; <form class="noprint" style="display:inline" method="post" name="raumanlegen">';
+            $html .= 'oder anlegen <input type="text" name="raumname" placeholder="neuer Raum Name">';
+            $html .= ' <input type="number" name="sitze" min="1" max="999" placeholder="MaxSitze" style="width:70px"> ';
+            $html .= '<input type="submit" name="raumanlegen" value="+"></form>';
+        }
+        $html .= '</div>';
 
-		if ('1' === $raum) $raum='';
-		if (date('Y-m-d') === $verandatum) $verandatum = '';
-		echo $verandatum;
-				
+        // Kalender anzeigen, max. 3 Monate ab des ausgewählten Datums
+        $caldatum = new DateTime($verandatum);
+        // $caldatum->modify('first day of last month');
+        $vormonatStart = $caldatum->format('Y-m-01');
+        $caldatum->modify('first day of +2 months');
+        $nachmonatEnde = $caldatum->format('Y-m-t');
+
+        // Toggle div for calendar on and off
+        $html .= '<style>.faq__content,summary{list-style-type:none;border:1px solid var(--pengcolor);outline:none;padding:6px;
+        position:relative}summary{background:var(--penglitecolor);color:var(--pengcolor);
+        cursor:pointer;font-size:1.1rem;margin-top:2px}.faq__content{border-top:none}
+        details[open] summary ~ *{animation:sweep .4s ease-in-out}
+        @keyframes sweep{0%{margin-top:-10px;opacity:0}100%{margin-top:0;opacity:1}}
+        details > summary::after{content:"\f107";font-family:"fontawesome";position:absolute;right:20px;font-size:1.2em}
+        details[open] > summary::after{content:"\f106";font-family:"fontawesome";position:absolute;right:20px}
+        </style>';
+        $html .= '<script> function toggleopen() { ';
+        $html .= ' var cusid_ele = document.getElementsByClassName("details");';
+        $html .= ' if (cusid_ele[0].open == 1) {var onoff = 0;} else {var onoff = 1;}';
+        $html .= 'for (var i = 0; i < cusid_ele.length; ++i) { var item = cusid_ele[i];';
+        $html .= ' if (onoff == 1) {item.open = true;} else {item.open=false;} } } </script>';
+        // dynamischer Titel je nach Historie
+    $kalenderTitel = $historie ? (function() use ($wpdb,$raum,$vormonatStart){
+        $minrow = (!empty($raum) && $raum!=='1')
+            ? $wpdb->get_row($wpdb->prepare("SELECT MIN(DATE(verandatum)) AS mind FROM {$wpdb->prefix}roombookings WHERE raum=%d", intval($raum)), ARRAY_A)
+            : $wpdb->get_row("SELECT MIN(DATE(verandatum)) AS mind FROM {$wpdb->prefix}roombookings", ARRAY_A);
+        return !empty($minrow['mind']) ? wp_date('F Y', strtotime($minrow['mind'])) : wp_date('F Y', strtotime($vormonatStart));
+    })() : wp_date('F Y', strtotime($vormonatStart));
+    $html .= '<details class="details"><summary>Buchungskalender ab ' . $kalenderTitel . '</summary>';
+        $html .= '<div class="faq__content">';
+        $customers = array();
+        // Raumbelegung errechnen für den Monat
+        // $xbelegung = $wpdb->get_results("SELECT ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."rooms.raumname, ".$wpdb->prefix."roombookings.raum, ".$wpdb->prefix."rooms.sitze, count(*) as belegt FROM ".$wpdb->prefix."roombookings join ".$wpdb->prefix."rooms on ".$wpdb->prefix."rooms.id=".$wpdb->prefix."roombookings.raum WHERE ".$wpdb->prefix."roombookings.verandatum >= '".$vormonatStart."' AND ".$wpdb->prefix."roombookings.verandatum <= '".$nachmonatEnde."' group by ".$wpdb->prefix."roombookings.verandatum, ".$wpdb->prefix."roombookings.raum order by verandatum" );
+
+        if ('1' === $raum) $raum='';
+
 		// Start der WHERE-Klausel mit den obligatorischen Datumsangaben
-
 		if (isset($_GET['historie'])) $historie = 1; else $historie = 0;
 
-		// alte Veranstaltungen anzeigen
-		if ($historie !== 1) $where_clause = "WHERE wp_roombookings.verandatum >= '".$vormonatStart."' AND wp_roombookings.verandatum <= '".$nachmonatEnde."'";
+		// alte Veranstaltungen anzeigen (Hist = 1 => keine Datumsgrenze)
+		if ($historie !== 1) $where_clause = "WHERE wp_roombookings.verandatum >= '".$vormonatStart." 00:00:00' AND wp_roombookings.verandatum <= '".$nachmonatEnde." 23:59:59'";
 		else $where_clause = "WHERE 1=1";
-		// Bedingte Filterung für Raum und/oder Verandatum
-		if (!empty($raum) && !empty($verandatum)) {
-			// Wenn beides gesetzt ist
-			$where_clause .= " AND wp_roombookings.raum = '" . $raum . "' AND wp_roombookings.verandatum = '" . $verandatum . "'";
-		} elseif (!empty($raum)) {
-			// Wenn nur $raum gesetzt ist
+
+		// Raumfilter
+		if (!empty($raum)) {
 			$where_clause .= " AND wp_roombookings.raum = '" . $raum . "'";
-		} elseif (!empty($verandatum)) {
-			// Wenn nur $verandatum gesetzt ist
-			$where_clause .= " AND wp_roombookings.verandatum = '" . $verandatum . "'";
 		}
 
-		// Den vollständigen Query zusammensetzen
+		// Nur wenn NICHT Historie: zusätzlich exakt auf den ausgewählten Tag filtern
+		if (!$historie && !empty($verandatum)) {
+			$where_clause .= " AND DATE(wp_roombookings.verandatum) = '" . $verandatum . "'";
+		}
+		// Query zusammenbauen
 		$query = "
-			SELECT 
-				wp_roombookings.verandatum, 
-				wp_rooms.raumname, 
-				wp_roombookings.raum, 
-				wp_rooms.sitze, 
-				count(*) as belegt 
-			FROM 
-				wp_roombookings 
-			JOIN 
-				wp_rooms ON wp_rooms.id=wp_roombookings.raum 
-			" . $where_clause . " 
-			GROUP BY 
-				wp_roombookings.verandatum, 
-				wp_roombookings.raum 
-			ORDER BY 
-				verandatum
+				SELECT
+					wp_roombookings.verandatum,
+					wp_rooms.raumname,
+					wp_roombookings.raum,
+					wp_rooms.sitze,
+					count(*) as belegt
+				FROM
+					wp_roombookings
+				JOIN
+					wp_rooms ON wp_rooms.id=wp_roombookings.raum
+				" . $where_clause . "
+				GROUP BY
+					wp_roombookings.verandatum,
+					wp_roombookings.raum
+				ORDER BY
+					verandatum
 		";
-		// Den Query ausführen
-		$xbelegung = $wpdb->get_results($query);
+        $xbelegung = $wpdb->get_results($query);
 
-		$linedata='';
-		foreach ($xbelegung as $beleg) {
-			$freiesitze = ($beleg->sitze - $beleg->belegt);
-			if ($freiesitze == 0) $zerofree = '#f888'; else if ($freiesitze <= 3) $zerofree ='#fff8'; else $zerofree ='#8f88';
-			$customers[] = array ('verandatum' => $beleg->verandatum, 'veranstaltung' => '<a href="'.home_url( add_query_arg( array('verandatum'=>substr($beleg->verandatum,0,10),'raum'=>$beleg->raum) ) ).'" class="newlabel" style="line-height:10px;font-size:1em;background-color:'.$zerofree.'">' . $beleg->raumname.' | '.$beleg->sitze.'-'.$beleg->belegt.' | '.$freiesitze.'</a>');
-			$linedata .= substr($beleg->verandatum,5,5) .'/'. $beleg->raumname . '/bel:' . round($beleg->belegt ) . '|';
-			$linedata .= substr($beleg->verandatum,5,5) .'/'. $beleg->raumname . '/frei:' . round($freiesitze ) . '|';
-		}
-		if ( !empty($customers)) {
-			// Monatskalender mit Events zeigen
-			$month=substr($customers[0]['verandatum'],5,2);
-			$year=substr($customers[0]['verandatum'],0,4);
-			if ( !empty($month) ) $html .= timeclock_event_calendar($month,$year,$customers);
-			foreach($customers as $customer ) {
-				if ( substr($customer['verandatum'],0,7) <> $year.'-'.$month ) {
-					$month=substr($customer['verandatum'],5,2);
-					$year=substr($customer['verandatum'],0,4);
-					$html .= timeclock_event_calendar($month,$year,$customers);
-				}	
+        $linedata='';
+        foreach ($xbelegung as $beleg) {
+            $freiesitze = ($beleg->sitze - $beleg->belegt);
+            if ($freiesitze == 0) $zerofree = '#f888'; else if ($freiesitze <= 3) $zerofree ='#fff8'; else $zerofree ='#8f88';
+            $customers[] = array ('verandatum' => $beleg->verandatum, 'veranstaltung' => '<a href="'.home_url( add_query_arg( array('verandatum'=>substr($beleg->verandatum,0,10),'raum'=>$beleg->raum) ) ).'" class="newlabel" style="line-height:10px;font-size:1em;background-color:'.$zerofree.'">' . $beleg->raumname.' | '.$beleg->sitze.'-'.$beleg->belegt.' | '.$freiesitze.'</a>');
+            $linedata .= substr($beleg->verandatum,5,5) .'/'. $beleg->raumname . '/bel:' . round($beleg->belegt ) . '|';
+            $linedata .= substr($beleg->verandatum,5,5) .'/'. $beleg->raumname . '/frei:' . round($freiesitze ) . '|';
+        }
+        if ( !empty($customers)) {
+            // Monatskalender mit Events zeigen
+            $month=substr($customers[0]['verandatum'],5,2);
+            $year=substr($customers[0]['verandatum'],0,4);
+            if ( !empty($month) ) $html .= timeclock_event_calendar($month,$year,$customers);
+            foreach($customers as $customer ) {
+                if ( substr($customer['verandatum'],0,7) <> $year.'-'.$month ) {
+                    $month=substr($customer['verandatum'],5,2);
+                    $year=substr($customer['verandatum'],0,4);
+                    $html .= timeclock_event_calendar($month,$year,$customers);
+                }
+            }
+        } else { $html .= __('no records','etimeclockwp'); }
+        $html .='</div></details>'	;
+
+		// ---------- Verfügbarkeit (Historie) für ausgewählten Raum ----------
+		if (!empty($raum) && $sitzzahl > 0) {
+			// Zeitfenster wie oben (oder vollständig bei Hist)
+			$start = $vormonatStart . ' 00:00:00';
+			$ende  = $nachmonatEnde  . ' 23:59:59';
+
+			$where = array();
+			if (!$historie) {
+				$where[] = "verandatum BETWEEN '".$start."' AND '".$ende."'";
+			} else {
+				$where[] = "1=1";
 			}
-		} else { $html .= __('no records','etimeclockwp'); }	
-		$html .='</div></details>'	;
+			$where[] = "raum = ".intval($raum);
+			$where_clause = "WHERE " . implode(" AND ", $where);
 
-		// Linechart for admin
-		if (class_exists('WPGDCharts') && !empty($linedata)) {
-		// Neue GD Charts
-		$html .= '<details class="details"><summary>Auslastungschart</summary>';
-		$html .= '<div class="faq__content">';
-		if (count($xbelegung)<30) 
-			$html .= do_shortcode('[gd_chart width="880" type="vbar" legend="false" data="'.$linedata.'"]');
-		else 
-			$html .= do_shortcode('[gd_chart width="880" type="vbar" table=1 table_pos="only" legend="false" data="'.$linedata.'"]');
-		$html .='</div></details><br>';
-	}	
+			// Detail-Query: alle Buchungen des gewählten Raums im Zeitfenster
+			$q_hist = "
+				SELECT DATE(verandatum) as vtag, sitz, belegung
+				FROM {$wpdb->prefix}roombookings
+				$where_clause
+				ORDER BY vtag DESC, sitz ASC
+			";
+			$xhist = $wpdb->get_results($q_hist);
 
-		// Sitz im Raum buchen
-		if ($sitzzahl > 0) {
-			$html .= '<div class="noprint">';
-			$html .= '<form class="noprint" method="post" id="sitzbuchung" name="sitzbuchung">';
-			$xseats = $wpdb->get_results("SELECT id, verandatum, sitz,belegung FROM " . $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum=".$raum." AND belegung <> '' ORDER by id" );
-			$html .= ' <select name="sitz">';
-			for($i=1; $i <= $sitzzahl; $i++) {
-				$found=false;
-				foreach ($xseats as $seat) { if ($i == $seat->sitz) $found=true; }
-				if (!$found) $html .=  '<option value="'.$i.'">' .$i. '</option>';
+			// Gruppieren nach Datum, zählen belegt/frei, und Zeilen rendern
+			$html .= '<details class="details">';
+			$html .= '<summary>Verfügbarkeit (Historie) – Raum ' . intval($raum) . '</summary>';
+			$html .= '<div class="faq__content">';
+			$html .= '<table class="widefat striped">';
+			$html .= '<thead><tr><th style="width:120px">Datum</th><th style="width:80px;text-align:right">Belegt</th><th style="width:80px;text-align:right">Frei</th><th>Sitze (Belegung je Sitz)</th></tr></thead><tbody>';
+
+			$byday = array();
+			foreach ($xhist as $row) {
+				$d = $row->vtag;
+				if (!isset($byday[$d])) $byday[$d] = array('belegt'=>0, 'map'=>array());
+				$seat = intval($row->sitz);
+				$name = trim($row->belegung);
+				if ($name !== '') { $byday[$d]['belegt'] += 1; $byday[$d]['map'][$seat] = $name; }
 			}
-			$html .=  '</select> ';
-			$html .= '	<input type="hidden" name="verandatum" value="'.$verandatum.'">';
-			$html .= '	<input type="hidden" name="raum" value="'.$raum.'">';
-			$html .= '	<input type="hidden" name="delseat" value="">';
-			$html .= '	<input type="hidden" name="delroom" value="">';
-			$html .= '	<input type="hidden" name="code" value="">';
-			$html .= '	<input type="text" id="belegung" name="belegung" value="'.$user_name.'" placeholder="Belegung"';
-			if (!current_user_can('administrator')) $html .=' readonly';
-			$html .= '>';
-			if (current_user_can('administrator')) {  // Teilnehmer selectbox alle bisherigen
-				$xtln = $wpdb->get_results("SELECT DISTINCT belegung FROM " . $wpdb->prefix . "roombookings ORDER by belegung" );
-				$html .= ' <select name="belegungauswahl" onchange="javascript:document.sitzbuchung.belegung.value = document.sitzbuchung.belegungauswahl.options[document.sitzbuchung.belegungauswahl.selectedIndex].value">';
-				foreach($xtln as $belegname) {
-					$html .=  '<option value="'.$belegname->belegung.'">' .$belegname->belegung. '</option>';
-				}
-				$html .=  '</select> ';
-			}	
-			$html .= ' <input type="submit" name="sitzbuchung" value="Sitz buchen"></form></div>';
 
-			// Belegtplan anzeigen
-			$xseats = $wpdb->get_results("SELECT  id, verandatum, sitz,belegung FROM " . $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum=".$raum." ORDER by id" );
-			$html .= '<blockquote><h6 class="widget-title" style="margin: -8px -15px 8px">';
-			if (current_user_can('administrator')) {
-				$code =  md5( (date('Y-m-d H')));
-				$html .= ' &nbsp; <a style="cursor:pointer" onclick="document.sitzbuchung.delroom.value = \''.$raum.'\';document.sitzbuchung.code.value = \''.$code.'\';document.sitzbuchung.submit();"><i class="fa fa-trash"></i></a>';
-			}	
-			$belegung = count( $xseats );
-			$prozent = round($belegung / $sitzzahl *100,1);
-			$html .= ' Raum '.$raum.' '.$aktraumname.' | '.count( $xseats ).' von '.$sitzzahl.' belegt';
-			$html .= ' <progress max=100 style="width:100px" value="'.$prozent.'"></progress>';
-			$html .= ' | ' . wp_date('D d. M Y, \K\w W',strtotime($verandatum) + 7200).'</h6>';
-			$html .='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr">';
-			$belegt = 0;
-			for($i=1; $i <= $sitzzahl; $i++) {
-				$cc = 0; $found =- 1;
-				foreach ($xseats as $seat) { $cc += 1; if ($i == $seat->sitz) $found = $cc-1; }
-				if ($found >=0) {
-					$belegt +=1;
-					$html .= '<div style="background-color:#f42c2c;color:#fff;margin:4px;padding:5px;width:auto;display:inline-block;border:1px solid #888" title="Buchungs-ID: '.$found.'">'; 
-					if (current_user_can('administrator') || $user_name == $xseats[$found]->belegung) {
-						$code =  md5( (date('Y-m-d H')));
-						$html .= '<a onclick="javascript:document.sitzbuchung.delseat.value = \''.$i.'\';document.sitzbuchung.code.value = \''.$code.'\';document.sitzbuchung.submit();" style="cursor:pointer;color:white"><i class="fa fa-trash"></i></a> &nbsp; ';
+			foreach ($byday as $d => $info) {
+				$belegt = intval($info['belegt']);
+				$frei   = max(0, intval($sitzzahl) - $belegt);
+
+				// Sitzliste als kompakter String
+				$cells = array();
+				for ($i=1; $i <= $sitzzahl; $i++) {
+					if (isset($info['map'][$i])) {
+						$cells[] = '<span style="display:inline-block;margin:2px;padding:2px 6px;background:#f42c2c;color:#fff;border-radius:6px">#'.$i.' '.esc_html($info['map'][$i]).'</span>';
+					} else {
+						$cells[] = '<span style="display:inline-block;margin:2px;padding:2px 6px;background:#4ecbab;color:#fff;border-radius:6px">#'.$i.' frei</span>';
 					}
-					$html .='<b>'.$i.'</b> - '.$xseats[$found]->belegung.'</div>'; 
-				} else {
-					$html .= '<div onclick="javascript:document.sitzbuchung.sitz.value = '.$i.';document.getElementById(\'belegung\').focus();" style="cursor:pointer;background-color:#4ecbab;color:#fff;margin:4px;padding:5px;display:inline-block;width:auto;border:1px solid #888" title="unbelegt, klicken zum Belegen">'; 
-					$html .= '<b>'.$i.'</b> - frei</a></div>'; 
 				}
+				$html .= '<tr>';
+				$html .= '<td>'.esc_html($d).'</td>';
+				$html .= '<td style="text-align:right">'.$belegt.'</td>';
+				$html .= '<td style="text-align:right">'.$frei.'</td>';
+				$html .= '<td>'.implode(' ', $cells).'</td>';
+				$html .= '</tr>';
 			}
-			$html .= '</div></blockquote>';
-		}	
+			if (empty($byday)) {
+				$html .= '<tr><td colspan="4">Keine Einträge im gewählten Zeitraum.</td></tr>';
+			}
+			$html .= '</tbody></table></div></details>';
+		}
 
-	} else { $html = '<div class="newlabel" style="background-color:#fe8;font-size:1em;width:100%;text-align:center">'.__('login required. Enter your timeclock username and password','etimeclockwp').'</div>';}   // Admin oder User Abfrage Ende
+        // Linechart for admin
+        if (class_exists('WPGDCharts') && !empty($linedata)) {
+			// Neue GD Charts
+			$html .= '<details class="details"><summary>Auslastungschart</summary>';
+			$html .= '<div class="faq__content">';
+			if (count($xbelegung)<30)
+				$html .= do_shortcode('[gd_chart width="880" type="vbar" legend="false" data="'.$linedata.'"]');
+			else
+				$html .= do_shortcode('[gd_chart width="880" type="vbar" table=1 table_pos="only" legend="false" data="'.$linedata.'"]');
+			$html .='</div></details><br>';
+		}
 
-	return $html;
+        // Sitz im Raum buchen
+        if ($sitzzahl > 0) {
+            $html .= '<div class="noprint">';
+            $html .= '<form class="noprint" method="post" id="sitzbuchung" name="sitzbuchung">';
+            $xseats = $wpdb->get_results("SELECT id, verandatum, sitz,belegung FROM " . $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum=".$raum." AND belegung <> '' ORDER by id" );
+            $html .= ' <select name="sitz">';
+            for($i=1; $i <= $sitzzahl; $i++) {
+                $found=false;
+                foreach ($xseats as $seat) { if ($i == $seat->sitz) $found=true; }
+                if (!$found) $html .=  '<option value="'.$i.'">' .$i. '</option>';
+            }
+            $html .=  '</select> ';
+            $html .= '	<input type="hidden" name="verandatum" value="'.$verandatum.'">';
+            $html .= '	<input type="hidden" name="raum" value="'.$raum.'">';
+            $html .= '	<input type="hidden" name="delseat" value="">';
+            $html .= '	<input type="hidden" name="delroom" value="">';
+            $html .= '	<input type="hidden" name="code" value="">';
+            $html .= '	<input type="text" id="belegung" name="belegung" value="'.$user_name.'" placeholder="Belegung"';
+            if (!current_user_can('administrator')) $html .=' readonly';
+            $html .= '>';
+            if (current_user_can('administrator')) {  // Teilnehmer selectbox alle bisherigen
+                $xtln = $wpdb->get_results("SELECT DISTINCT belegung FROM " . $wpdb->prefix . "roombookings ORDER by belegung" );
+                $html .= ' <select name="belegungauswahl" onchange="javascript:document.sitzbuchung.belegung.value = document.sitzbuchung.belegungauswahl.options[document.sitzbuchung.belegungauswahl.selectedIndex].value">';
+				$html .= '<option value="">- bitte auswählen -</option>';
+			foreach($xtln as $belegname) {
+                    $html .=  '<option value="'.$belegname->belegung.'">' .$belegname->belegung. '</option>';
+                }
+                $html .=  '</select> ';
+            }
+            $html .= ' <input type="submit" name="sitzbuchung" value="Sitz buchen"></form></div>';
+
+            // Belegtplan anzeigen
+            $xseats = $wpdb->get_results("SELECT  id, verandatum, sitz,belegung FROM " . $wpdb->prefix . "roombookings WHERE verandatum='".$verandatum." 00:00:00' AND raum=".$raum." ORDER by id" );
+            $html .= '<blockquote><h6 class="widget-title" style="margin: -8px -15px 8px">';
+            if (current_user_can('administrator')) {
+                $code =  md5( (date('Y-m-d H')));
+                $html .= ' &nbsp; <a style="cursor:pointer" onclick="document.sitzbuchung.delroom.value = \''.$raum.'\';document.sitzbuchung.code.value = \''.$code.'\';document.sitzbuchung.submit();"><i class="fa fa-trash"></i></a>';
+            }
+            $belegung = count( $xseats );
+            $prozent = round($belegung / $sitzzahl *100,1);
+            $html .= ' Raum '.$raum.' '.$aktraumname.' | '.count( $xseats ).' von '.$sitzzahl.' belegt';
+            $html .= ' <progress max=100 style="width:100px" value="'.$prozent.'"></progress>';
+            $html .= ' | ' . wp_date('D d. M Y, \K\w W', strtotime($verandatum.' 12:00:00')).'</h6>';
+            $html .='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr">';
+            $belegt = 0;
+            for($i=1; $i <= $sitzzahl; $i++) {
+                $cc = 0; $found =- 1;
+                foreach ($xseats as $seat) { $cc += 1; if ($i == $seat->sitz) $found = $cc-1; }
+                if ($found >=0) {
+                    $belegt +=1;
+                    $html .= '<div style="background-color:#f42c2c;color:#fff;margin:4px;padding:5px;width:auto;display:inline-block;border:1px solid #888" title="Buchungs-ID: '.$found.'">';
+                    if (current_user_can('administrator') || $user_name == $xseats[$found]->belegung) {
+                        $code =  md5( (date('Y-m-d H')));
+                        $html .= '<a onclick="javascript:document.sitzbuchung.delseat.value = \''.$i.'\';document.sitzbuchung.code.value = \''.$code.'\';document.sitzbuchung.submit();" style="cursor:pointer;color:white"><i class="fa fa-trash"></i></a> &nbsp; ';
+                    }
+                    $html .='<b>'.$i.'</b> - '.$xseats[$found]->belegung.'</div>';
+                } else {
+                    $html .= '<div onclick="javascript:document.sitzbuchung.sitz.value = '.$i.';document.getElementById(\'belegung\').focus();" style="cursor:pointer;background-color:#4ecbab;color:#fff;margin:4px;padding:5px;display:inline-block;width:auto;border:1px solid #888" title="unbelegt, klicken zum Belegen">';
+                    $html .= '<b>'.$i.'</b> - frei</a></div>';
+                }
+            }
+            $html .= '</div></blockquote>';
+        }
+
+    } else { $html = '<div class="newlabel" style="background-color:#fe8;font-size:1em;width:100%;text-align:center">'.__('login required. Enter your timeclock username and password','etimeclockwp').'</div>';}   // Admin oder User Abfrage Ende
+
+    
+        // Statistik (kompakt): nur Tage mit Buchung; History=1 => MIN..MAX, sonst Monat..+2 Monate
+        try{
+            if($historie){ $mm = $wpdb->get_row("SELECT MIN(DATE(verandatum)) AS mind, MAX(DATE(verandatum)) AS maxd FROM {$wpdb->prefix}roombookings", ARRAY_A);
+                $von = !empty($mm['mind'])?$mm['mind']:date('Y-m-01',strtotime($verandatum));
+                $bis = !empty($mm['maxd'])?$mm['maxd']:date('Y-m-t',strtotime((new DateTime($verandatum))->modify('first day of +2 months')->format('Y-m-t')));
+            } else {
+                $von = date('Y-m-01',strtotime($verandatum));
+                $tmp = new DateTime($verandatum); $tmp->modify('first day of +2 months');
+                $bis = $tmp->format('Y-m-t');
+            }
+            $rooms = $wpdb->get_results("SELECT id, raumname, sitze FROM {$wpdb->prefix}rooms ORDER BY raumname");
+            $rows = $wpdb->get_results($wpdb->prepare("SELECT DATE(verandatum) tag, raum, COUNT(*) belegt FROM {$wpdb->prefix}roombookings WHERE verandatum BETWEEN %s AND %s GROUP BY DATE(verandatum), raum", $von.' 00:00:00', $bis.' 23:59:59'), ARRAY_A);
+            $agg=[]; $day=[]; foreach((array)$rows as $r){ $k=$r['raum'].'|'.$r['tag']; $v=(int)$r['belegt']; $agg[$k]=$v; $day[$r['tag']]=($day[$r['tag']]??0)+$v; }
+            $tage=[]; $c=new DateTime($von); $e=new DateTime($bis); while($c<=$e){ $t=$c->format('Y-m-d'); if(($day[$t]??0)>0) $tage[]=$t; $c->modify('+1 day'); }
+            $label = wp_date('m.Y',strtotime($von)).' – '.wp_date('m.Y',strtotime($bis));
+            $html.='<details class="details"><summary>Statistik: Belegung pro Raum &amp; Tag (%) — '.$label.'</summary><div class="faq__content">';
+            if(empty($tage)){ $html.='<div class="notice notice-info">Keine Belegungen im gewählten Zeitraum.</div></div></details>'; }
+            else {
+                $html.='<div style="overflow:auto"><table class="widefat striped" style="font-size:12px;white-space:nowrap"><thead><tr><th>Raum<br><span style="font-weight:normal">(# Sitze)</span></th>';
+                foreach($tage as $t){ $html.='<th>'.esc_html(wp_date('d.m.y', strtotime($t))).'</th>'; } $html.='</tr></thead><tbody>';
+                foreach($rooms as $room){ $html.='<tr><td><strong>'.esc_html($room->raumname).'</strong><br><span style="color:#666">'.(int)$room->sitze.'</span></td>';
+                    foreach($tage as $t){ $b=$agg[$room->id.'|'.$t]??0; $s=max(0,(int)$room->sitze); $p=$s>0?round(($b/$s)*100):0;
+                        if($p>0){ $col=($p<=30?'#2ecc71':($p<=60?'#f1c40f':($p<=85?'#e67e22':'#e74c3c')));
+                            $bar='<div style="height:6px;border-radius:3px;background:linear-gradient(90deg,'.$col.' '.$p.'%, #eee '.$p.'%)"></div>'; 
+                            $html.='<td title="'.esc_attr($p).'% ('.$b.'/'.$s.')">'.$bar.'<div style="font-size:11px;text-align:center">'.$p.'</div></td>';
+                        } else { $html.='<td title="0% (0/'.$s.')"></td>'; }
+                    } $html.='</tr>';
+                } $html.='</tbody></table></div>';
+                $html.='<div style="margin-top:8px;font-size:11px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">'
+                    .'<span><span style="display:inline-block;width:10px;height:10px;background:#2ecc71;border-radius:2px;margin-right:6px"></span>≤30%</span>'
+                    .'<span><span style="display:inline-block;width:10px;height:10px;background:#f1c40f;border-radius:2px;margin-right:6px"></span>31–60%</span>'
+                    .'<span><span style="display:inline-block;width:10px;height:10px;background:#e67e22;border-radius:2px;margin-right:6px"></span>61–85%</span>'
+                    .'<span><span style="display:inline-block;width:10px;height:10px;background:#e74c3c;border-radius:2px;margin-right:6px"></span>>85%</span>'
+                .'</div></div></details>';
+            }
+        }catch(Throwable $e){ $html.='<div class="notice notice-error">Statistik-Fehler: '.esc_html($e->getMessage()).'</div>'; }
+
+        return $html;
 }
 add_shortcode('roombooking', 'etimeclockwp_roombooking');
 
-// Auswertungen, Listen und Exports der Zeiten
+
+// --------------------------- Auswertungen, Listen und Exports der Zeiten --------------------------------------------------------
 function etimeclockwp_button_shortcode($atts) {
 	wp_enqueue_script('etimeclockwp-date-time');
 	global $current_user,$wp,$datefilter;

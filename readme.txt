@@ -5,10 +5,10 @@ Plugin URI: https://github.com/svenbolte/time-clock/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung, sitzreservierung, seat booking, events, rooms
-Version: 9.1.3.0.86
-Stable tag: 9.1.3.0.86
+Version: 9.1.3.1.100
+Stable tag: 9.1.3.1.100
 Requires at least: 6.0
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 Requires PHP: 8.2
 
 a time clock and seat reservation (desksharing) plugin for WordPress
@@ -46,6 +46,7 @@ Admins (wordpress admin role) can:
 = Roombooking Features =
 
 Users can: 
+*  use their login from time-clock to book a room or desk in a room
 *  book seats in rooms (or book a desktop in a room in office)
 *  review rooms status in a month calendar (red when fully booked, green if free seats available)
 *  select a room and day and see the reserved status aof seats in room
@@ -54,6 +55,8 @@ Users can:
 Admins can:
 *  create and delete rooms (with capacity)
 *  create and delete seats for existing users and guests
+*  view statistics on roob % usage, usage graphs and usage calendar for selected room.
+*  export lists
 
 == Installation ==
 
@@ -69,6 +72,9 @@ If you want to use the seat reservation/room planner:
 
 
 == Changelog ==
+
+= 9.1.3.1.86 = 16.10.2025
+bogfix from master not relevant for my fork
 
 = 9.1.3.0.86 = 3.7.2025
 keine Änderungen aus dem Master relevant für diesen Fork, Versionszähler erhöht
