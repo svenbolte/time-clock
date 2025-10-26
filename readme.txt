@@ -5,10 +5,10 @@ Plugin URI: https://github.com/svenbolte/time-clock/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: timeclock, time, clock, employee, volunteer, stempeluhr, zeiterfassung, sitzreservierung, seat booking, events, rooms
-Version: 9.1.3.1.100
-Stable tag: 9.1.3.1.100
+Version: 9.1.3.2.101
+Stable tag: 9.1.3.2.100
 Requires at least: 6.0
-Tested up to: 6.8.2
+Tested up to: 6.8.3
 Requires PHP: 8.2
 
 a time clock and seat reservation (desksharing) plugin for WordPress
@@ -72,6 +72,9 @@ If you want to use the seat reservation/room planner:
 
 
 == Changelog ==
+
+= 9.1.3.2.101 = 25.10.2025
+relevant fixes from master and raumbuchungen improved and wp683 compatibility
 
 = 9.1.3.1.86 = 16.10.2025
 bogfix from master not relevant for my fork

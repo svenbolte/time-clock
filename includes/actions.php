@@ -36,6 +36,11 @@ function etimeclockwp_timeclock_action_callback() {
 	// verify nonce
 	if (!wp_verify_nonce($nonce,'etimeclock_nonce')) { die( __('Error - Nonce validation failed.','etimeclockwp')); }
 	
+   // validate data parameter - only allow specific values to prevent XSS
+	$allowed_actions = array('in', 'out', 'breakon', 'breakoff');
+	if (!in_array($data, $allowed_actions, true)) {
+		die( __('Error - Invalid action.','time-clock'));
+	}
 	
 	// check to see if login data is valid
 	$args = array(

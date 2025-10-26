@@ -44,7 +44,7 @@ function etimeclockwp_callback_activity($post) {
 		}
 		
 		foreach ($values as $label => $value) {
-			echo "<option value='$value'"; if ($current == $value) { echo "SELECTED"; } echo ">$label</option>";
+			echo "<option value='".esc_attr($value)."'"; if ($current == $value) { echo "SELECTED"; } echo ">".esc_html($label)."</option>";			
 		}
 		echo "</select>";
 		echo "</td></tr><tr><td>";
@@ -55,7 +55,7 @@ function etimeclockwp_callback_activity($post) {
 		$wp_date_format = 	etimeclockwp_get_option('date-format');
 		$date_now = 		date_i18n($wp_date_format);
 		
-		echo "<input type='text' id='etimeclockwp-new-activity' class='etimeclockwp_cell_width' value='$date_now'><input type='hidden' id='etimeclockwp-new-activity-real' name='real-date' value=''>";
+		echo "<input type='text' id='etimeclockwp-new-activity' class='etimeclockwp_cell_width' value='".esc_attr($date_now)."'><input type='hidden' id='etimeclockwp-new-activity-real' name='real-date' value=''>";
 		echo '<input type="hidden" name="etimeclockwp_MetaNonce" value="', wp_create_nonce(basename(__FILE__)), '" />';
 		echo '<input type="hidden" name="etimeclockwp_submit" value="1" />';
 		echo "</td></tr><tr><td></td><td><input id='publish' class='button-primary' type='submit' value='"; echo __('Save','etimeclockwp'); echo "' accesskey='p' tabindex='5' name='save'>";
@@ -146,15 +146,15 @@ function etimeclockwp_callback_activity($post) {
 						if (isset($timestamp_array[1])) {
 							$order = $timestamp_array[1];
                             echo "<tr><td class='etimeclockwp_cell_title_width' style='color:white;text-transform:uppercase;background-color: ".$keycolor."'>";
-							echo $working_status.' &nbsp; '.$key;
-							echo "</td><td>".date_i18n('D',$timestampdb).' '.$datetime.'</td><td>';
+							echo $working_status.' &nbsp; '.esc_html($key);
+							echo "</td><td>".date_i18n('D',$timestampdb).' '.esc_html($datetime).'</td><td>';
 							if (function_exists('ago')) { echo ago($timestampdb-date('Z')); }
 							echo '</td><td>'.$difftime."</td><td>&nbsp;";
 							echo "</td><td><a href='#' class='etimeclockwp-entry-new' data-nonce='$nonce_add' data-timestamp='".$timestamp."' data-date='".$date."' data-time='".$time."' data-action='".$key_action."' data-pure='".$key_pure."'>".__('New','etimeclockwp')."</a> &nbsp; ";
 							echo "</td><td><a href='#' class='etimeclockwp-entry-edit' data-nonce='$nonce_edit' data-timestamp='".$timestamp."' data-date='".$date."' data-time='".$time."' data-order='".$order."' data-action='".$key_action."' data-pure='".$key_pure."'>".__('Edit','etimeclockwp')."</a> &nbsp; ";
-							echo "</td><td><a href='#' class='etimeclockwp-entry-delete' data-nonce='$nonce_delete' data-date='".$date."' data-time='".$time."' data-pure='".$key_pure."'>".__('Delete','etimeclockwp')."</a></td></tr>";
+							echo "</td><td><a href='#' class='etimeclockwp-entry-delete' data-nonce='$nonce_delete' data-date='".esc_attr($date)."' data-time='".esc_attr($time)."' data-pure='".esc_attr($key_pure)."'>".__('Delete','etimeclockwp')."</a></td></tr>";
 						} else {
-							echo "<tr><td class='etimeclockwp_cell_title_width'>"; echo $key; echo ": </td><td>".$datetime."</td></tr>";
+							 echo "<tr><td class='etimeclockwp_cell_title_width'>"; echo esc_html($key); echo ": </td><td>".esc_html($datetime)."</td></tr>";
 						}
 						$oldtimestampdb = $timestampdb;
 					}
